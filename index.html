@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -12,16 +13,19 @@
     <link rel="apple-touch-icon" href="logo.png">
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
     <header>
         <div class="header-container">
             <div class="header-top">
                 <div style="display: flex; align-items: center; gap: 10px;">
-                    <img src="logo.png" alt="Logo" style="width: 45px; height: 45px; border-radius: 8px; border: 2px solid #fedd00;">
+                    <img src="logo.png" alt="Logo"
+                        style="width: 45px; height: 45px; border-radius: 8px; border: 2px solid #fedd00;">
                     <h1>MEU ÁLBUM 2026</h1>
                 </div>
                 <div style="display: flex; gap: 8px;">
-                    <button id="btn-instalar" class="badge-btn" style="display:none; background:#012169;">INSTALAR</button>
+                    <button id="btn-instalar" class="badge-btn"
+                        style="display:none; background:#012169;">INSTALAR</button>
                     <button id="btn-repetidas" class="badge-btn" style="background:#d32f2f;">REPETIDAS</button>
                 </div>
             </div>
@@ -48,23 +52,24 @@
                 <h2 style="margin:0; color:#009739;">Minhas Repetidas</h2>
                 <span class="close-modal" style="cursor:pointer; font-size:28px;">&times;</span>
             </div>
-            <div id="lista-repetidas" class="sticker-grid" style="margin-top:20px; max-height:60vh; overflow-y:auto;"></div>
+            <div id="lista-repetidas" class="sticker-grid" style="margin-top:20px; max-height:60vh; overflow-y:auto;">
+            </div>
             <button id="btn-whatsapp" class="btn-whatsapp">Compartilhar no WhatsApp</button>
         </div>
     </div>
 
     <footer class="main-footer">
-        <div class="footer-content">
-            <p style="margin: 0 0 5px 0;">📱 Toque: Add | Segure: Remover</p>
-            <div class="credits">
-                <span>© 2026 Hugo Gomes - Todos os Direitos Reservados</span>
-                <a href="https://www.instagram.com/h.gomes04" target="_blank" class="insta-link">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="Instagram" style="width:16px;"> @h.gomes04
-                </a>
-            </div>
+        <p class="footer-instruction">📱 1 Toque: Add | 2 Toques: Remover</p>
+        <div class="footer-credits">
+            <span>© 2026 Hugo Gomes - Todos os Direitos Reservados</span>
+            <a href="https://www.instagram.com/h.gomes04" target="_blank" class="insta-link">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="Insta">
+                @h.gomes04
+            </a>
         </div>
     </footer>
 
     <script src="script.js"></script>
 </body>
+
 </html>
