@@ -1,19 +1,7 @@
 const albumData = {
-    "ESPECIAIS": { 
-        id: "esp", 
-        stickers: ["00", "FWC1", "FWC2", "FWC3", "FWC4", "FWC5", "FWC6", "FWC7", "FWC8"], 
-        img: "https://www.svgrepo.com/show/513354/star.svg" 
-    },
-    "SELEÇÕES ESPECIAIS": { 
-        id: "fwc_spec", 
-        stickers: Array.from({length: 11}, (_, i) => `FWC${i + 9}`), 
-        img: "https://www.svgrepo.com/show/500431/trophy.svg" 
-    },
-    "COCA-COLA": { 
-        id: "coca", 
-        stickers: Array.from({length: 14}, (_, i) => `CC${i + 1}`), 
-        img: "https://upload.wikimedia.org/wikipedia/commons/c/ce/Coca-Cola_logo.svg" 
-    },
+    "ESPECIAIS": { id: "esp", stickers: ["00", "FWC1", "FWC2", "FWC3", "FWC4", "FWC5", "FWC6", "FWC7", "FWC8"], img: "https://cdn-icons-png.flaticon.com/512/1828/1828884.png" },
+    "SELEÇÕES ESPECIAIS": { id: "fwc_spec", stickers: Array.from({length: 11}, (_, i) => `FWC${i + 9}`), img: "https://cdn-icons-png.flaticon.com/512/3112/3112946.png" },
+    "COCA-COLA": { id: "coca", stickers: Array.from({length: 14}, (_, i) => `CC${i + 1}`), img: "https://upload.wikimedia.org/wikipedia/commons/c/ce/Coca-Cola_logo.svg" },
     "GRUPO A": { teams: [{n: "México", s: "MEX", c: "mx"}, {n: "África do Sul", s: "RSA", c: "za"}, {n: "Coreia do Sul", s: "KOR", c: "kr"}, {n: "República Tcheca", s: "CZE", c: "cz"}] },
     "GRUPO B": { teams: [{n: "Canadá", s: "CAN", c: "ca"}, {n: "Bósnia", s: "BIH", c: "ba"}, {n: "Catar", s: "QAT", c: "qa"}, {n: "Suíça", s: "SUI", c: "ch"}] },
     "GRUPO C": { teams: [{n: "Brasil", s: "BRA", c: "br"}, {n: "Marrocos", s: "MAR", c: "ma"}, {n: "Haiti", s: "HAI", c: "ht"}, {n: "Escócia", s: "SCO", c: "scotland"}] },
@@ -28,12 +16,11 @@ const albumData = {
     "GRUPO L": { teams: [{n: "Inglaterra", s: "ENG", c: "gb-eng"}, {n: "Croácia", s: "CRO", c: "hr"}, {n: "Gana", s: "GHA", c: "gh"}, {n: "Panamá", s: "PAN", c: "pa"}] }
 };
 
-let owned = JSON.parse(localStorage.getItem('album_v10_fix')) || {};
-let openSections = {};
+let owned = JSON.parse(localStorage.getItem('album_2026_final')) || {};
+const clickSound = document.getElementById('clickSound');
 
 function render() {
     const main = document.getElementById('album-content');
-    if (!main) return;
     main.innerHTML = '';
     let totalPossible = 0;
 
@@ -41,46 +28,37 @@ function render() {
         const section = document.createElement('section');
         section.className = 'group-section';
         section.innerHTML = `<h2 class="section-title">${title}</h2>`;
-
+        
         if (data.stickers) {
             section.appendChild(createCard(title, data.stickers, data.img, data.id));
             totalPossible += data.stickers.length;
         } else {
             data.teams.forEach(t => {
-                const list = Array.from({length: 20}, (_, i) => `${t.s.toUpperCase()}${i + 1}`);
-                let flag = t.c === "scotland" ? "https://flagcdn.com/w80/gb-sct.png" : `https://flagcdn.com/w80/${t.c}.png`;
+                const list = Array.from({length: 20}, (_, i) => `${t.s}${i + 1}`);
+                const flag = t.c === "scotland" ? "https://flagcdn.com/w80/gb-sct.png" : `https://flagcdn.com/w80/${t.c}.png`;
                 section.appendChild(createCard(t.n, list, flag, t.s));
                 totalPossible += 20;
             });
         }
         main.appendChild(section);
     }
-    document.getElementById('max-total').innerText = totalPossible;
     updateStats(totalPossible);
 }
 
 function createCard(name, stickers, img, id) {
     const card = document.createElement('div');
     card.className = 'team-card';
-
-    const header = document.createElement('div');
-    header.className = 'team-header';
-    header.innerHTML = `<img src="${img}" loading="lazy"> <span class="name">${name}</span>`;
-    header.onclick = () => {
-        const body = card.querySelector('.team-body');
-        body.classList.toggle('active');
-        openSections[id] = body.classList.contains('active');
-    };
-
+    card.innerHTML = `<div class="team-header"><img src="${img}"> <span class="name">${name}</span></div>`;
+    
     const body = document.createElement('div');
-    body.className = `team-body ${openSections[id] ? 'active' : ''}`;
-
+    body.className = 'team-body';
+    
     const btnFill = document.createElement('button');
     btnFill.className = 'btn-fill';
-    btnFill.innerText = 'Completar Seleção';
+    btnFill.innerText = 'Marcar Todas';
     btnFill.onclick = (e) => {
         e.stopPropagation();
-        stickers.forEach(sid => { if(!owned[sid]) owned[sid] = 1; });
+        stickers.forEach(s => { if(!owned[s]) owned[s] = 1; });
         save();
     };
 
@@ -91,52 +69,101 @@ function createCard(name, stickers, img, id) {
         const s = document.createElement('div');
         const count = owned[sid] || 0;
         s.className = `sticker ${count > 0 ? 'owned' : ''}`;
+        s.id = `st-${sid}`;
         s.innerHTML = `${sid} ${count > 1 ? `<span class="badge-repeat">${count-1}</span>` : ''}`;
-
-        let timer;
-        s.addEventListener('touchstart', (e) => {
-            timer = setTimeout(() => { removeSticker(sid); }, 500);
-        }, {passive: true});
-        s.addEventListener('touchend', () => clearTimeout(timer));
-        s.addEventListener('touchmove', () => clearTimeout(timer));
-
+        
         s.onclick = (e) => {
             e.stopPropagation();
             owned[sid] = (owned[sid] || 0) + 1;
+            clickSound.currentTime = 0;
+            clickSound.play();
             save();
         };
+        
+        let timer;
+        s.oncontextmenu = (e) => e.preventDefault();
+        s.ontouchstart = () => timer = setTimeout(() => { if(owned[sid]>0){owned[sid]--; save();} }, 600);
+        s.ontouchend = () => clearTimeout(timer);
+        s.onmousedown = () => timer = setTimeout(() => { if(owned[sid]>0){owned[sid]--; save();} }, 600);
+        s.onmouseup = () => clearTimeout(timer);
 
-        s.oncontextmenu = (e) => { e.preventDefault(); removeSticker(sid); };
         grid.appendChild(s);
     });
 
+    card.querySelector('.team-header').onclick = () => body.classList.toggle('active');
     body.appendChild(btnFill);
     body.appendChild(grid);
-    card.appendChild(header);
     card.appendChild(body);
     return card;
 }
 
-function removeSticker(sid) {
-    if (owned[sid] > 0) {
-        owned[sid]--;
-        if (owned[sid] === 0) delete owned[sid];
-        save();
-    }
-}
-
 function save() {
-    localStorage.setItem('album_v10_fix', JSON.stringify(owned));
+    localStorage.setItem('album_2026_final', JSON.stringify(owned));
     render();
 }
 
 function updateStats(max) {
     const unique = Object.keys(owned).length;
-    const percent = max > 0 ? ((unique / max) * 100).toFixed(1) : 0;
+    const percent = ((unique / max) * 100).toFixed(1);
     document.getElementById('total-count').innerText = unique;
     document.getElementById('progress-percent').innerText = percent + "%";
     document.getElementById('bar').style.width = percent + "%";
 }
 
-// Inicialização segura
+// BUSCA
+document.getElementById('searchSticker').addEventListener('input', (e) => {
+    const val = e.target.value.toUpperCase();
+    if(val.length >= 3) {
+        const target = document.getElementById(`st-${val}`);
+        if(target) {
+            target.closest('.team-body').classList.add('active');
+            target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            target.style.outline = "4px solid #fedd00";
+            setTimeout(() => target.style.outline = "none", 2000);
+        }
+    }
+});
+
+// MODAL REPETIDAS
+const modal = document.getElementById("modal-repetidas");
+document.getElementById("btn-repetidas").onclick = () => {
+    const lista = document.getElementById("lista-repetidas");
+    lista.innerHTML = "";
+    Object.keys(owned).forEach(sid => {
+        if(owned[sid] > 1) {
+            const s = document.createElement('div');
+            s.className = 'sticker owned';
+            s.innerHTML = `${sid} <span class="badge-repeat">${owned[sid]-1}</span>`;
+            lista.appendChild(s);
+        }
+    });
+    modal.style.display = "block";
+};
+document.querySelector(".close-modal").onclick = () => modal.style.display = "none";
+
+// WHATSAPP
+document.getElementById("btn-whatsapp").onclick = () => {
+    let t = "*MINHAS REPETIDAS 2026*\n";
+    Object.keys(owned).forEach(sid => { if(owned[sid]>1) t += `• ${sid} (${owned[sid]-1}x)\n`; });
+    window.open(`https://wa.me/?text=${encodeURIComponent(t)}`);
+};
+
+// PWA & IOS
+let defPrompt;
+window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault(); defPrompt = e;
+    document.getElementById('btn-instalar').style.display = 'block';
+});
+document.getElementById('btn-instalar').onclick = () => {
+    defPrompt.prompt();
+    document.getElementById('btn-instalar').style.display = 'none';
+};
+
+if (/iPhone|iPad|iPod/.test(navigator.userAgent) && !window.navigator.standalone) {
+    const notice = document.createElement('div');
+    notice.id = 'ios-notice';
+    notice.innerHTML = '📲 Para instalar: toque em compartilhar e "Adicionar à Tela de Início"';
+    document.querySelector('.header-container').prepend(notice);
+}
+
 window.onload = render;
