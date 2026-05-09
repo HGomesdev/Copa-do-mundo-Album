@@ -1,0 +1,77 @@
+:root {
+    --verde: #009739;
+    --amarelo: #fedd00;
+    --azul: #012169;
+    --branco: #ffffff;
+    --cinza-fundo: #f4f4f4;
+}
+
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; outline: none; }
+
+body {
+    font-family: sans-serif;
+    background-color: var(--cinza-fundo);
+    margin: 0;
+    padding-bottom: 80px;
+}
+
+header {
+    background: var(--verde);
+    color: white;
+    padding: 15px;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    border-bottom: 4px solid var(--amarelo);
+}
+
+.header-container { max-width: 600px; margin: 0 auto; }
+.header-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+.badge { background: var(--azul); padding: 4px 8px; border-radius: 4px; font-size: 0.7rem; font-weight: bold; }
+
+.progress-info { display: flex; justify-content: space-between; font-size: 0.8rem; margin-bottom: 5px; }
+.progress-bar-bg { background: rgba(0,0,0,0.2); height: 10px; border-radius: 5px; overflow: hidden; }
+#bar { background: var(--amarelo); height: 100%; width: 0%; transition: width 0.3s; }
+
+.group-section { max-width: 600px; margin: 20px auto; padding: 0 10px; }
+.section-title { border-left: 5px solid var(--verde); padding-left: 10px; color: var(--azul); font-size: 1.1rem; margin-bottom: 15px; }
+
+.team-card { background: white; border-radius: 8px; border: 1px solid #ddd; margin-bottom: 10px; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+.team-header { padding: 12px; display: flex; align-items: center; cursor: pointer; user-select: none; }
+.team-header img { width: 30px; height: 30px; object-fit: contain; margin-right: 12px; }
+.team-header .name { flex-grow: 1; font-weight: bold; color: var(--azul); }
+
+.team-body { display: none; padding: 15px; background: #fafafa; border-top: 1px solid #eee; }
+.team-body.active { display: block; }
+
+.btn-fill {
+    width: 100%; background: var(--azul); color: white; border: none;
+    padding: 12px; border-radius: 5px; font-weight: bold; margin-bottom: 15px;
+    cursor: pointer; font-size: 0.85rem;
+}
+
+.sticker-grid { 
+    display: grid; 
+    grid-template-columns: repeat(4, 1fr); 
+    gap: 8px; 
+}
+
+.sticker {
+    background: #fff; border: 2px solid #eee; border-radius: 4px; padding: 12px 0;
+    text-align: center; font-size: 0.7rem; font-weight: bold; position: relative;
+    cursor: pointer; user-select: none;
+}
+
+.sticker.owned { background: var(--amarelo); border-color: var(--verde); color: var(--azul); }
+
+.badge-repeat {
+    position: absolute; top: -5px; right: -5px; background: #cc0000;
+    color: white; width: 16px; height: 16px; border-radius: 50%;
+    font-size: 0.6rem; display: flex; align-items: center; justify-content: center;
+    border: 1px solid white;
+}
+
+footer {
+    position: fixed; bottom: 0; width: 100%; background: var(--azul);
+    color: white; text-align: center; padding: 10px; font-size: 0.75rem;
+}
