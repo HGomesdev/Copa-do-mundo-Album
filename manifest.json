@@ -1,23 +1,14 @@
 {
   "name": "Meu Álbum 2026",
   "short_name": "Álbum 2026",
-  "description": "Controle de figurinhas para a Copa 2026 por Hugo Gomes",
+  "description": "Controle de figurinhas para a Copa 2026",
   "start_url": "index.html",
   "display": "standalone",
   "background_color": "#009739",
   "theme_color": "#009739",
   "orientation": "portrait",
   "icons": [
-    {
-      "src": "logo.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any maskable"
-    },
-    {
-      "src": "logo.png",
-      "sizes": "192x192",
-      "type": "image/png"
-    }
+    { "src": "logo.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" },
+    { "src": "logo.png", "sizes": "192x192", "type": "image/png" }
   ]
 }

@@ -4,14 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Meu Álbum 2026</title>
-    
     <link rel="icon" type="image/png" href="logo.png">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="theme-color" content="#009739">
     <link rel="manifest" href="manifest.json">
     <link rel="apple-touch-icon" href="logo.png">
-    
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -23,19 +21,17 @@
                     <h1>MEU ÁLBUM 2026</h1>
                 </div>
                 <div style="display: flex; gap: 8px;">
-                    <button id="btn-instalar" class="badge-btn">INSTALAR APP</button>
-                    <button id="btn-repetidas" class="badge-btn">REPETIDAS</button>
+                    <button id="btn-instalar" class="badge-btn" style="display:none; background:#012169;">INSTALAR</button>
+                    <button id="btn-repetidas" class="badge-btn" style="background:#d32f2f;">REPETIDAS</button>
                 </div>
             </div>
-
             <div class="search-container">
                 <input type="text" id="searchSticker" placeholder="🔍 Buscar figurinha (ex: BRA10)">
             </div>
-
             <div class="progress-container">
                 <div class="progress-info">
                     <span>Progresso: <strong id="progress-percent">0%</strong></span>
-                    <span><strong id="total-count">0</strong> / <span id="max-total">994</span></span>
+                    <span><strong id="total-count">0</strong> / <span id="max-total">670</span></span>
                 </div>
                 <div class="progress-bar-bg">
                     <div id="bar"></div>
@@ -49,27 +45,25 @@
     <div id="modal-repetidas" class="modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h2>Minhas Repetidas</h2>
-                <span class="close-modal">&times;</span>
+                <h2 style="margin:0; color:#009739;">Minhas Repetidas</h2>
+                <span class="close-modal" style="cursor:pointer; font-size:28px;">&times;</span>
             </div>
-            <div id="lista-repetidas" class="sticker-grid"></div>
+            <div id="lista-repetidas" class="sticker-grid" style="margin-top:20px; max-height:60vh; overflow-y:auto;"></div>
             <button id="btn-whatsapp" class="btn-whatsapp">Compartilhar no WhatsApp</button>
         </div>
     </div>
 
     <footer class="main-footer">
         <div class="footer-content">
-            <p>📱 Toque: Adicionar | Segure: Remover</p>
+            <p style="margin: 0 0 5px 0;">📱 Toque: Add | Segure: Remover</p>
             <div class="credits">
-                <span>© 2026 Hugo Gomes - Todos os direitos reservados</span>
+                <span>© 2026 Hugo Gomes - Todos os Direitos Reservados</span>
                 <a href="https://www.instagram.com/h.gomes04" target="_blank" class="insta-link">
-                    <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="Instagram"> @h.gomes04
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="Instagram" style="width:16px;"> @h.gomes04
                 </a>
             </div>
         </div>
     </footer>
-
-    <audio id="clickSound" src="https://www.soundjay.com/buttons/sounds/button-16.mp3" preload="auto"></audio>
 
     <script src="script.js"></script>
 </body>

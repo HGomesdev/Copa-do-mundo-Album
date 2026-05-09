@@ -17,114 +17,112 @@ const albumData = {
 };
 
 let owned = JSON.parse(localStorage.getItem('album_2026_final')) || {};
-const clickSound = document.getElementById('clickSound');
+let totalMax = 670;
 
 function render() {
     const main = document.getElementById('album-content');
     main.innerHTML = '';
-    let totalPossible = 0;
-
+    let count = 0;
     for (const [title, data] of Object.entries(albumData)) {
         const section = document.createElement('section');
         section.className = 'group-section';
         section.innerHTML = `<h2 class="section-title">${title}</h2>`;
-        
         if (data.stickers) {
-            section.appendChild(createCard(title, data.stickers, data.img, data.id));
-            totalPossible += data.stickers.length;
+            section.appendChild(createCard(title, data.stickers, data.img));
+            count += data.stickers.length;
         } else {
             data.teams.forEach(t => {
                 const list = Array.from({length: 20}, (_, i) => `${t.s}${i + 1}`);
                 const flag = t.c === "scotland" ? "https://flagcdn.com/w80/gb-sct.png" : `https://flagcdn.com/w80/${t.c}.png`;
-                section.appendChild(createCard(t.n, list, flag, t.s));
-                totalPossible += 20;
+                section.appendChild(createCard(t.n, list, flag));
+                count += 20;
             });
         }
         main.appendChild(section);
     }
-    updateStats(totalPossible);
+    totalMax = count;
+    updateStats();
 }
 
-function createCard(name, stickers, img, id) {
+function createCard(name, stickers, img) {
     const card = document.createElement('div');
     card.className = 'team-card';
     card.innerHTML = `<div class="team-header"><img src="${img}"> <span class="name">${name}</span></div>`;
-    
     const body = document.createElement('div');
     body.className = 'team-body';
-    
     const btnFill = document.createElement('button');
     btnFill.className = 'btn-fill';
     btnFill.innerText = 'Marcar Todas';
-    btnFill.onclick = (e) => {
-        e.stopPropagation();
-        stickers.forEach(s => { if(!owned[s]) owned[s] = 1; });
-        save();
-    };
+    btnFill.onclick = (e) => { e.stopPropagation(); stickers.forEach(s => { if(!owned[s]) owned[s] = 1; }); saveFull(); };
 
     const grid = document.createElement('div');
     grid.className = 'sticker-grid';
-
     stickers.forEach(sid => {
         const s = document.createElement('div');
-        const count = owned[sid] || 0;
-        s.className = `sticker ${count > 0 ? 'owned' : ''}`;
         s.id = `st-${sid}`;
-        s.innerHTML = `${sid} ${count > 1 ? `<span class="badge-repeat">${count-1}</span>` : ''}`;
+        updateVisual(s, sid);
         
         s.onclick = (e) => {
-            e.stopPropagation();
+            e.preventDefault(); e.stopPropagation();
             owned[sid] = (owned[sid] || 0) + 1;
-            clickSound.currentTime = 0;
-            clickSound.play();
-            save();
+            saveQuiet(s, sid);
         };
         
         let timer;
+        const remove = () => { if(owned[sid] > 0) { owned[sid]--; if(owned[sid] === 0) delete owned[sid]; saveQuiet(s, sid); } };
         s.oncontextmenu = (e) => e.preventDefault();
-        s.ontouchstart = () => timer = setTimeout(() => { if(owned[sid]>0){owned[sid]--; save();} }, 600);
+        s.ontouchstart = () => { timer = setTimeout(remove, 600); };
         s.ontouchend = () => clearTimeout(timer);
-        s.onmousedown = () => timer = setTimeout(() => { if(owned[sid]>0){owned[sid]--; save();} }, 600);
+        s.onmousedown = () => { timer = setTimeout(remove, 600); };
         s.onmouseup = () => clearTimeout(timer);
 
         grid.appendChild(s);
     });
 
     card.querySelector('.team-header').onclick = () => body.classList.toggle('active');
-    body.appendChild(btnFill);
-    body.appendChild(grid);
-    card.appendChild(body);
+    body.appendChild(btnFill); body.appendChild(grid); card.appendChild(body);
     return card;
 }
 
-function save() {
+function updateVisual(el, sid) {
+    const count = owned[sid] || 0;
+    el.className = `sticker ${count > 0 ? 'owned' : ''}`;
+    el.innerHTML = `${sid}${count > 1 ? `<span class="badge-repeat">${count-1}</span>` : ''}`;
+}
+
+function saveQuiet(el, sid) {
+    localStorage.setItem('album_2026_final', JSON.stringify(owned));
+    updateVisual(el, sid);
+    updateStats();
+}
+
+function saveFull() {
     localStorage.setItem('album_2026_final', JSON.stringify(owned));
     render();
 }
 
-function updateStats(max) {
+function updateStats() {
     const unique = Object.keys(owned).length;
-    const percent = ((unique / max) * 100).toFixed(1);
+    const percent = ((unique / totalMax) * 100).toFixed(1);
     document.getElementById('total-count').innerText = unique;
+    document.getElementById('max-total').innerText = totalMax;
     document.getElementById('progress-percent').innerText = percent + "%";
     document.getElementById('bar').style.width = percent + "%";
 }
 
 // BUSCA
 document.getElementById('searchSticker').addEventListener('input', (e) => {
-    const val = e.target.value.toUpperCase();
+    const val = e.target.value.toUpperCase().trim();
     if(val.length >= 3) {
         const target = document.getElementById(`st-${val}`);
         if(target) {
             target.closest('.team-body').classList.add('active');
             target.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            target.style.outline = "4px solid #fedd00";
-            setTimeout(() => target.style.outline = "none", 2000);
         }
     }
 });
 
-// MODAL REPETIDAS
+// REPETIDAS
 const modal = document.getElementById("modal-repetidas");
 document.getElementById("btn-repetidas").onclick = () => {
     const lista = document.getElementById("lista-repetidas");
@@ -141,29 +139,26 @@ document.getElementById("btn-repetidas").onclick = () => {
 };
 document.querySelector(".close-modal").onclick = () => modal.style.display = "none";
 
-// WHATSAPP
 document.getElementById("btn-whatsapp").onclick = () => {
     let t = "*MINHAS REPETIDAS 2026*\n";
     Object.keys(owned).forEach(sid => { if(owned[sid]>1) t += `• ${sid} (${owned[sid]-1}x)\n`; });
     window.open(`https://wa.me/?text=${encodeURIComponent(t)}`);
 };
 
-// PWA & IOS
-let defPrompt;
+// INSTALAÇÃO
+let deferredPrompt;
 window.addEventListener('beforeinstallprompt', (e) => {
-    e.preventDefault(); defPrompt = e;
+    e.preventDefault();
+    deferredPrompt = e;
     document.getElementById('btn-instalar').style.display = 'block';
 });
-document.getElementById('btn-instalar').onclick = () => {
-    defPrompt.prompt();
-    document.getElementById('btn-instalar').style.display = 'none';
-};
 
-if (/iPhone|iPad|iPod/.test(navigator.userAgent) && !window.navigator.standalone) {
-    const notice = document.createElement('div');
-    notice.id = 'ios-notice';
-    notice.innerHTML = '📲 Para instalar: toque em compartilhar e "Adicionar à Tela de Início"';
-    document.querySelector('.header-container').prepend(notice);
-}
+document.getElementById('btn-instalar').onclick = async () => {
+    if (deferredPrompt) {
+        deferredPrompt.prompt();
+        deferredPrompt = null;
+        document.getElementById('btn-instalar').style.display = 'none';
+    }
+};
 
 window.onload = render;
