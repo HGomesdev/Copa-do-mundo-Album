@@ -26,7 +26,7 @@ function iniciarAnuncio() {
     if (!modal) return;
 
     modal.style.display = 'flex';
-    let tempo = 7;
+    let tempo = 7; // Segundos
 
     const contagem = setInterval(() => {
         tempo--;
@@ -46,6 +46,9 @@ function iniciarAnuncio() {
 
 // --- INSTALAÇÃO E INICIALIZAÇÃO ---
 window.addEventListener('DOMContentLoaded', () => {
+    // Ano dinâmico no rodapé
+    document.getElementById('current-year').innerText = new Date().getFullYear();
+
     const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
     const isStandalone = window.navigator.standalone === true || window.matchMedia('(display-mode: standalone)').matches;
     
@@ -53,7 +56,7 @@ window.addEventListener('DOMContentLoaded', () => {
         document.getElementById('ios-install-banner').style.display = 'block';
     }
     
-    iniciarAnuncio(); // Abre o anúncio direto
+    iniciarAnuncio(); // Abre o anúncio
     render();
 });
 
@@ -124,7 +127,7 @@ function createCard(name, stickers, img) {
         }, { passive: true });
 
         s.addEventListener('touchend', (e) => {
-            if (movendo) return; // Se arrastou a tela, não faz nada
+            if (movendo) return; // Arrastou, não marca
             
             cliques++;
             if (cliques === 1) {
