@@ -17,10 +17,10 @@ body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
     background-color: var(--cinza-fundo); 
     margin: 0; 
-    padding-bottom: 115px; /* Espaço para o rodapé não cobrir figurinhas */
+    padding-bottom: 110px; /* Espaço para o rodapé */
 }
 
-/* HEADER CONFIGURAÇÕES */
+/* HEADER */
 header {
     background: linear-gradient(135deg, var(--topo-inicio) 0%, var(--topo-fim) 100%);
     color: white; 
@@ -33,16 +33,14 @@ header {
 
 .header-container { max-width: 600px; margin: 0 auto; }
 
-/* AJUSTE DOS BOTÕES NO TOPO */
 .badge-btn {
     box-shadow: 0 2px 4px rgba(0,0,0,0.2);
     transition: transform 0.1s;
     cursor: pointer;
-    white-space: nowrap;
 }
 .badge-btn:active { transform: scale(0.95); }
 
-/* SEÇÃO DE GRUPOS E TIMES */
+/* GRUPOS E TIMES */
 .group-section { max-width: 600px; margin: 15px auto; padding: 0 12px; }
 
 .section-title { 
@@ -61,7 +59,6 @@ header {
     border: 1px solid #ddd; 
     margin-bottom: 10px; 
     overflow: hidden; 
-    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
 }
 
 .team-header { 
@@ -88,7 +85,7 @@ header {
 
 .team-body.active { display: block; }
 
-/* GRID DE FIGURINHAS */
+/* FIGURINHAS */
 .sticker-grid { 
     display: grid; 
     grid-template-columns: repeat(4, 1fr); 
@@ -105,7 +102,7 @@ header {
     font-weight: bold; 
     position: relative;
     color: #555;
-    transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transition: all 0.2s;
 }
 
 .sticker.owned { 
@@ -131,12 +128,10 @@ header {
     font-weight: 900;
 }
 
-/* DESTAQUE DE BUSCA */
 .sticker-foco {
-    box-shadow: 0 0 15px var(--detalhe-amarelo);
-    border: 2px solid var(--detalhe-amarelo) !important;
-    transform: scale(1.1);
-    z-index: 10;
+    box-shadow: 0 0 12px var(--detalhe-amarelo);
+    border-color: var(--detalhe-amarelo);
+    transform: scale(1.05);
 }
 
 /* RESPONSIVIDADE */
@@ -145,7 +140,6 @@ header {
     h1 { font-size: 0.9rem !important; }
 }
 
-/* ANIMAÇÃO SLIDE */
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(-10px); }
     to { opacity: 1; transform: translateY(0); }
