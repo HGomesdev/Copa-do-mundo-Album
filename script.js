@@ -19,9 +19,9 @@ const albumData = {
 let owned = JSON.parse(localStorage.getItem('album_2026_final')) || {};
 let totalGeralVal = 0;
 
-// Inicialização e Renderização
 function render() {
     const main = document.getElementById('album-content');
+    if (!main) return;
     main.innerHTML = '';
     totalGeralVal = 0;
 
@@ -50,7 +50,7 @@ function render() {
 function createCard(name, stickers, img) {
     const card = document.createElement('div');
     card.className = 'team-card';
-    card.innerHTML = `<div class="team-header"><img src="${img}"> <span class="name">${name}</span></div>`;
+    card.innerHTML = `<div class="team-header"><img src="${img}" onerror="this.src='https://cdn-icons-png.flaticon.com/512/1828/1828884.png'"> <span class="name">${name}</span></div>`;
     const body = document.createElement('div');
     body.className = 'team-body';
     const grid = document.createElement('div');
@@ -68,7 +68,6 @@ function createCard(name, stickers, img) {
         const handleAction = (e) => {
             if (touchMoved) return;
             e.preventDefault();
-            e.stopPropagation();
             clicks++;
             if (clicks === 1) {
                 timeout = setTimeout(() => {
@@ -120,7 +119,7 @@ function updateStats() {
     document.getElementById('bar').style.width = percent + "%";
 }
 
-// BUSCA INTELIGENTE
+// BUSCA
 document.getElementById('searchSticker').addEventListener('input', (e) => {
     const val = e.target.value.toUpperCase().trim();
     document.querySelectorAll('.sticker').forEach(s => s.classList.remove('sticker-foco'));
@@ -130,66 +129,52 @@ document.getElementById('searchSticker').addEventListener('input', (e) => {
         if (!alvo) alvo = stickers.find(s => s.id.replace('st-', '').startsWith(val));
         
         if(alvo) {
-            const pb = alvo.closest('.team-body');
-            if(pb) pb.classList.add('active');
+            alvo.closest('.team-body').classList.add('active');
             alvo.scrollIntoView({ behavior: 'smooth', block: 'center' });
             alvo.classList.add('sticker-foco');
         }
     }
 });
 
-// LÓGICA DO ANÚNCIO (POP-UP)
+// ANÚNCIO
 setTimeout(() => {
     const modalAds = document.getElementById('modal-anuncio');
     const btnPular = document.getElementById('btn-pular-ads');
     let segundos = 7;
-
     if(modalAds) {
         modalAds.style.display = 'flex';
         const intervalo = setInterval(() => {
             segundos--;
-            if (segundos > 0) {
-                btnPular.innerText = `Aguarde ${segundos}s`;
-            } else {
+            if (segundos > 0) btnPular.innerText = `Aguarde ${segundos}s`;
+            else {
                 clearInterval(intervalo);
                 btnPular.innerText = "Pular Anúncio ✕";
                 btnPular.classList.add('ativo');
                 btnPular.disabled = false;
             }
         }, 1000);
-
-        btnPular.onclick = () => {
-            if (!btnPular.disabled) modalAds.style.display = 'none';
-        };
+        btnPular.onclick = () => modalAds.style.display = 'none';
     }
-}, 10000); // 10 segundos para aparecer
+}, 10000);
 
-// COPIAR PIX
-const pixBtn = document.getElementById('copy-pix');
-if(pixBtn) {
-    pixBtn.onclick = function() {
-        const chave = document.getElementById('chave-pix').innerText;
-        navigator.clipboard.writeText(chave).then(() => {
-            alert("Chave PIX copiada! Valeu pelo apoio! 👊");
-        });
-    };
-}
+// PIX
+document.getElementById('copy-pix').onclick = function() {
+    const chave = document.getElementById('chave-pix').innerText;
+    navigator.clipboard.writeText(chave).then(() => alert("Chave PIX copiada! 👊"));
+};
 
-// MODAL REPETIDAS
+// REPETIDAS
 document.getElementById("btn-repetidas").onclick = () => {
     const lista = document.getElementById("lista-repetidas");
     lista.innerHTML = "";
-    let temRepetida = false;
     Object.keys(owned).forEach(sid => {
         if(owned[sid] > 1) {
-            temRepetida = true;
             const s = document.createElement('div');
             s.className = 'sticker owned';
             s.innerHTML = `${sid} <span class="badge-repeat">${owned[sid]-1}</span>`;
             lista.appendChild(s);
         }
     });
-    if(!temRepetida) lista.innerHTML = "<p style='text-align:center; color:#999;'>Nenhuma repetida ainda.</p>";
     document.getElementById("modal-repetidas").style.display = "block";
 };
 
@@ -197,21 +182,15 @@ document.querySelector(".close-modal").onclick = () => document.getElementById("
 
 document.getElementById("btn-whatsapp").onclick = () => {
     let t = "*MINHAS REPETIDAS 2026*\n";
-    let count = 0;
-    Object.keys(owned).forEach(sid => { 
-        if(owned[sid]>1) {
-            t += `• ${sid} (${owned[sid]-1}x)\n`; 
-            count++;
-        }
-    });
-    if(count === 0) alert("Você não tem repetidas para compartilhar.");
-    else window.open(`https://wa.me/?text=${encodeURIComponent(t)}`);
+    Object.keys(owned).forEach(sid => { if(owned[sid]>1) t += `• ${sid} (${owned[sid]-1}x)\n`; });
+    window.open(`https://wa.me/?text=${encodeURIComponent(t)}`);
 };
 
-// FECHAR AVISO IOS
-const fecharAviso = document.getElementById('fechar-aviso');
-if(fecharAviso) {
-    fecharAviso.onclick = () => document.getElementById('aviso-ios').style.display = 'none';
-}
-
-window.onload = render;
+// INICIALIZAÇÃO BLINDADA
+window.onload = () => {
+    try {
+        render();
+    } catch (e) {
+        console.error("Erro ao carregar o álbum:", e);
+    }
+};
