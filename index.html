@@ -4,40 +4,40 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Meu Álbum 2026</title>
-    <link rel="icon" type="image/png" href="logo.png">
+    
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="theme-color" content="#009739">
-    <link rel="manifest" href="manifest.json">
+    <link rel="icon" type="image/png" href="logo.png">
     <link rel="apple-touch-icon" href="logo.png">
     
-    <link rel="stylesheet" href="style.css?v=1.4">
+    <link rel="stylesheet" href="style.css?v=1.6">
 </head>
 <body>
+
     <header>
         <div class="header-container">
             <div class="header-top">
                 <div style="display: flex; align-items: center; gap: 10px;">
-                    <img src="logo.png" alt="Logo" style="width: 45px; height: 45px; border-radius: 8px; border: 2px solid #fedd00;">
-                    <h1>MEU ÁLBUM 2026</h1>
+                    <img src="logo.png" alt="Logo" onerror="this.style.display='none'" style="width: 45px; height: 45px; border-radius: 8px; border: 2px solid #fedd00;">
+                    <h1 style="color: white !important; margin: 0; font-size: 1.2rem;">MEU ÁLBUM 2026</h1>
                 </div>
-                <div style="display: flex; gap: 8px;">
-                    <button id="btn-instalar" class="badge-btn" style="background:#012169; display:none;">INSTALAR APP</button>
-                    <button id="btn-repetidas" class="badge-btn" style="background:#d32f2f;">REPETIDAS</button>
+                <div>
+                    <button id="btn-repetidas" class="badge-btn" style="background:#d32f2f; color: white; border: none; padding: 8px 12px; border-radius: 6px; font-weight: bold; cursor: pointer;">REPETIDAS</button>
                 </div>
             </div>
             
-            <div class="search-container">
-                <input type="text" id="searchSticker" placeholder="🔍 Buscar (ex: BRA10)">
+            <div class="search-container" style="margin-top: 15px;">
+                <input type="text" id="searchSticker" placeholder="🔍 Buscar figurinha (ex: BRA10)" style="width: 100%; padding: 12px; border-radius: 8px; border: none; font-weight: bold;">
             </div>
 
-            <div class="progress-container">
-                <div class="progress-info">
+            <div class="progress-container" style="margin-top: 15px;">
+                <div class="progress-info" style="display: flex; justify-content: space-between; font-size: 0.8rem; margin-bottom: 5px; color: white; font-weight: bold;">
                     <span>Progresso: <strong id="progress-percent">0%</strong></span>
                     <span><strong id="total-count">0</strong> / <span id="max-total">994</span></span>
                 </div>
-                <div class="progress-bar-bg">
-                    <div id="bar"></div>
+                <div class="progress-bar-bg" style="background: rgba(0,0,0,0.2); height: 12px; border-radius: 6px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1);">
+                    <div id="bar" style="background: #fedd00; height: 100%; width: 0%; transition: width 0.4s ease;"></div>
                 </div>
             </div>
         </div>
@@ -47,11 +47,11 @@
         <div class="apoio-card">
             <div class="apoio-texto">
                 <strong>🚀 Gostou do App?</strong>
-                <span>Ajude a manter o projeto!</span>
+                <span>Ajude a manter o projeto no ar!</span>
             </div>
-            <div class="pix-box" id="copy-pix" title="Clique para copiar">
+            <div class="pix-box" id="copy-pix">
                 <span id="chave-pix">18981427594</span>
-                <small>Clique para copiar</small>
+                <small>Clique para copiar PIX</small>
             </div>
         </div>
     </div>
@@ -63,14 +63,14 @@
                 <button id="btn-pular-ads" disabled>Aguarde 7s</button>
             </div>
             <div class="ads-body">
-                <a href="https://wa.me/5518981427594?text=Olá! Vi o anúncio no App do Álbum e gostaria de mais informações." target="_blank" style="text-decoration: none;">
+                <a href="https://wa.me/5518981427594?text=Olá! Vi o anúncio no App e quero anunciar também." target="_blank" style="text-decoration: none;">
                     <div class="ads-image-wrapper">
-                        <img src="Ads.PNG" alt="Anúncio">
+                        <img src="Ads.PNG" alt="Clique para Anunciar">
                     </div>
                 </a>
                 
-                <div class="pix-destaque" style="margin-top: 15px;">
-                    <small>Copie o PIX:</small>
+                <div class="pix-destaque">
+                    <small>Fortaleça o projeto via PIX:</small>
                     <strong>18981427594</strong>
                 </div>
             </div>
@@ -81,25 +81,28 @@
 
     <div id="modal-repetidas" class="modal">
         <div class="modal-content">
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-                <h2 style="margin:0; color:#009739;">Minhas Repetidas</h2>
-                <span class="close-modal" style="cursor:pointer; font-size:28px;">&times;</span>
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eee; padding-bottom: 10px;">
+                <h2 style="margin:0; color:#009739; font-size: 1.2rem;">Minhas Repetidas</h2>
+                <span class="close-modal" style="cursor:pointer; font-size:28px; font-weight: bold;">&times;</span>
             </div>
-            <div id="lista-repetidas" class="sticker-grid" style="margin-top:20px; max-height:60vh; overflow-y:auto;"></div>
-            <button id="btn-whatsapp" class="btn-whatsapp">Compartilhar no WhatsApp</button>
+            <div id="lista-repetidas" class="sticker-grid" style="margin-top:20px; max-height:50vh; overflow-y:auto; padding: 5px;">
+                </div>
+            <button id="btn-whatsapp" class="btn-whatsapp" style="width: 100%; background: #25D366; color: white; border: none; padding: 15px; border-radius: 10px; font-weight: bold; margin-top: 15px; cursor: pointer;">
+                Compartilhar no WhatsApp
+            </button>
         </div>
     </div>
 
     <footer class="main-footer">
-        <p class="footer-instruction">📱 1 Toque: Add | 2 Toques: Remover</p>
+        <p style="margin: 0; font-size: 0.8rem; font-weight: bold;">📱 1 Toque: Adicionar | 2 Toques: Remover</p>
         <div class="footer-credits">
             <span>© 2026 Hugo Gomes</span>
-            <a href="https://www.instagram.com/h.gomes04" target="_blank" class="insta-link">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" alt="Insta"> @h.gomes04
+            <a href="https://www.instagram.com/h.gomes04" target="_blank" class="insta-link" style="display: flex; align-items: center; gap: 5px;">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" width="15"> @h.gomes04
             </a>
         </div>
     </footer>
 
-    <script src="script.js?v=1.4"></script>
+    <script src="script.js?v=1.6"></script>
 </body>
 </html>
