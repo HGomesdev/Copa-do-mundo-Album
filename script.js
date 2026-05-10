@@ -124,27 +124,32 @@ function updateStats() {
     document.getElementById('bar').style.width = percent + "%";
 }
 
-// BUSCA INTELIGENTE COM PULSO VISUAL
+// BUSCA CIRÚRGICA (ID EXATO)
+let searchTimeout;
 document.getElementById('searchSticker').addEventListener('input', (e) => {
+    clearTimeout(searchTimeout);
     const val = e.target.value.toUpperCase().trim();
     document.querySelectorAll('.sticker').forEach(s => s.classList.remove('sticker-foco'));
 
     if(val.length >= 2) {
-        const stickers = document.querySelectorAll('.sticker');
-        let alvo = null;
+        searchTimeout = setTimeout(() => {
+            const stickers = Array.from(document.querySelectorAll('.sticker'));
+            
+            // Prioridade 1: ID Exato (BRA10 não pega BRA1)
+            let alvo = stickers.find(s => s.id.replace('st-', '') === val);
+            
+            // Prioridade 2: Começa com (se o cara ainda está digitando)
+            if (!alvo) {
+                alvo = stickers.find(s => s.id.replace('st-', '').startsWith(val));
+            }
 
-        // Procura correspondência exata primeiro, depois parcial
-        for (let s of stickers) {
-            const text = s.innerText.split('\n')[0]; // Pega só o ID, ignora o badge de repetida
-            if (text === val) { alvo = s; break; }
-        }
-
-        if(alvo) {
-            const pb = alvo.closest('.team-body');
-            if(pb) pb.classList.add('active');
-            alvo.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            alvo.classList.add('sticker-foco');
-        }
+            if(alvo) {
+                const pb = alvo.closest('.team-body');
+                if(pb) pb.classList.add('active');
+                alvo.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                alvo.classList.add('sticker-foco');
+            }
+        }, 500);
     }
 });
 
@@ -171,16 +176,14 @@ document.getElementById("btn-whatsapp").onclick = () => {
     window.open(`https://wa.me/?text=${encodeURIComponent(t)}`);
 };
 
-// DETECÇÃO IPHONE E APP
+// INSTALAÇÃO
 const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
 const isStandalone = window.navigator.standalone === true || window.matchMedia('(display-mode: standalone)').matches;
 
 const avisoIos = document.getElementById('aviso-ios');
 const btnInstalar = document.getElementById('btn-instalar');
 
-if (isIOS && !isStandalone && avisoIos) {
-    avisoIos.style.display = 'block';
-}
+if (isIOS && !isStandalone && avisoIos) avisoIos.style.display = 'block';
 
 if(document.getElementById('fechar-aviso')) {
     document.getElementById('fechar-aviso').onclick = () => avisoIos.style.display = 'none';
