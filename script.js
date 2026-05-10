@@ -19,7 +19,7 @@ const albumData = {
 let owned = JSON.parse(localStorage.getItem('album_2026_final')) || {};
 let totalGeralVal = 0;
 
-// Renderizar o Álbum
+// Inicialização e Renderização
 function render() {
     const main = document.getElementById('album-content');
     main.innerHTML = '';
@@ -73,7 +73,7 @@ function createCard(name, stickers, img) {
             if (clicks === 1) {
                 timeout = setTimeout(() => {
                     owned[sid] = (owned[sid] || 0) + 1;
-                    saveQuiet(s, sid);
+                    saveData(s, sid);
                     clicks = 0;
                 }, 250);
             } else {
@@ -81,7 +81,7 @@ function createCard(name, stickers, img) {
                 if (owned[sid] > 0) {
                     owned[sid]--;
                     if (owned[sid] === 0) delete owned[sid];
-                    saveQuiet(s, sid);
+                    saveData(s, sid);
                 }
                 clicks = 0;
             }
@@ -105,7 +105,7 @@ function updateVisual(el, sid) {
     el.innerHTML = `${sid}${count > 1 ? `<span class="badge-repeat">${count-1}</span>` : ''}`;
 }
 
-function saveQuiet(el, sid) {
+function saveData(el, sid) {
     localStorage.setItem('album_2026_final', JSON.stringify(owned));
     updateVisual(el, sid);
     updateStats();
@@ -120,7 +120,7 @@ function updateStats() {
     document.getElementById('bar').style.width = percent + "%";
 }
 
-// BUSCA
+// BUSCA INTELIGENTE
 document.getElementById('searchSticker').addEventListener('input', (e) => {
     const val = e.target.value.toUpperCase().trim();
     document.querySelectorAll('.sticker').forEach(s => s.classList.remove('sticker-foco'));
@@ -130,58 +130,66 @@ document.getElementById('searchSticker').addEventListener('input', (e) => {
         if (!alvo) alvo = stickers.find(s => s.id.replace('st-', '').startsWith(val));
         
         if(alvo) {
-            alvo.closest('.team-body').classList.add('active');
+            const pb = alvo.closest('.team-body');
+            if(pb) pb.classList.add('active');
             alvo.scrollIntoView({ behavior: 'smooth', block: 'center' });
             alvo.classList.add('sticker-foco');
         }
     }
 });
 
-// LÓGICA DO ANÚNCIO (10s para aparecer, 7s para pular)
+// LÓGICA DO ANÚNCIO (POP-UP)
 setTimeout(() => {
     const modalAds = document.getElementById('modal-anuncio');
     const btnPular = document.getElementById('btn-pular-ads');
     let segundos = 7;
 
-    modalAds.style.display = 'flex';
+    if(modalAds) {
+        modalAds.style.display = 'flex';
+        const intervalo = setInterval(() => {
+            segundos--;
+            if (segundos > 0) {
+                btnPular.innerText = `Aguarde ${segundos}s`;
+            } else {
+                clearInterval(intervalo);
+                btnPular.innerText = "Pular Anúncio ✕";
+                btnPular.classList.add('ativo');
+                btnPular.disabled = false;
+            }
+        }, 1000);
 
-    const intervalo = setInterval(() => {
-        segundos--;
-        if (segundos > 0) {
-            btnPular.innerText = `Aguarde ${segundos}s`;
-        } else {
-            clearInterval(intervalo);
-            btnPular.innerText = "Pular Anúncio ✕";
-            btnPular.classList.add('ativo');
-            btnPular.disabled = false;
-        }
-    }, 1000);
-
-    btnPular.onclick = () => {
-        if (!btnPular.disabled) modalAds.style.display = 'none';
-    };
-}, 10000);
+        btnPular.onclick = () => {
+            if (!btnPular.disabled) modalAds.style.display = 'none';
+        };
+    }
+}, 10000); // 10 segundos para aparecer
 
 // COPIAR PIX
-document.getElementById('copy-pix').onclick = function() {
-    const chave = document.getElementById('chave-pix').innerText;
-    navigator.clipboard.writeText(chave).then(() => {
-        alert("Chave PIX copiada! Valeu pelo apoio! 👊");
-    });
-};
+const pixBtn = document.getElementById('copy-pix');
+if(pixBtn) {
+    pixBtn.onclick = function() {
+        const chave = document.getElementById('chave-pix').innerText;
+        navigator.clipboard.writeText(chave).then(() => {
+            alert("Chave PIX copiada! Valeu pelo apoio! 👊");
+        });
+    };
+}
 
-// REPETIDAS
+// MODAL REPETIDAS
 document.getElementById("btn-repetidas").onclick = () => {
     const lista = document.getElementById("lista-repetidas");
     lista.innerHTML = "";
+    let temRepetida = false;
     Object.keys(owned).forEach(sid => {
         if(owned[sid] > 1) {
+            temRepetida = true;
             const s = document.createElement('div');
             s.className = 'sticker owned';
             s.innerHTML = `${sid} <span class="badge-repeat">${owned[sid]-1}</span>`;
             lista.appendChild(s);
         }
     });
+    if(!temRepetida) lista.innerHTML = "<p style='text-align:center; color:#999;'>Nenhuma repetida ainda.</p>";
     document.getElementById("modal-repetidas").style.display = "block";
 };
 
@@ -189,8 +197,21 @@ document.querySelector(".close-modal").onclick = () => document.getElementById("
 
 document.getElementById("btn-whatsapp").onclick = () => {
     let t = "*MINHAS REPETIDAS 2026*\n";
-    Object.keys(owned).forEach(sid => { if(owned[sid]>1) t += `• ${sid} (${owned[sid]-1}x)\n`; });
-    window.open(`https://wa.me/?text=${encodeURIComponent(t)}`);
+    let count = 0;
+    Object.keys(owned).forEach(sid => { 
+        if(owned[sid]>1) {
+            t += `• ${sid} (${owned[sid]-1}x)\n`; 
+            count++;
+        }
+    });
+    if(count === 0) alert("Você não tem repetidas para compartilhar.");
+    else window.open(`https://wa.me/?text=${encodeURIComponent(t)}`);
 };
+
+// FECHAR AVISO IOS
+const fecharAviso = document.getElementById('fechar-aviso');
+if(fecharAviso) {
+    fecharAviso.onclick = () => document.getElementById('aviso-ios').style.display = 'none';
+}
 
 window.onload = render;
