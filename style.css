@@ -22,7 +22,7 @@ body {
     overflow-x: hidden; 
 }
 
-/* HEADER - Resolvendo o problema do topo sumir */
+/* HEADER - Corrigido para garantir visibilidade */
 header {
     background: linear-gradient(135deg, var(--topo-inicio) 0%, var(--topo-fim) 100%);
     color: white; 
@@ -31,23 +31,15 @@ header {
     top: 0; 
     z-index: 1000;
     box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    min-height: 160px; /* Garante que o topo tenha espaço */
 }
 
 .header-container { max-width: 600px; margin: 0 auto; }
 
 #searchSticker {
     width: 100%; padding: 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.3);
-    background: rgba(255,255,255,0.2); color: white; font-weight: bold; outline: none; margin-top: 10px;
+    background: rgba(255,255,255,0.2); color: white; font-weight: bold; outline: none;
 }
-
-.header-top { display: flex; justify-content: space-between; align-items: center; }
-h1 { margin: 0; font-size: 1.1rem; font-weight: 900; color: white; }
-
-.badge-btn { padding: 8px 12px; border-radius: 6px; font-size: 0.7rem; font-weight: bold; color: white; border: none; cursor: pointer; }
-
-.progress-info { display: flex; justify-content: space-between; font-size: 0.8rem; margin: 10px 0 5px 0; font-weight: bold; }
-.progress-bar-bg { background: rgba(0,0,0,0.1); height: 14px; border-radius: 7px; overflow: hidden; border: 1px solid rgba(255,255,255,0.2); }
-#bar { background: var(--detalhe-amarelo); height: 100%; width: 0%; transition: width 0.4s ease; }
 
 /* CARD DE APOIO PIX */
 .apoio-container { max-width: 600px; margin: 15px auto; padding: 0 15px; }
@@ -68,7 +60,8 @@ h1 { margin: 0; font-size: 1.1rem; font-weight: 900; color: white; }
 /* MODAL DE ANÚNCIO (INTERSTITIAL) */
 .modal-ads {
     display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+    background: rgba(0, 0, 0, 0.75); 
+    backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
     z-index: 9999; align-items: center; justify-content: center;
 }
 .ads-content {
@@ -76,33 +69,29 @@ h1 { margin: 0; font-size: 1.1rem; font-weight: 900; color: white; }
     overflow: hidden; box-shadow: 0 25px 50px rgba(0,0,0,0.5); animation: zoomIn 0.3s ease;
 }
 .ads-header { background: #f8f9fa; padding: 12px 15px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eee; }
-.ads-header span { font-size: 0.7rem; color: #999; text-transform: uppercase; font-weight: bold; }
 
 #btn-pular-ads {
     background: #eee; border: none; padding: 6px 14px; border-radius: 20px;
-    font-size: 0.8rem; font-weight: bold; color: #666; cursor: not-allowed;
+    font-size: 0.8rem; font-weight: bold; color: #666;
 }
 #btn-pular-ads.ativo { background: var(--vermelho); color: white; cursor: pointer; }
 
 .ads-body { padding: 15px; text-align: center; }
 .ads-image-wrapper { 
     width: 100%; border-radius: 15px; overflow: hidden; 
-    border: 1px solid #eee; transition: transform 0.1s; background: #fff;
-    min-height: 250px; display: flex; align-items: center; justify-content: center;
+    border: 1px solid #eee; background: #fff;
 }
-.ads-image-wrapper img { width: 100%; height: auto; display: block; object-fit: contain; }
-.ads-image-wrapper:active { transform: scale(0.97); }
+.ads-image-wrapper img { width: 100%; height: auto; display: block; }
 
 .pix-destaque { background: #f0fdf4; border: 2px solid var(--topo-inicio); padding: 12px; border-radius: 10px; margin-top: 15px; }
 .pix-destaque strong { font-size: 1.2rem; color: #333; display: block; text-decoration: underline; }
 
 /* CONTEÚDO DO ÁLBUM */
-.group-section { max-width: 600px; margin: 20px auto; padding: 0 15px; }
+.group-section { max-width: 600px; margin: 20px auto; padding: 0 15px; min-height: 50px; }
 .section-title { border-left: 6px solid var(--topo-inicio); padding-left: 12px; color: var(--topo-inicio); font-size: 1.1rem; font-weight: 800; text-transform: uppercase; margin-bottom: 15px; }
-.team-card { background: white; border-radius: 12px; border: 1px solid #ddd; margin-bottom: 12px; overflow: hidden; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+.team-card { background: white; border-radius: 12px; border: 1px solid #ddd; margin-bottom: 12px; overflow: hidden; }
 .team-header { padding: 15px; display: flex; align-items: center; cursor: pointer; }
 .team-header img { width: 35px; height: 35px; margin-right: 15px; border-radius: 4px; }
-.team-header .name { font-weight: bold; color: #222; }
 .team-body { display: none; padding: 15px; background: #fdfdfd; border-top: 1px solid #eee; }
 .team-body.active { display: block; }
 
@@ -114,23 +103,18 @@ h1 { margin: 0; font-size: 1.1rem; font-weight: 900; color: white; }
 .sticker.owned { background: var(--detalhe-amarelo); border-color: var(--topo-inicio); }
 .badge-repeat { position: absolute; top: -8px; right: -8px; background: var(--vermelho); color: white; width: 20px; height: 20px; border-radius: 50%; font-size: 0.65rem; display: flex; align-items: center; justify-content: center; border: 2px solid white; }
 
-/* RODAPÉ */
+/* RODAPÉ FIXO */
 .main-footer { position: fixed; bottom: 0; width: 100%; height: 90px; background: var(--topo-inicio); color: white; border-top: 4px solid var(--detalhe-amarelo); z-index: 1000; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-.footer-credits { margin-top: 6px; font-size: 0.75rem; display: flex; gap: 10px; }
-.insta-link { color: white; text-decoration: none; font-weight: bold; }
 
-/* MODAL GERAL */
+/* MODAIS */
 .modal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); }
-.modal-content { background: white; margin: 20% auto; padding: 20px; border-radius: 15px; width: 90%; max-width: 400px; position: relative; }
+.modal-content { background: white; margin: 15% auto; padding: 20px; border-radius: 15px; width: 90%; max-width: 400px; position: relative; }
 
 /* ANIMAÇÕES */
 @keyframes zoomIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
 @keyframes destaqueBusca {
     0% { transform: scale(1); }
-    50% { transform: scale(1.15); box-shadow: 0 0 20px var(--detalhe-amarelo); border-color: var(--azul-brasil); }
+    50% { transform: scale(1.15); box-shadow: 0 0 20px var(--detalhe-amarelo); }
     100% { transform: scale(1); }
 }
 .sticker-foco { animation: destaqueBusca 1.5s ease-in-out; z-index: 10; }
-
-/* AVISO IOS */
-#aviso-ios { display: none; background: white; margin: 15px; padding: 20px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); border-top: 5px solid var(--azul-brasil); text-align: center; }
