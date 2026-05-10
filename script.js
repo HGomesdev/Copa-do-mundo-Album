@@ -1,3 +1,7 @@
+/* ALBUM DIGITAL 2026 - Versão Final Estabilizada
+   Lógica de Toque Otimizada para Celulares
+*/
+
 const albumData = {
     "ESPECIAIS": { id: "esp", stickers: ["00", "FWC1", "FWC2", "FWC3", "FWC4", "FWC5", "FWC6", "FWC7", "FWC8"], img: "https://cdn-icons-png.flaticon.com/512/1828/1828884.png" },
     "SELEÇÕES ESPECIAIS": { id: "fwc_spec", stickers: Array.from({ length: 11 }, (_, i) => `FWC${i + 9}`), img: "https://cdn-icons-png.flaticon.com/512/3112/3112946.png" },
@@ -11,7 +15,7 @@ const albumData = {
     "GRUPO G": { teams: [{ n: "Bélgica", s: "BEL", c: "be" }, { n: "Egito", s: "EGY", c: "eg" }, { n: "Irã", s: "IRN", c: "ir" }, { n: "N. Zelândia", s: "NZL", c: "nz" }] },
     "GRUPO H": { teams: [{ n: "Espanha", s: "ESP", c: "es" }, { n: "Cabo Verde", s: "CPV", c: "cv" }, { n: "Arábia Saudita", s: "KSA", c: "sa" }, { n: "Uruguai", s: "URU", c: "uy" }] },
     "GRUPO I": { teams: [{ n: "França", s: "FRA", c: "fr" }, { n: "Senegal", s: "SEN", c: "sn" }, { n: "Iraque", s: "IRQ", c: "iq" }, { n: "Noruega", s: "NOR", c: "no" }] },
-    "GRUPO J": { teams: [{ n: "Argentina", s: "ARG", c: "ar" }, { n: "Argélia", s: "ALG", c: "dz" }, { n: "Áustria", s: "AUT", c: "at" }, { n: "Jordânia", s: "JOR", c: "jo" }] },
+    "GRUPO J": { teams: [{ n: "Argentina", s: "ARG", c: "ar" }, { n: "Argélia", s: "ALG", c: "dz" }, { n: "Áustria", s: "AUT", c: "at" }, { n: "Jordânia", s: "JOR", b: "jo" }] },
     "GRUPO K": { teams: [{ n: "Portugal", s: "POR", c: "pt" }, { n: "Congo", s: "COD", c: "cd" }, { n: "Uzbequistão", s: "UZB", c: "uz" }, { n: "Colômbia", s: "COL", c: "co" }] },
     "GRUPO L": { teams: [{ n: "Inglaterra", s: "ENG", c: "gb-eng" }, { n: "Croácia", s: "CRO", c: "hr" }, { n: "Gana", s: "GHA", c: "gh" }, { n: "Panamá", s: "PAN", c: "pa" }] }
 };
@@ -40,14 +44,11 @@ function iniciarAnuncio() {
     let tempo = 7;
     const contagem = setInterval(() => {
         tempo--;
-        if (tempo > 0) { 
-            btn.innerText = `Aguarde ${tempo}s...`; 
-        } 
+        if (tempo > 0) { btn.innerText = `Aguarde ${tempo}s...`; } 
         else {
             clearInterval(contagem);
             btn.innerText = "Pular Anúncio ✕";
-            btn.style.background = "#fedd00"; 
-            btn.style.color = "#012169";
+            btn.style.background = "#fedd00"; btn.style.color = "#012169";
             btn.disabled = false;
         }
     }, 1000);
@@ -99,19 +100,15 @@ function render() {
 
 function configurarBotao(card, nome, sigla, listaFigurinhas) {
     if (filtroRepetidas) return; 
-
     const header = card.querySelector('.team-header');
     let btn = header.querySelector('.btn-completar-selecao');
-    
     if (!btn) {
         btn = document.createElement('button');
         btn.className = 'btn-completar-selecao';
         btn.style = "margin-left: auto; border: none; padding: 6px 10px; border-radius: 6px; font-size: 0.6rem; font-weight: 900; z-index: 10; position: relative; cursor: pointer;";
         header.appendChild(btn);
     }
-
     const estaCompleta = listaFigurinhas.every(sid => owned[sid] > 0);
-
     if (estaCompleta) {
         btn.innerText = "COMPLETO ✓";
         btn.style.background = "#d32f2f"; btn.style.color = "white";
@@ -141,30 +138,43 @@ function createCard(name, stickers, img) {
         s.id = `st-${sid}`;
         updateVisual(s, sid);
         
-        let startX, startY, movendo = false, cliques = 0, timer;
-        const acao = (e) => {
-            if (e.type === 'touchend' && movendo) return;
-            cliques++;
-            if (cliques === 1) {
-                timer = setTimeout(() => {
-                    owned[sid] = (owned[sid] || 0) + 1;
-                    saveData(s, sid);
-                    cliques = 0;
-                }, 250);
-            } else {
-                clearTimeout(timer);
+        // LÓGICA DE TOQUE PARA CELULAR
+        let cliqueTime = 0;
+        const tratarAcao = (e) => {
+            const agora = new Date().getTime();
+            const diff = agora - cliqueTime;
+            cliqueTime = agora;
+
+            if (diff < 300 && diff > 0) { // Duplo toque
                 if (owned[sid] > 0) {
                     owned[sid]--;
                     if (owned[sid] === 0) delete owned[sid];
-                    saveData(s, sid);
                 }
-                cliques = 0;
+            } else { // Toque simples
+                owned[sid] = (owned[sid] || 0) + 1;
             }
+            saveData(s, sid);
         };
-        s.addEventListener('touchstart', (e) => { startX = e.touches[0].clientX; startY = e.touches[0].clientY; movendo = false; }, { passive: true });
-        s.addEventListener('touchmove', (e) => { if (Math.abs(e.touches[0].clientX - startX) > 10 || Math.abs(e.touches[0].clientY - startY) > 10) movendo = true; }, { passive: true });
-        s.addEventListener('touchend', acao);
-        s.addEventListener('click', (e) => { if (e.pointerType === 'mouse') acao(e); });
+
+        let startX, startY;
+        s.addEventListener('touchstart', (e) => {
+            startX = e.touches[0].clientX;
+            startY = e.touches[0].clientY;
+        }, { passive: true });
+
+        s.addEventListener('touchend', (e) => {
+            const endX = e.changedTouches[0].clientX;
+            const endY = e.changedTouches[0].clientY;
+            // Se não moveu o dedo (não foi scroll), processa o clique
+            if (Math.abs(endX - startX) < 10 && Math.abs(endY - startY) < 10) {
+                tratarAcao(e);
+            }
+        });
+
+        s.addEventListener('click', (e) => {
+            if (e.pointerType === 'mouse') tratarAcao(e);
+        });
+
         grid.appendChild(s);
     });
 
@@ -187,6 +197,7 @@ function createCard(name, stickers, img) {
     return card;
 }
 
+// --- RESTANTE DAS FUNÇÕES ---
 function compartilharNoZap() {
     const linkApp = "https://hgomesdev.github.io/Copa-do-mundo-Album/"; 
     let texto = "⚽ *MINHAS REPETIDAS - ÁLBUM 2026* ⚽\n\n";
@@ -209,17 +220,14 @@ function compartilharNoZap() {
     window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(texto)}`, '_blank');
 }
 
-// --- BOTÃO REPETIDAS ---
 document.getElementById('btn-repetidas').onclick = function() {
     filtroRepetidas = !filtroRepetidas;
     if (filtroRepetidas) {
         this.innerText = "VER TUDO";
-        this.style.background = "#fedd00";
-        this.style.color = "#012169";
+        this.style.background = "#fedd00"; this.style.color = "#012169";
     } else {
         this.innerText = "REPETIDAS";
-        this.style.background = "#e31a1a";
-        this.style.color = "#ffffff";
+        this.style.background = "#e31a1a"; this.style.color = "#ffffff";
     }
     render();
 };
@@ -270,7 +278,6 @@ function completarSelecao(nome, sigla) {
     render();
 }
 
-// --- BUSCA ---
 document.getElementById('searchSticker').addEventListener('input', (e) => {
     const val = e.target.value.toUpperCase().trim();
     document.querySelectorAll('.sticker').forEach(s => s.classList.remove('sticker-foco'));
