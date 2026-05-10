@@ -1,200 +1,282 @@
+/* ESTILOS ÁLBUM 2026 - v3.8 Final
+   Foco: Performance Mobile e Bloqueio de Zoom
+*/
+
 :root {
-    --topo-inicio: #009739;
-    --topo-fim: #00702a;
-    --detalhe-amarelo: #fedd00;
-    --azul-brasil: #012169;
-    --cinza-fundo: #f4f4f4;
-    --vermelho: #d32f2f;
+    --azul-copa: #012169;
+    --vermelho-copa: #e31a1a;
+    --amarelo-copa: #fedd00;
+    --verde-copa: #009739;
+    --fundo: #f0f2f5;
+    --branco: #ffffff;
 }
 
 * {
+    margin: 0;
+    padding: 0;
     box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+    /* Remove o azulzinho chato ao clicar no mobile */
     -webkit-tap-highlight-color: transparent;
-    user-select: none !important;
 }
 
 body {
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-    background-color: var(--cinza-fundo);
-    margin: 0;
-    padding-bottom: 110px;
-    /* Espaço para o rodapé */
+    background-color: var(--fundo);
+    color: #333;
+    line-height: 1.6;
+    padding-bottom: 40px;
 }
 
-/* HEADER */
-header {
-    background: linear-gradient(135deg, var(--topo-inicio) 0%, var(--topo-fim) 100%);
-    color: white;
-    padding: 12px 15px;
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+/* Header */
+.main-header {
+    background-color: var(--azul-copa);
+    color: var(--branco);
+    padding: 20px 10px;
+    text-align: center;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
 }
 
-.header-container {
-    max-width: 600px;
-    margin: 0 auto;
-}
-
-.badge-btn {
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-    transition: transform 0.1s;
-    cursor: pointer;
-}
-
-.badge-btn:active {
-    transform: scale(0.95);
-}
-
-/* GRUPOS E TIMES */
-.group-section {
-    max-width: 600px;
-    margin: 15px auto;
-    padding: 0 12px;
-}
-
-.section-title {
-    border-left: 5px solid var(--topo-inicio);
-    padding-left: 10px;
-    color: var(--topo-inicio);
-    font-size: 1rem;
-    font-weight: 800;
-    text-transform: uppercase;
-    margin-bottom: 12px;
-}
-
-.team-card {
-    background: white;
-    border-radius: 12px;
-    border: 1px solid #ddd;
+.logo-top {
+    width: 60px;
     margin-bottom: 10px;
+}
+
+.search-box {
+    margin-top: 15px;
+}
+
+.search-box input {
+    width: 90%;
+    max-width: 400px;
+    padding: 12px;
+    border-radius: 25px;
+    border: none;
+    outline: none;
+    font-size: 14px;
+}
+
+/* Painel de Estatísticas */
+.stats-panel {
+    background: var(--branco);
+    margin: 15px;
+    padding: 15px;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+}
+
+.stats-grid {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 10px;
+}
+
+.stat-card { text-align: center; }
+.stat-card span { font-size: 20px; font-weight: 900; color: var(--azul-copa); }
+.stat-card p { font-size: 11px; color: #777; text-transform: uppercase; }
+
+.progress-bg {
+    height: 10px;
+    background: #eee;
+    border-radius: 5px;
     overflow: hidden;
 }
 
+.progress-fill {
+    height: 100%;
+    background: var(--verde-copa);
+    width: 0%;
+    transition: width 0.4s ease;
+}
+
+/* Botões de Ação */
+.action-buttons {
+    display: flex;
+    gap: 10px;
+    padding: 0 15px;
+    margin-bottom: 10px;
+}
+
+.btn-util {
+    flex: 1;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    background: var(--vermelho-copa);
+    color: white;
+    font-size: 13px;
+}
+
+/* Estrutura das Seleções */
+.group-section {
+    margin: 0 15px 20px;
+}
+
+.section-title {
+    font-size: 16px;
+    margin-bottom: 10px;
+    color: #444;
+    border-left: 4px solid var(--amarelo-copa);
+    padding-left: 10px;
+}
+
+.team-card {
+    background: var(--branco);
+    border-radius: 8px;
+    margin-bottom: 10px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
 .team-header {
-    padding: 12px 15px;
+    padding: 12px;
     display: flex;
     align-items: center;
+    background: #f9f9f9;
     cursor: pointer;
-    background: #fff;
 }
 
 .team-header img {
-    width: 30px;
-    height: auto;
-    margin-right: 12px;
-    border-radius: 3px;
+    width: 24px;
+    height: 18px;
+    margin-right: 10px;
+    object-fit: contain;
+}
+
+.team-header span {
+    font-weight: 600;
+    font-size: 14px;
 }
 
 .team-body {
     display: none;
-    padding: 12px;
-    background: #fafafa;
-    border-top: 1px solid #eee;
 }
 
 .team-body.active {
     display: block;
 }
 
-/* FIGURINHAS */
+/* Grid de Figurinhas */
 .sticker-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(auto-fill, minmax(65px, 1fr));
     gap: 8px;
+    padding: 12px;
+    background: #fff;
 }
 
 .sticker {
-    background: #fff;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    padding: 12px 0;
-    text-align: center;
-    font-size: 0.65rem;
+    aspect-ratio: 1/1;
+    background: #e9ecef;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 4px;
     font-weight: bold;
+    font-size: 11px;
+    color: #999;
     position: relative;
-    color: #555;
-    transition: all 0.2s;
+    cursor: pointer;
+    
+    /* CRÍTICO PARA MOBILE: BLOQUEIA ZOOM E SELEÇÃO */
+    touch-action: manipulation; 
+    user-select: none;
+    -webkit-user-select: none;
 }
 
 .sticker.owned {
-    background: var(--detalhe-amarelo);
-    border-color: var(--topo-inicio);
-    color: var(--azul-brasil);
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Dá um relevo na figurinha colada */
+    background-color: var(--azul-copa);
+    color: var(--branco);
 }
 
 .badge-repeat {
     position: absolute;
     top: -5px;
     right: -5px;
-    background: var(--vermelho);
-    color: white;
-    width: 17px;
-    height: 17px;
-    border-radius: 50%;
-    font-size: 0.55rem;
+    background: var(--amarelo-copa);
+    color: var(--azul-copa);
+    min-width: 18px;
+    height: 18px;
+    border-radius: 10px;
+    font-size: 10px;
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 1.5px solid white;
     font-weight: 900;
+    border: 1px solid var(--azul-copa);
+    padding: 0 4px;
 }
 
+/* Footer e Pix */
+.footer {
+    text-align: center;
+    padding: 30px 10px;
+    font-size: 12px;
+    color: #888;
+}
+
+.pix-area {
+    margin-top: 15px;
+    background: #eef;
+    padding: 15px;
+    border-radius: 10px;
+}
+
+#copy-pix {
+    background: var(--azul-copa);
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    margin-top: 8px;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+/* Modal de Anúncio */
+.modal-overlay {
+    position: fixed;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.9);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    padding: 20px;
+}
+
+.modal-card {
+    background: white;
+    padding: 15px;
+    border-radius: 12px;
+    width: 100%;
+    max-width: 350px;
+    text-align: center;
+}
+
+.modal-card img {
+    width: 100%;
+    border-radius: 8px;
+    margin-bottom: 15px;
+}
+
+#btn-pular-ads {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 6px;
+    background: #ddd;
+    font-weight: bold;
+}
+
+/* Animação da Busca */
 .sticker-foco {
-    box-shadow: 0 0 12px var(--detalhe-amarelo);
-    border-color: var(--detalhe-amarelo);
-    transform: scale(1.05);
+    animation: glow 1s infinite alternate;
 }
 
-/* RESPONSIVIDADE */
-@media (max-width: 370px) {
-    .sticker-grid {
-        grid-template-columns: repeat(3, 1fr);
-    }
-
-    h1 {
-        font-size: 0.9rem !important;
-    }
-}
-
-@keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(-10px);
-    }
-
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-.ios-banner {
-    animation: fadeIn 0.5s ease-out;
-}
-
-/* --- ANIMAÇÃO DE PULSO PARA A BUSCA --- */
-@keyframes pulsar {
-    0% {
-        box-shadow: 0 0 0px 0px rgba(254, 221, 0, 0.7);
-        transform: scale(1);
-    }
-    50% {
-        box-shadow: 0 0 20px 8px rgba(254, 221, 0, 1);
-        transform: scale(1.1);
-        border-color: #fedd00;
-    }
-    100% {
-        box-shadow: 0 0 0px 0px rgba(254, 221, 0, 0.7);
-        transform: scale(1);
-    }
-}
-
-.sticker-foco {
-    z-index: 99;
-    position: relative;
-    border: 2px solid #fedd00 !important;
-    animation: pulsar 1.2s infinite ease-in-out;
+@keyframes glow {
+    from { box-shadow: 0 0 5px var(--amarelo-copa); transform: scale(1); }
+    to { box-shadow: 0 0 20px var(--amarelo-copa); transform: scale(1.1); }
 }
