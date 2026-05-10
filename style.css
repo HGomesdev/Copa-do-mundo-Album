@@ -25,11 +25,7 @@ body {
 /* HEADER */
 header {
     background: linear-gradient(135deg, var(--topo-inicio) 0%, var(--topo-fim) 100%);
-    color: white; 
-    padding: 15px; 
-    position: sticky; 
-    top: 0; 
-    z-index: 1000;
+    color: white; padding: 15px; position: sticky; top: 0; z-index: 1000;
     box-shadow: 0 2px 10px rgba(0,0,0,0.1);
 }
 
@@ -37,8 +33,7 @@ header {
 
 #searchSticker {
     width: 100%; padding: 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.3);
-    background: rgba(255,255,255,0.2); color: white; font-weight: bold; outline: none;
-    margin-top: 10px;
+    background: rgba(255,255,255,0.2); color: white; font-weight: bold; outline: none; margin-top: 10px;
 }
 
 .header-top { display: flex; justify-content: space-between; align-items: center; }
@@ -50,85 +45,58 @@ h1 { margin: 0; font-size: 1.1rem; font-weight: 900; }
 .progress-bar-bg { background: rgba(0,0,0,0.1); height: 14px; border-radius: 7px; overflow: hidden; border: 1px solid rgba(255,255,255,0.2); }
 #bar { background: var(--detalhe-amarelo); height: 100%; width: 0%; transition: width 0.4s ease; }
 
-/* BANNER DE APOIO (PIX) FIXO */
-.apoio-container {
-    max-width: 600px;
-    margin: 15px auto;
-    padding: 0 15px;
-}
-
+/* CARD DE APOIO PIX (FIXO NO TOPO) */
+.apoio-container { max-width: 600px; margin: 15px auto; padding: 0 15px; }
 .apoio-card {
-    background: #fff;
-    border-radius: 12px;
-    padding: 12px 15px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border: 2px solid var(--detalhe-amarelo);
+    background: #fff; border-radius: 12px; padding: 12px 15px; display: flex;
+    justify-content: space-between; align-items: center; border: 2px solid var(--detalhe-amarelo);
     box-shadow: 0 4px 10px rgba(0,0,0,0.08);
 }
-
-.apoio-texto { display: flex; flex-direction: column; }
-.apoio-texto strong { font-size: 0.9rem; color: var(--topo-inicio); }
+.apoio-texto strong { font-size: 0.9rem; color: var(--topo-inicio); display: block; }
 .apoio-texto span { font-size: 0.75rem; color: #666; }
-
 .pix-box {
-    background: #f0fdf4;
-    border: 1px dashed var(--topo-inicio);
-    padding: 6px 10px;
-    border-radius: 8px;
-    text-align: center;
-    cursor: pointer;
-    min-width: 120px;
-    transition: all 0.2s;
+    background: #f0fdf4; border: 1px dashed var(--topo-inicio); padding: 6px 10px;
+    border-radius: 8px; text-align: center; cursor: pointer; min-width: 120px;
 }
-
-.pix-box:active { background: #dcfce7; transform: scale(0.95); }
 .pix-box span { display: block; font-size: 0.8rem; font-weight: bold; color: #333; }
-.pix-box small { font-size: 0.6rem; color: var(--topo-inicio); text-transform: uppercase; font-weight: bold; }
+.pix-box small { font-size: 0.6rem; color: var(--topo-inicio); text-transform: uppercase; }
 
-/* AVISO IPHONE */
-#aviso-ios {
-    display: none;
-    background: white;
-    margin: 15px auto;
-    max-width: 90%;
-    padding: 20px;
-    border-radius: 15px;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-    border-top: 5px solid var(--azul-brasil);
-    position: relative;
-    text-align: center;
-    color: #333;
+/* MODAL DE ANÚNCIO (INTERSTITIAL) */
+.modal-ads {
+    display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+    z-index: 9999; align-items: center; justify-content: center;
 }
-
-#fechar-aviso { position: absolute; top: 8px; right: 15px; font-size: 1.6rem; font-weight: bold; color: #bbb; cursor: pointer; }
-
-/* ANIMAÇÃO DE DESTAQUE PARA A BUSCA */
-@keyframes destaqueBusca {
-    0% { transform: scale(1); border-color: #eee; }
-    50% { transform: scale(1.2); border-color: var(--azul-brasil); box-shadow: 0 0 15px var(--detalhe-amarelo); }
-    100% { transform: scale(1); border-color: #eee; }
+.ads-content {
+    background: white; width: 90%; max-width: 400px; border-radius: 15px;
+    overflow: hidden; box-shadow: 0 20px 40px rgba(0,0,0,0.4); animation: zoomIn 0.3s ease;
 }
+.ads-header { background: #f8f9fa; padding: 10px 15px; display: flex; justify-content: space-between; align-items: center; }
+.ads-header span { font-size: 0.7rem; color: #999; text-transform: uppercase; }
 
-.sticker-foco {
-    animation: destaqueBusca 1.5s ease-in-out;
-    z-index: 10;
-    position: relative;
+#btn-pular-ads {
+    background: #eee; border: none; padding: 6px 12px; border-radius: 20px;
+    font-size: 0.8rem; font-weight: bold; color: #666; cursor: not-allowed;
 }
+#btn-pular-ads.ativo { background: var(--vermelho); color: white; cursor: pointer; }
+
+.ads-body { padding: 20px; text-align: center; }
+.ads-image-wrapper { 
+    width: 100%; border-radius: 12px; overflow: hidden; 
+    border: 1px solid #eee; transition: transform 0.1s;
+}
+.ads-image-wrapper img { width: 100%; height: auto; display: block; object-fit: cover; }
+.ads-image-wrapper:active { transform: scale(0.97); }
+
+.pix-destaque { background: #f0fdf4; border: 2px solid var(--topo-inicio); padding: 10px; border-radius: 8px; }
+.pix-destaque strong { font-size: 1.1rem; color: #333; display: block; }
 
 /* CONTEÚDO DO ÁLBUM */
-main#album-content { padding-top: 5px; }
-
 .group-section { max-width: 600px; margin: 20px auto; padding: 0 15px; }
 .section-title { border-left: 6px solid var(--topo-inicio); padding-left: 12px; color: var(--topo-inicio); font-size: 1.1rem; font-weight: 800; text-transform: uppercase; margin-bottom: 15px; }
-
-.team-card { background: white; border-radius: 12px; border: 1px solid #ddd; margin-bottom: 12px; overflow: hidden; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
-
-.team-header { padding: 15px; display: flex; align-items: center; cursor: pointer; min-height: 60px; }
-.team-header img { width: 35px; height: 35px; margin-right: 15px; object-fit: contain; }
-.team-header .name { font-weight: bold; color: #222; }
-
+.team-card { background: white; border-radius: 12px; border: 1px solid #ddd; margin-bottom: 12px; overflow: hidden; }
+.team-header { padding: 15px; display: flex; align-items: center; cursor: pointer; }
+.team-header img { width: 35px; height: 35px; margin-right: 15px; }
 .team-body { display: none; padding: 15px; background: #fdfdfd; border-top: 1px solid #eee; }
 .team-body.active { display: block; }
 
@@ -136,19 +104,28 @@ main#album-content { padding-top: 5px; }
 .sticker { 
     background: #fff; border: 2px solid #eee; border-radius: 8px; padding: 15px 0; 
     text-align: center; font-size: 0.75rem; font-weight: bold; position: relative; 
-    cursor: pointer;
 }
 .sticker.owned { background: var(--detalhe-amarelo); border-color: var(--topo-inicio); }
 .badge-repeat { position: absolute; top: -8px; right: -8px; background: var(--vermelho); color: white; width: 20px; height: 20px; border-radius: 50%; font-size: 0.65rem; display: flex; align-items: center; justify-content: center; border: 2px solid white; }
 
-/* RODAPÉ FIXO */
+/* RODAPÉ E MODAIS GERAIS */
 .main-footer { position: fixed; bottom: 0; width: 100%; height: 90px; background: var(--topo-inicio); color: white; border-top: 4px solid var(--detalhe-amarelo); z-index: 1000; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-.footer-instruction { margin: 0; font-size: 0.85rem; font-weight: bold; }
-.footer-credits { margin-top: 6px; font-size: 0.75rem; display: flex; align-items: center; gap: 10px; }
-.insta-link { color: white; text-decoration: none; font-weight: bold; display: flex; align-items: center; gap: 4px; }
-.insta-link img { width: 14px; height: 14px; }
+.footer-credits { margin-top: 6px; font-size: 0.75rem; display: flex; gap: 10px; }
+.insta-link { color: white; text-decoration: none; font-weight: bold; }
 
-/* MODAIS */
 .modal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); }
 .modal-content { background: white; margin: 20% auto; padding: 20px; border-radius: 15px; width: 90%; max-width: 400px; position: relative; }
-.btn-whatsapp { width: 100%; background: #25D366; color: white; border: none; padding: 12px; border-radius: 8px; font-weight: bold; margin-top: 15px; cursor: pointer; }
+.btn-whatsapp { width: 100%; background: #25D366; color: white; border: none; padding: 12px; border-radius: 8px; font-weight: bold; margin-top: 15px; }
+
+/* AVISO IOS */
+#aviso-ios { display: none; background: white; margin: 15px; padding: 20px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); border-top: 5px solid var(--azul-brasil); text-align: center; }
+
+@keyframes zoomIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+
+/* DESTAQUE BUSCA */
+@keyframes destaqueBusca {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.15); box-shadow: 0 0 20px var(--detalhe-amarelo); border-color: var(--azul-brasil); }
+    100% { transform: scale(1); }
+}
+.sticker-foco { animation: destaqueBusca 1.5s ease-in-out; z-index: 10; }
