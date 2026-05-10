@@ -7,6 +7,7 @@
     --vermelho: #d32f2f;
 }
 
+/* Configurações Gerais */
 * { 
     box-sizing: border-box; 
     -webkit-tap-highlight-color: transparent; 
@@ -17,30 +18,49 @@ body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
     background-color: var(--cinza-fundo); 
     margin: 0; 
-    padding-bottom: 110px; /* Espaço para o rodapé */
+    padding-bottom: 120px; /* Garante que o rodapé não cubra as últimas figurinhas */
 }
 
 /* HEADER */
 header {
     background: linear-gradient(135deg, var(--topo-inicio) 0%, var(--topo-fim) 100%);
     color: white; 
-    padding: 12px 15px; 
+    padding: 12px 0; 
     position: sticky; 
     top: 0; 
     z-index: 1000;
     box-shadow: 0 2px 10px rgba(0,0,0,0.2);
 }
 
-.header-container { max-width: 600px; margin: 0 auto; }
+.header-container { 
+    max-width: 600px; 
+    margin: 0 auto; 
+    padding: 0 15px;
+}
 
-.badge-btn {
+/* BOTÕES DO TOPO */
+.badge-btn, #btn-repetidas {
     box-shadow: 0 2px 4px rgba(0,0,0,0.2);
     transition: transform 0.1s;
     cursor: pointer;
+    border: none;
+    font-family: inherit;
 }
-.badge-btn:active { transform: scale(0.95); }
+.badge-btn:active, #btn-repetidas:active { transform: scale(0.95); }
 
-/* GRUPOS E TIMES */
+/* BUSCA */
+#searchSticker {
+    width: 100%;
+    padding: 12px;
+    border-radius: 8px;
+    border: none;
+    font-weight: bold;
+    outline: none;
+    font-size: 0.95rem;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* ESTILIZAÇÃO DOS TIMES/GRUPOS */
 .group-section { max-width: 600px; margin: 15px auto; padding: 0 12px; }
 
 .section-title { 
@@ -59,6 +79,7 @@ header {
     border: 1px solid #ddd; 
     margin-bottom: 10px; 
     overflow: hidden; 
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
 }
 
 .team-header { 
@@ -67,6 +88,8 @@ header {
     align-items: center; 
     cursor: pointer;
     background: #fff;
+    font-weight: bold;
+    color: #333;
 }
 
 .team-header img { 
@@ -85,7 +108,7 @@ header {
 
 .team-body.active { display: block; }
 
-/* FIGURINHAS */
+/* GRID DE FIGURINHAS */
 .sticker-grid { 
     display: grid; 
     grid-template-columns: repeat(4, 1fr); 
@@ -102,49 +125,59 @@ header {
     font-weight: bold; 
     position: relative;
     color: #555;
-    transition: all 0.2s;
+    transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 .sticker.owned { 
     background: var(--detalhe-amarelo); 
     border-color: var(--topo-inicio); 
     color: var(--azul-brasil); 
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
 .badge-repeat { 
     position: absolute; 
-    top: -5px; 
-    right: -5px; 
+    top: -6px; 
+    right: -6px; 
     background: var(--vermelho); 
     color: white; 
-    width: 17px; 
-    height: 17px; 
+    width: 18px; 
+    height: 18px; 
     border-radius: 50%; 
-    font-size: 0.55rem; 
+    font-size: 0.6rem; 
     display: flex; 
     align-items: center; 
     justify-content: center; 
-    border: 1.5px solid white; 
+    border: 2px solid white; 
     font-weight: 900;
+    z-index: 2;
 }
 
+/* ANIMAÇÃO DE FOCO NA BUSCA */
 .sticker-foco {
-    box-shadow: 0 0 12px var(--detalhe-amarelo);
-    border-color: var(--detalhe-amarelo);
-    transform: scale(1.05);
+    box-shadow: 0 0 15px var(--detalhe-amarelo);
+    border: 2px solid var(--detalhe-amarelo) !important;
+    transform: scale(1.1);
+    z-index: 10;
 }
 
-/* RESPONSIVIDADE */
+/* RODAPÉ FIXED */
+footer {
+    box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+}
+
+/* RESPONSIVIDADE PARA TELAS PEQUENAS */
 @media (max-width: 370px) {
     .sticker-grid { grid-template-columns: repeat(3, 1fr); }
     h1 { font-size: 0.9rem !important; }
 }
 
+/* ANIMAÇÕES */
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(-10px); }
     to { opacity: 1; transform: translateY(0); }
 }
 
-.ios-banner {
-    animation: fadeIn 0.5s ease-out;
+#modal-anuncio > div {
+    animation: fadeIn 0.4s ease-out;
 }
