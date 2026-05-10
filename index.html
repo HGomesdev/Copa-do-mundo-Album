@@ -10,7 +10,8 @@
     <meta name="theme-color" content="#009739">
     <link rel="manifest" href="manifest.json">
     <link rel="apple-touch-icon" href="logo.png">
-    <link rel="stylesheet" href="style.css">
+    
+    <link rel="stylesheet" href="style.css?v=1.2">
 </head>
 <body>
     <header>
@@ -27,7 +28,7 @@
             </div>
             
             <div class="search-container">
-                <input type="text" id="searchSticker" placeholder="🔍 Buscar figurinha (ex: BRA10)">
+                <input type="text" id="searchSticker" placeholder="🔍 Buscar (ex: BRA10)">
             </div>
 
             <div class="progress-container">
@@ -42,11 +43,24 @@
         </div>
     </header>
 
+    <div class="apoio-container">
+        <div class="apoio-card">
+            <div class="apoio-texto">
+                <strong>🚀 Gostou do App?</strong>
+                <span>Ajude a manter o projeto!</span>
+            </div>
+            <div class="pix-box" id="copy-pix" title="Clique para copiar">
+                <span id="chave-pix">18981427594</span>
+                <small>Clique para copiar</small>
+            </div>
+        </div>
+    </div>
+
     <div id="aviso-ios">
         <span id="fechar-aviso">&times;</span>
         <p>
             📱 <strong>Instalar no iPhone</strong><br>
-            Toque no ícone de compartilhar <span style="font-size: 1.2rem; vertical-align: middle;">⎋</span> e depois em <br>
+            Toque no ícone de compartilhar <span style="font-size: 1.2rem;">⎋</span> e depois em <br>
             <strong>"Adicionar à Tela de Início"</strong>.
         </p>
     </div>
@@ -74,6 +88,6 @@
         </div>
     </footer>
 
-    <script src="script.js"></script>
+    <script src="script.js?v=1.2"></script>
 </body>
 </html>
