@@ -2,11 +2,10 @@
   "name": "Meu Álbum 2026",
   "short_name": "Álbum 2026",
   "description": "Controle de figurinhas para o Álbum de 2026",
-  "start_url": "index.html",
+  "start_url": "./index.html",
   "display": "standalone",
   "background_color": "#009739",
   "theme_color": "#009739",
-  "orientation": "portrait",
   "icons": [
     {
       "src": "logo.png",
