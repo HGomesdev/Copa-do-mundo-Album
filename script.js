@@ -17,16 +17,15 @@ const albumData = {
 };
 
 let owned = JSON.parse(localStorage.getItem('album_2026_final')) || {};
-let deferredPrompt;
 
-// --- FUNÇÃO DO ANÚNCIO ---
+// --- LÓGICA DO ANÚNCIO ---
 function iniciarAnuncio() {
     const modal = document.getElementById('modal-anuncio');
     const btn = document.getElementById('btn-pular-ads');
     if (!modal) return;
 
     modal.style.display = 'flex';
-    let tempo = 7; // Segundos
+    let tempo = 7;
 
     const contagem = setInterval(() => {
         tempo--;
@@ -35,40 +34,17 @@ function iniciarAnuncio() {
         } else {
             clearInterval(contagem);
             btn.innerText = "Pular Anúncio ✕";
-            btn.style.background = "#fedd00";
-            btn.style.color = "#012169";
+            btn.style.background = "#009739";
             btn.disabled = false;
         }
     }, 1000);
 
-    btn.onclick = () => modal.style.display = 'none';
+    btn.onclick = () => {
+        modal.style.display = 'none';
+    };
 }
 
-// --- INSTALAÇÃO E INICIALIZAÇÃO ---
-window.addEventListener('DOMContentLoaded', () => {
-    // Ano dinâmico no rodapé
-    document.getElementById('current-year').innerText = new Date().getFullYear();
-
-    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-    const isStandalone = window.navigator.standalone === true || window.matchMedia('(display-mode: standalone)').matches;
-    
-    if (isIOS && !isStandalone) {
-        document.getElementById('ios-install-banner').style.display = 'block';
-    }
-    
-    iniciarAnuncio(); // Abre o anúncio
-    render();
-});
-
-window.addEventListener('beforeinstallprompt', (e) => {
-    e.preventDefault();
-    deferredPrompt = e;
-    if (!/iPhone|iPad|iPod/.test(navigator.userAgent)) {
-        document.getElementById('btn-instalar').style.display = 'block';
-    }
-});
-
-// --- RENDERIZAÇÃO DO CONTEÚDO ---
+// --- RENDERIZAÇÃO ---
 function render() {
     const main = document.getElementById('album-content');
     if (!main) return;
@@ -108,27 +84,13 @@ function createCard(name, stickers, img) {
         s.id = `st-${sid}`;
         updateVisual(s, sid);
 
-        let startX, startY;
-        let movendo = false;
-        let cliques = 0;
-        let timer;
+        let startX, startY, movendo = false, cliques = 0, timer;
 
-        // Lógica para ignorar marcação durante o scroll
-        s.addEventListener('touchstart', (e) => {
-            startX = e.touches[0].clientX;
-            startY = e.touches[0].clientY;
-            movendo = false;
-        }, { passive: true });
+        s.addEventListener('touchstart', (e) => { startX = e.touches[0].clientX; startY = e.touches[0].clientY; movendo = false; }, { passive: true });
+        s.addEventListener('touchmove', (e) => { if (Math.abs(e.touches[0].clientX - startX) > 5 || Math.abs(e.touches[0].clientY - startY) > 5) movendo = true; }, { passive: true });
 
-        s.addEventListener('touchmove', (e) => {
-            const diffX = Math.abs(e.touches[0].clientX - startX);
-            const diffY = Math.abs(e.touches[0].clientY - startY);
-            if (diffX > 5 || diffY > 5) movendo = true;
-        }, { passive: true });
-
-        s.addEventListener('touchend', (e) => {
-            if (movendo) return; // Arrastou, não marca
-            
+        s.addEventListener('touchend', () => {
+            if (movendo) return;
             cliques++;
             if (cliques === 1) {
                 timer = setTimeout(() => {
@@ -146,7 +108,6 @@ function createCard(name, stickers, img) {
                 cliques = 0;
             }
         });
-
         grid.appendChild(s);
     });
 
@@ -179,7 +140,6 @@ function updateStats() {
 document.getElementById('searchSticker').addEventListener('input', (e) => {
     const val = e.target.value.toUpperCase().trim();
     document.querySelectorAll('.sticker').forEach(s => s.classList.remove('sticker-foco'));
-    
     if(val.length >= 2) {
         const alvo = Array.from(document.querySelectorAll('.sticker')).find(s => s.id.replace('st-', '') === val);
         if(alvo) {
@@ -190,7 +150,8 @@ document.getElementById('searchSticker').addEventListener('input', (e) => {
     }
 });
 
-// --- PIX ---
-document.getElementById('copy-pix').onclick = () => {
-    navigator.clipboard.writeText("18981427594").then(() => alert("Chave PIX copiada! 👊"));
-};
+// --- INICIALIZAÇÃO ---
+window.addEventListener('DOMContentLoaded', () => {
+    iniciarAnuncio();
+    render();
+});
