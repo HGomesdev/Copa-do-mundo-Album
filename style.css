@@ -22,7 +22,7 @@ body {
     overflow-x: hidden; 
 }
 
-/* HEADER - Corrigido para garantir visibilidade */
+/* HEADER */
 header {
     background: linear-gradient(135deg, var(--topo-inicio) 0%, var(--topo-fim) 100%);
     color: white; 
@@ -31,14 +31,34 @@ header {
     top: 0; 
     z-index: 1000;
     box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-    min-height: 160px; /* Garante que o topo tenha espaço */
 }
 
 .header-container { max-width: 600px; margin: 0 auto; }
 
+/* Botões do Header */
+.badge-btn {
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    transition: transform 0.1s active;
+}
+
+.badge-btn:active {
+    transform: scale(0.95);
+}
+
+/* INPUT DE BUSCA */
 #searchSticker {
-    width: 100%; padding: 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.3);
-    background: rgba(255,255,255,0.2); color: white; font-weight: bold; outline: none;
+    width: 100%; 
+    padding: 12px; 
+    border-radius: 8px; 
+    border: 1px solid rgba(255,255,255,0.3);
+    background: rgba(255,255,255,0.2); 
+    color: white; 
+    font-weight: bold; 
+    outline: none;
+}
+
+#searchSticker::placeholder {
+    color: rgba(255,255,255,0.7);
 }
 
 /* CARD DE APOIO PIX */
@@ -57,7 +77,7 @@ header {
 .pix-box span { display: block; font-size: 0.8rem; font-weight: bold; color: #333; }
 .pix-box small { font-size: 0.6rem; color: var(--topo-inicio); text-transform: uppercase; font-weight: bold; }
 
-/* MODAL DE ANÚNCIO (INTERSTITIAL) */
+/* MODAL DE ANÚNCIO (Refinado conforme IMG_3268 e IMG_3270) */
 .modal-ads {
     display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
     background: rgba(0, 0, 0, 0.75); 
@@ -65,56 +85,75 @@ header {
     z-index: 9999; align-items: center; justify-content: center;
 }
 .ads-content {
-    background: white; width: 90%; max-width: 400px; border-radius: 20px;
+    background: white; width: 92%; max-width: 380px; border-radius: 20px;
     overflow: hidden; box-shadow: 0 25px 50px rgba(0,0,0,0.5); animation: zoomIn 0.3s ease;
 }
 .ads-header { background: #f8f9fa; padding: 12px 15px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eee; }
 
 #btn-pular-ads {
     background: #eee; border: none; padding: 6px 14px; border-radius: 20px;
-    font-size: 0.8rem; font-weight: bold; color: #666;
+    font-size: 0.8rem; font-weight: bold; color: #666; transition: 0.3s;
 }
 #btn-pular-ads.ativo { background: var(--vermelho); color: white; cursor: pointer; }
 
 .ads-body { padding: 15px; text-align: center; }
 .ads-image-wrapper { 
     width: 100%; border-radius: 15px; overflow: hidden; 
-    border: 1px solid #eee; background: #fff;
+    border: 1px solid #eee; background: #fff; margin-bottom: 10px;
 }
 .ads-image-wrapper img { width: 100%; height: auto; display: block; }
 
-.pix-destaque { background: #f0fdf4; border: 2px solid var(--topo-inicio); padding: 12px; border-radius: 10px; margin-top: 15px; }
-.pix-destaque strong { font-size: 1.2rem; color: #333; display: block; text-decoration: underline; }
+.pix-destaque { background: #f0fdf4; border: 2px solid var(--topo-inicio); padding: 10px; border-radius: 10px; }
+.pix-destaque strong { font-size: 1.1rem; color: #333; display: block; text-decoration: underline; }
 
 /* CONTEÚDO DO ÁLBUM */
-.group-section { max-width: 600px; margin: 20px auto; padding: 0 15px; min-height: 50px; }
+.group-section { max-width: 600px; margin: 20px auto; padding: 0 15px; }
 .section-title { border-left: 6px solid var(--topo-inicio); padding-left: 12px; color: var(--topo-inicio); font-size: 1.1rem; font-weight: 800; text-transform: uppercase; margin-bottom: 15px; }
 .team-card { background: white; border-radius: 12px; border: 1px solid #ddd; margin-bottom: 12px; overflow: hidden; }
 .team-header { padding: 15px; display: flex; align-items: center; cursor: pointer; }
-.team-header img { width: 35px; height: 35px; margin-right: 15px; border-radius: 4px; }
+.team-header img { width: 35px; height: 35px; margin-right: 15px; border-radius: 4px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
 .team-body { display: none; padding: 15px; background: #fdfdfd; border-top: 1px solid #eee; }
 .team-body.active { display: block; }
 
-.sticker-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+/* GRID DE FIGURINHAS */
+.sticker-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
 .sticker { 
-    background: #fff; border: 2px solid #eee; border-radius: 8px; padding: 15px 0; 
-    text-align: center; font-size: 0.75rem; font-weight: bold; position: relative; 
+    background: #fff; border: 1px solid #ddd; border-radius: 8px; padding: 12px 0; 
+    text-align: center; font-size: 0.7rem; font-weight: bold; position: relative; color: #555;
 }
-.sticker.owned { background: var(--detalhe-amarelo); border-color: var(--topo-inicio); }
-.badge-repeat { position: absolute; top: -8px; right: -8px; background: var(--vermelho); color: white; width: 20px; height: 20px; border-radius: 50%; font-size: 0.65rem; display: flex; align-items: center; justify-content: center; border: 2px solid white; }
+.sticker.owned { background: var(--detalhe-amarelo); border-color: var(--topo-inicio); color: var(--azul-brasil); }
+.badge-repeat { position: absolute; top: -6px; right: -6px; background: var(--vermelho); color: white; width: 18px; height: 18px; border-radius: 50%; font-size: 0.6rem; display: flex; align-items: center; justify-content: center; border: 1.5px solid white; }
 
-/* RODAPÉ FIXO */
-.main-footer { position: fixed; bottom: 0; width: 100%; height: 90px; background: var(--topo-inicio); color: white; border-top: 4px solid var(--detalhe-amarelo); z-index: 1000; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+/* RODAPÉ FIXO (Conforme IMG_3271) */
+.main-footer { 
+    position: fixed; bottom: 0; width: 100%; height: 95px; 
+    background: var(--topo-inicio); color: white; 
+    border-top: 4px solid var(--detalhe-amarelo); z-index: 1000; 
+    display: flex; flex-direction: column; align-items: center; justify-content: center; 
+}
 
-/* MODAIS */
+/* Ajuste da cor do Instagram para Branco */
+.insta-link { 
+    color: white !important; 
+    text-decoration: none; 
+    font-weight: bold; 
+}
+
+/* MODAIS GERAIS */
 .modal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); }
 .modal-content { background: white; margin: 15% auto; padding: 20px; border-radius: 15px; width: 90%; max-width: 400px; position: relative; }
 
 /* ANIMAÇÕES */
 @keyframes zoomIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+.sticker-foco { animation: destaqueBusca 1.5s ease-in-out; z-index: 10; }
 @keyframes destaqueBusca {
     0% { transform: scale(1); }
-    50% { transform: scale(1.15); box-shadow: 0 0 20px var(--detalhe-amarelo); }
+    50% { transform: scale(1.15); box-shadow: 0 0 15px var(--detalhe-amarelo); border-color: var(--detalhe-amarelo); }
     100% { transform: scale(1); }
 }
-.sticker-foco { animation: destaqueBusca 1.5s ease-in-out; z-index: 10; }
+
+/* Responsividade para telas menores */
+@media (max-width: 380px) {
+    .sticker-grid { grid-template-columns: repeat(3, 1fr); }
+    h1 { font-size: 0.9rem !important; }
+}
