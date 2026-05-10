@@ -17,27 +17,38 @@ const albumData = {
 };
 
 let owned = JSON.parse(localStorage.getItem('album_2026_final')) || {};
+let totalGeral = 0;
 
 window.oncontextmenu = (e) => { e.preventDefault(); return false; };
 
 function render() {
     const main = document.getElementById('album-content');
     main.innerHTML = '';
+    totalGeral = 0;
+
     for (const [title, data] of Object.entries(albumData)) {
         const section = document.createElement('section');
         section.className = 'group-section';
         section.innerHTML = `<h2 class="section-title">${title}</h2>`;
+        
         if (data.stickers) {
             section.appendChild(createCard(title, data.stickers, data.img));
+            totalGeral += data.stickers.length;
         } else {
             data.teams.forEach(t => {
                 const list = Array.from({length: 20}, (_, i) => `${t.s}${i + 1}`);
                 const flag = t.c === "scotland" ? "https://flagcdn.com/w80/gb-sct.png" : `https://flagcdn.com/w80/${t.c}.png`;
                 section.appendChild(createCard(t.n, list, flag));
+                totalGeral += 20;
             });
         }
         main.appendChild(section);
     }
+    
+    // Atualiza o número total no HTML dinamicamente
+    const maxDisplay = document.getElementById('max-total');
+    if(maxDisplay) maxDisplay.innerText = totalGeral;
+    
     updateStats();
 }
 
@@ -109,13 +120,14 @@ function saveQuiet(el, sid) {
 
 function updateStats() {
     const unique = Object.keys(owned).length;
-    const totalMaxVal = 670; 
-    const percent = ((unique / totalMaxVal) * 100).toFixed(1);
+    const percent = ((unique / totalGeral) * 100).toFixed(1);
+    
     document.getElementById('total-count').innerText = unique;
     document.getElementById('progress-percent').innerText = percent + "%";
     document.getElementById('bar').style.width = percent + "%";
 }
 
+// ... Resto das funções de Busca, Repetidas e Whatsapp (mantém igual) ...
 document.getElementById('searchSticker').addEventListener('input', (e) => {
     const val = e.target.value.toUpperCase().trim();
     if(val.length >= 3) {
