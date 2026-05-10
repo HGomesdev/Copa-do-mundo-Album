@@ -21,12 +21,15 @@
                     <h1>MEU ÁLBUM 2026</h1>
                 </div>
                 <div style="display: flex; gap: 8px;">
+                    <button id="btn-instalar" class="badge-btn" style="background:#012169; display:none;">INSTALAR APP</button>
                     <button id="btn-repetidas" class="badge-btn" style="background:#d32f2f;">REPETIDAS</button>
                 </div>
             </div>
+            
             <div class="search-container">
                 <input type="text" id="searchSticker" placeholder="🔍 Buscar figurinha (ex: BRA10)">
             </div>
+
             <div class="progress-container">
                 <div class="progress-info">
                     <span>Progresso: <strong id="progress-percent">0%</strong></span>
@@ -39,11 +42,16 @@
         </div>
     </header>
 
+    <div id="aviso-ios" style="display:none; background: #012169; color: white; padding: 12px; font-size: 0.85rem; text-align: center; border-bottom: 3px solid #fedd00; line-height: 1.4;">
+        📱 <strong>Para instalar no iPhone:</strong> Toque em <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d7/Share_icon_iOS.svg/1200px-Share_icon_iOS.svg.png" width="16" style="filter: invert(1); vertical-align: middle;"> e depois em <strong>"Adicionar à Tela de Início"</strong>.
+        <span id="fechar-aviso" style="margin-left: 15px; font-weight: bold; cursor: pointer; text-decoration: underline;">[X]</span>
+    </div>
+
     <main id="album-content"></main>
 
     <div id="modal-repetidas" class="modal">
         <div class="modal-content">
-            <div class="modal-header">
+            <div style="display: flex; justify-content: space-between; align-items: center;">
                 <h2 style="margin:0; color:#009739;">Minhas Repetidas</h2>
                 <span class="close-modal" style="cursor:pointer; font-size:28px;">&times;</span>
             </div>
@@ -61,6 +69,7 @@
             </a>
         </div>
     </footer>
+
     <script src="script.js"></script>
 </body>
 </html>
