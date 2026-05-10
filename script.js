@@ -20,7 +20,39 @@ let owned = JSON.parse(localStorage.getItem('album_2026_final')) || {};
 let totalGeralVal = 0;
 let deferredPrompt;
 
-// --- FUNÇÃO DE RENDERIZAÇÃO ---
+// --- LÓGICA DE INSTALAÇÃO (PWA) ---
+const btnInstalar = document.getElementById('btn-instalar');
+
+// Detecta se é iOS
+const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+
+// Se for iOS, mostra o botão de baixar sempre
+if (isIOS && btnInstalar) {
+    btnInstalar.style.display = 'block';
+}
+
+window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    if (btnInstalar) btnInstalar.style.display = 'block';
+});
+
+if (btnInstalar) {
+    btnInstalar.addEventListener('click', async () => {
+        if (isIOS) {
+            alert("Para baixar no iPhone:\n\n1. Clique no ícone de 'Compartilhar' (seta no meio da barra inferior).\n2. Selecione 'Adicionar à Tela de Início'.");
+            return;
+        }
+        if (deferredPrompt) {
+            deferredPrompt.prompt();
+            const { outcome } = await deferredPrompt.userChoice;
+            if (outcome === 'accepted') btnInstalar.style.display = 'none';
+            deferredPrompt = null;
+        }
+    });
+}
+
+// --- RENDERIZAÇÃO DO ÁLBUM ---
 function render() {
     const main = document.getElementById('album-content');
     if (!main) return;
@@ -52,7 +84,7 @@ function render() {
 function createCard(name, stickers, img) {
     const card = document.createElement('div');
     card.className = 'team-card';
-    card.innerHTML = `<div class="team-header"><img src="${img}" onerror="this.src='https://cdn-icons-png.flaticon.com/512/1828/1828884.png'"> <span class="name">${name}</span></div>`;
+    card.innerHTML = `<div class="team-header"><img src="${img}" onerror="this.src='logo.png'"> <span class="name">${name}</span></div>`;
     const body = document.createElement('div');
     body.className = 'team-body';
     const grid = document.createElement('div');
@@ -116,9 +148,13 @@ function updateStats() {
     const unique = Object.keys(owned).length;
     const maxVal = totalGeralVal || 994;
     const percent = ((unique / maxVal) * 100).toFixed(1);
-    document.getElementById('total-count').innerText = unique;
-    document.getElementById('progress-percent').innerText = percent + "%";
-    document.getElementById('bar').style.width = percent + "%";
+    const totalCountEl = document.getElementById('total-count');
+    const progPercentEl = document.getElementById('progress-percent');
+    const barEl = document.getElementById('bar');
+    
+    if(totalCountEl) totalCountEl.innerText = unique;
+    if(progPercentEl) progPercentEl.innerText = percent + "%";
+    if(barEl) barEl.style.width = percent + "%";
 }
 
 // --- BUSCA ---
@@ -138,27 +174,6 @@ document.getElementById('searchSticker').addEventListener('input', (e) => {
     }
 });
 
-// --- LÓGICA DE INSTALAÇÃO ---
-window.addEventListener('beforeinstallprompt', (e) => {
-    e.preventDefault();
-    deferredPrompt = e;
-    const btnInstalar = document.getElementById('btn-instalar');
-    if (btnInstalar) btnInstalar.style.display = 'block';
-});
-
-document.getElementById('btn-instalar').addEventListener('click', async () => {
-    if (deferredPrompt) {
-        deferredPrompt.prompt();
-        const { outcome } = await deferredPrompt.userChoice;
-        if (outcome === 'accepted') {
-            document.getElementById('btn-instalar').style.display = 'none';
-        }
-        deferredPrompt = null;
-    } else {
-        alert("No iPhone: clique no ícone de compartilhar e depois em 'Adicionar à Tela de Início'.");
-    }
-});
-
 // --- ANÚNCIO ---
 setTimeout(() => {
     const modalAds = document.getElementById('modal-anuncio');
@@ -168,8 +183,9 @@ setTimeout(() => {
         modalAds.style.display = 'flex';
         const intervalo = setInterval(() => {
             segundos--;
-            if (segundos > 0) btnPular.innerText = `Aguarde ${segundos}s`;
-            else {
+            if (segundos > 0) {
+                btnPular.innerText = `Aguarde ${segundos}s`;
+            } else {
                 clearInterval(intervalo);
                 btnPular.innerText = "Pular Anúncio ✕";
                 btnPular.classList.add('ativo');
@@ -178,7 +194,7 @@ setTimeout(() => {
         }, 1000);
         btnPular.onclick = () => modalAds.style.display = 'none';
     }
-}, 5000); // Aparece após 5 segundos
+}, 3000);
 
 // --- PIX ---
 document.getElementById('copy-pix').onclick = function() {
@@ -205,15 +221,13 @@ document.querySelector(".close-modal").onclick = () => document.getElementById("
 
 document.getElementById("btn-whatsapp").onclick = () => {
     let t = "*MINHAS REPETIDAS 2026*\n";
-    Object.keys(owned).forEach(sid => { if(owned[sid]>1) t += `• ${sid} (${owned[sid]-1}x)\n`; });
+    let cont = 0;
+    Object.keys(owned).forEach(sid => { if(owned[sid]>1) { t += `• ${sid} (${owned[sid]-1}x)\n`; cont++; } });
+    if(cont === 0) t = "Não tenho figurinhas repetidas no momento.";
     window.open(`https://wa.me/?text=${encodeURIComponent(t)}`);
 };
 
 // --- INICIALIZAÇÃO ---
 window.onload = () => {
-    try {
-        render();
-    } catch (e) {
-        console.error("Erro ao carregar o álbum:", e);
-    }
+    render();
 };
