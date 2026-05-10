@@ -124,7 +124,26 @@ function updateStats() {
     document.getElementById('bar').style.width = percent + "%";
 }
 
-// BUSCA CIRÚRGICA (ID EXATO)
+// LÓGICA DO PIX (COPIAR)
+if(document.getElementById('copy-pix')) {
+    document.getElementById('copy-pix').onclick = function() {
+        const chave = document.getElementById('chave-pix').innerText;
+        navigator.clipboard.writeText(chave).then(() => {
+            alert("Chave PIX copiada! Valeu pelo apoio! 👊");
+        }).catch(() => {
+            // Fallback para celulares antigos
+            const temp = document.createElement('input');
+            temp.value = chave;
+            document.body.appendChild(temp);
+            temp.select();
+            document.execCommand('copy');
+            document.body.removeChild(temp);
+            alert("Chave PIX copiada! Valeu pelo apoio! 👊");
+        });
+    };
+}
+
+// BUSCA CIRÚRGICA (Diferencia BRA1 de BRA10)
 let searchTimeout;
 document.getElementById('searchSticker').addEventListener('input', (e) => {
     clearTimeout(searchTimeout);
@@ -135,10 +154,10 @@ document.getElementById('searchSticker').addEventListener('input', (e) => {
         searchTimeout = setTimeout(() => {
             const stickers = Array.from(document.querySelectorAll('.sticker'));
             
-            // Prioridade 1: ID Exato (BRA10 não pega BRA1)
+            // Busca Exata Primeiro
             let alvo = stickers.find(s => s.id.replace('st-', '') === val);
             
-            // Prioridade 2: Começa com (se o cara ainda está digitando)
+            // Busca Parcial se não achar exata
             if (!alvo) {
                 alvo = stickers.find(s => s.id.replace('st-', '').startsWith(val));
             }
@@ -176,7 +195,7 @@ document.getElementById("btn-whatsapp").onclick = () => {
     window.open(`https://wa.me/?text=${encodeURIComponent(t)}`);
 };
 
-// INSTALAÇÃO
+// IPHONE / INSTALAÇÃO
 const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
 const isStandalone = window.navigator.standalone === true || window.matchMedia('(display-mode: standalone)').matches;
 
