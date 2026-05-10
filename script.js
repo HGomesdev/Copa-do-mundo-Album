@@ -1,5 +1,5 @@
-/* ALBUM DIGITAL 2026 - Versão Estável Mobile
-   Correção de Clique: Pointer Events (Touch + Mouse)
+/* ALBUM DIGITAL 2026 - Versão Final Estabilizada
+   Correção: Lógica de atraso para diferenciar clique simples de duplo
 */
 
 const albumData = {
@@ -30,16 +30,13 @@ function iniciarAnuncio() {
     const btn = document.getElementById('btn-pular-ads');
     if (!modal) return;
     modal.style.display = 'flex';
-
     const imgAds = modal.querySelector('img');
     if (imgAds) {
-        imgAds.style.cursor = 'pointer';
         imgAds.onclick = () => {
             const msg = encodeURIComponent("Olá Hugo! Gostaria de anunciar no seu app de figurinhas. Como funciona?");
             window.open(`https://wa.me/5518981427594?text=${msg}`, "_blank");
         };
     }
-
     let tempo = 7;
     const contagem = setInterval(() => {
         tempo--;
@@ -112,21 +109,31 @@ function createCard(name, stickers, img) {
         s.id = `st-${sid}`;
         updateVisual(s, sid);
         
-        let lastTap = 0;
-        // EVENTO UNIFICADO (MOBILE + PC)
+        let clickTimer = null;
+
+        // --- LÓGICA DE CLIQUE COM DELAY PARA DUPLO CLIQUE ---
         s.addEventListener('pointerdown', (e) => {
             e.preventDefault();
             e.stopPropagation();
-            
-            const now = Date.now();
-            if (now - lastTap < 300) { // Duplo clique
-                if (owned[sid] > 1) { owned[sid]--; } 
-                else { delete owned[sid]; }
-            } else { // Clique simples
-                owned[sid] = (owned[sid] || 0) + 1;
+
+            if (clickTimer === null) {
+                // PRIMEIRO CLIQUE: Aguarda um pouco para ver se vem o segundo
+                clickTimer = setTimeout(() => {
+                    // Se o tempo passou e não houve segundo clique: ADICIONA
+                    owned[sid] = (owned[sid] || 0) + 1;
+                    saveData(s, sid);
+                    clickTimer = null;
+                }, 250); // 250ms é o tempo ideal para humanos
+            } else {
+                // SEGUNDO CLIQUE: Cancela a adição e REMOVE
+                clearTimeout(clickTimer);
+                clickTimer = null;
+                if (owned[sid] > 0) {
+                    owned[sid]--;
+                    if (owned[sid] === 0) delete owned[sid];
+                    saveData(s, sid);
+                }
             }
-            lastTap = now;
-            saveData(s, sid);
         }, { passive: false });
 
         grid.appendChild(s);
@@ -151,15 +158,12 @@ function createCard(name, stickers, img) {
     return card;
 }
 
-// --- FUNÇÕES DE APOIO ---
 function configurarBotao(card, nome, sigla, lista) {
     const header = card.querySelector('.team-header');
     let btn = header.querySelector('.btn-completar-selecao') || document.createElement('button');
     btn.className = 'btn-completar-selecao';
     btn.style = "margin-left: auto; border: none; padding: 6px 10px; border-radius: 6px; font-size: 0.6rem; font-weight: 900; cursor: pointer;";
-    
     if (!header.querySelector('.btn-completar-selecao')) header.appendChild(btn);
-
     const completo = lista.every(sid => owned[sid] > 0);
     btn.innerText = completo ? "COMPLETO ✓" : "COMPLETAR";
     btn.style.background = completo ? "#d32f2f" : "#009739";
