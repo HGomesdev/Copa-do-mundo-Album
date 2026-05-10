@@ -24,16 +24,30 @@ let deferredPrompt;
 function iniciarAnuncio() {
     const modal = document.getElementById('modal-anuncio');
     const btn = document.getElementById('btn-pular-ads');
+    const imgAds = modal ? modal.querySelector('img') : null;
+
     if (!modal) return;
     modal.style.display = 'flex';
+
+    if (imgAds) {
+        imgAds.style.cursor = 'pointer';
+        imgAds.onclick = () => {
+            const msg = encodeURIComponent("Olá Hugo! Gostaria de anunciar no seu app de figurinhas. Como funciona?");
+            window.open(`https://wa.me/5518981427594?text=${msg}`, "_blank");
+        };
+    }
+
     let tempo = 7;
     const contagem = setInterval(() => {
         tempo--;
-        if (tempo > 0) { btn.innerText = `Aguarde ${tempo}s...`; } 
+        if (tempo > 0) { 
+            btn.innerText = `Aguarde ${tempo}s...`; 
+        } 
         else {
             clearInterval(contagem);
             btn.innerText = "Pular Anúncio ✕";
-            btn.style.background = "#fedd00"; btn.style.color = "#012169";
+            btn.style.background = "#fedd00"; 
+            btn.style.color = "#012169";
             btn.disabled = false;
         }
     }, 1000);
@@ -195,17 +209,17 @@ function compartilharNoZap() {
     window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(texto)}`, '_blank');
 }
 
-// --- BOTÃO REPETIDAS (CORREÇÃO DE COR PERMANENTE) ---
+// --- BOTÃO REPETIDAS ---
 document.getElementById('btn-repetidas').onclick = function() {
     filtroRepetidas = !filtroRepetidas;
     if (filtroRepetidas) {
         this.innerText = "VER TUDO";
-        this.style.background = "#fedd00"; // Amarelo quando você está vendo as repetidas
+        this.style.background = "#fedd00";
         this.style.color = "#012169";
     } else {
         this.innerText = "REPETIDAS";
-        this.style.background = "#e31a1a"; // VOLTA PARA VERMELHO (Igual ao carregar o site)
-        this.style.color = "#ffffff";    // VOLTA PARA BRANCO
+        this.style.background = "#e31a1a";
+        this.style.color = "#ffffff";
     }
     render();
 };
