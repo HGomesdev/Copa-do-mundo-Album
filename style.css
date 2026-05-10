@@ -39,12 +39,34 @@ h1 { margin: 0; font-size: 1.1rem; font-weight: 900; }
 .progress-bar-bg { background: rgba(0,0,0,0.2); height: 14px; border-radius: 7px; overflow: hidden; }
 #bar { background: var(--detalhe-amarelo); height: 100%; width: 0%; transition: width 0.4s ease; }
 
+/* AJUSTE: Respiro no topo para as logos especiais não ficarem coladas */
+main#album-content {
+    padding-top: 15px;
+}
+
 .group-section { max-width: 600px; margin: 25px auto; padding: 0 15px; }
 .section-title { border-left: 6px solid var(--topo-inicio); padding-left: 12px; color: var(--topo-inicio); font-size: 1.1rem; font-weight: 800; text-transform: uppercase; margin-bottom: 15px; }
 
-.team-card { background: white; border-radius: 12px; border: 1px solid #ddd; margin-bottom: 12px; overflow: hidden; }
-.team-header { padding: 15px; display: flex; align-items: center; cursor: pointer; }
-.team-header img { width: 32px; height: 24px; margin-right: 15px; border-radius: 2px; object-fit: cover; }
+.team-card { background: white; border-radius: 12px; border: 1px solid #ddd; margin-bottom: 12px; overflow: hidden; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
+
+/* CORREÇÃO DAS LOGOS: Altura e alinhamento */
+.team-header { 
+    padding: 15px; 
+    display: flex; 
+    align-items: center; 
+    cursor: pointer;
+    min-height: 60px;
+}
+
+.team-header img { 
+    width: 35px; 
+    height: auto;
+    max-height: 35px;
+    margin-right: 15px; 
+    border-radius: 4px; 
+    object-fit: contain; 
+}
+
 .team-header .name { font-weight: bold; color: #222; }
 
 .team-body { display: none; padding: 15px; background: #fdfdfd; border-top: 1px solid #eee; }
