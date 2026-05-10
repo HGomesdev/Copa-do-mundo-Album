@@ -19,8 +19,7 @@ const albumData = {
 let owned = JSON.parse(localStorage.getItem('album_2026_final')) || {};
 let totalGeralVal = 0;
 
-window.oncontextmenu = (e) => { e.preventDefault(); return false; };
-
+// Renderizar o Álbum
 function render() {
     const main = document.getElementById('album-content');
     main.innerHTML = '';
@@ -44,7 +43,6 @@ function render() {
         }
         main.appendChild(section);
     }
-    
     document.getElementById('max-total').innerText = totalGeralVal;
     updateStats();
 }
@@ -71,7 +69,6 @@ function createCard(name, stickers, img) {
             if (touchMoved) return;
             e.preventDefault();
             e.stopPropagation();
-
             clicks++;
             if (clicks === 1) {
                 timeout = setTimeout(() => {
@@ -94,7 +91,6 @@ function createCard(name, stickers, img) {
         s.addEventListener('touchmove', () => { touchMoved = true; });
         s.addEventListener('touchend', handleAction);
         s.addEventListener('click', (e) => { if (e.pointerType === 'mouse') handleAction(e); });
-
         grid.appendChild(s);
     });
 
@@ -124,56 +120,57 @@ function updateStats() {
     document.getElementById('bar').style.width = percent + "%";
 }
 
-// LÓGICA DO PIX (COPIAR)
-if(document.getElementById('copy-pix')) {
-    document.getElementById('copy-pix').onclick = function() {
-        const chave = document.getElementById('chave-pix').innerText;
-        navigator.clipboard.writeText(chave).then(() => {
-            alert("Chave PIX copiada! Valeu pelo apoio! 👊");
-        }).catch(() => {
-            // Fallback para celulares antigos
-            const temp = document.createElement('input');
-            temp.value = chave;
-            document.body.appendChild(temp);
-            temp.select();
-            document.execCommand('copy');
-            document.body.removeChild(temp);
-            alert("Chave PIX copiada! Valeu pelo apoio! 👊");
-        });
-    };
-}
-
-// BUSCA CIRÚRGICA (Diferencia BRA1 de BRA10)
-let searchTimeout;
+// BUSCA
 document.getElementById('searchSticker').addEventListener('input', (e) => {
-    clearTimeout(searchTimeout);
     const val = e.target.value.toUpperCase().trim();
     document.querySelectorAll('.sticker').forEach(s => s.classList.remove('sticker-foco'));
-
     if(val.length >= 2) {
-        searchTimeout = setTimeout(() => {
-            const stickers = Array.from(document.querySelectorAll('.sticker'));
-            
-            // Busca Exata Primeiro
-            let alvo = stickers.find(s => s.id.replace('st-', '') === val);
-            
-            // Busca Parcial se não achar exata
-            if (!alvo) {
-                alvo = stickers.find(s => s.id.replace('st-', '').startsWith(val));
-            }
-
-            if(alvo) {
-                const pb = alvo.closest('.team-body');
-                if(pb) pb.classList.add('active');
-                alvo.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                alvo.classList.add('sticker-foco');
-            }
-        }, 500);
+        const stickers = Array.from(document.querySelectorAll('.sticker'));
+        let alvo = stickers.find(s => s.id.replace('st-', '') === val);
+        if (!alvo) alvo = stickers.find(s => s.id.replace('st-', '').startsWith(val));
+        
+        if(alvo) {
+            alvo.closest('.team-body').classList.add('active');
+            alvo.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            alvo.classList.add('sticker-foco');
+        }
     }
 });
 
+// LÓGICA DO ANÚNCIO (10s para aparecer, 7s para pular)
+setTimeout(() => {
+    const modalAds = document.getElementById('modal-anuncio');
+    const btnPular = document.getElementById('btn-pular-ads');
+    let segundos = 7;
+
+    modalAds.style.display = 'flex';
+
+    const intervalo = setInterval(() => {
+        segundos--;
+        if (segundos > 0) {
+            btnPular.innerText = `Aguarde ${segundos}s`;
+        } else {
+            clearInterval(intervalo);
+            btnPular.innerText = "Pular Anúncio ✕";
+            btnPular.classList.add('ativo');
+            btnPular.disabled = false;
+        }
+    }, 1000);
+
+    btnPular.onclick = () => {
+        if (!btnPular.disabled) modalAds.style.display = 'none';
+    };
+}, 10000);
+
+// COPIAR PIX
+document.getElementById('copy-pix').onclick = function() {
+    const chave = document.getElementById('chave-pix').innerText;
+    navigator.clipboard.writeText(chave).then(() => {
+        alert("Chave PIX copiada! Valeu pelo apoio! 👊");
+    });
+};
+
 // REPETIDAS
-const modal = document.getElementById("modal-repetidas");
 document.getElementById("btn-repetidas").onclick = () => {
     const lista = document.getElementById("lista-repetidas");
     lista.innerHTML = "";
@@ -185,47 +182,15 @@ document.getElementById("btn-repetidas").onclick = () => {
             lista.appendChild(s);
         }
     });
-    modal.style.display = "block";
+    document.getElementById("modal-repetidas").style.display = "block";
 };
-document.querySelector(".close-modal").onclick = () => modal.style.display = "none";
+
+document.querySelector(".close-modal").onclick = () => document.getElementById("modal-repetidas").style.display = "none";
 
 document.getElementById("btn-whatsapp").onclick = () => {
     let t = "*MINHAS REPETIDAS 2026*\n";
     Object.keys(owned).forEach(sid => { if(owned[sid]>1) t += `• ${sid} (${owned[sid]-1}x)\n`; });
     window.open(`https://wa.me/?text=${encodeURIComponent(t)}`);
 };
-
-// IPHONE / INSTALAÇÃO
-const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-const isStandalone = window.navigator.standalone === true || window.matchMedia('(display-mode: standalone)').matches;
-
-const avisoIos = document.getElementById('aviso-ios');
-const btnInstalar = document.getElementById('btn-instalar');
-
-if (isIOS && !isStandalone && avisoIos) avisoIos.style.display = 'block';
-
-if(document.getElementById('fechar-aviso')) {
-    document.getElementById('fechar-aviso').onclick = () => avisoIos.style.display = 'none';
-}
-
-let deferredPrompt;
-window.addEventListener('beforeinstallprompt', (e) => {
-    e.preventDefault();
-    deferredPrompt = e;
-    if (!isIOS && !isStandalone && btnInstalar) btnInstalar.style.display = 'block';
-});
-
-if(btnInstalar) {
-    btnInstalar.addEventListener('click', async () => {
-        if (deferredPrompt) {
-            deferredPrompt.prompt();
-            deferredPrompt = null;
-        }
-    });
-}
-
-if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('sw.js').catch(() => {});
-}
 
 window.onload = render;
