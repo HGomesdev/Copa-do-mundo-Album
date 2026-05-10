@@ -5,10 +5,23 @@ const albumData = {
     "GRUPO A": { teams: [{ n: "México", s: "MEX", c: "mx" }, { n: "África do Sul", s: "RSA", c: "za" }, { n: "Coreia do Sul", s: "KOR", c: "kr" }, { n: "República Tcheca", s: "CZE", c: "cz" }] },
     "GRUPO B": { teams: [{ n: "Canadá", s: "CAN", c: "ca" }, { n: "Bósnia", s: "BIH", c: "ba" }, { n: "Catar", s: "QAT", c: "qa" }, { n: "Suíça", s: "SUI", c: "ch" }] },
     "GRUPO C": { teams: [{ n: "Brasil", s: "BRA", c: "br" }, { n: "Marrocos", s: "MAR", c: "ma" }, { n: "Haiti", s: "HAI", c: "ht" }, { n: "Escócia", s: "SCO", c: "scotland" }] },
-    "GRUPO D": { teams: [{ n: "EUA", s: "USA", c: "us" }, { n: "Paraguai", s: "PAR", c: "py" }, { n: "Austrália", s: "AUS", c: "au" }, { n: "Turquia", s: "TUR", c: "tr" }] },
+    "GRUPO D": {
+        teams: [
+            { n: "EUA", s: "USA", c: "us" }, { n: "Paraguai", s: "PAR", c: "py" },
+            { n: "Austrália", s: "AUS", c: "au" }, // Corrigido: Nome, Sigla e Bandeira
+            { n: "Turquia", s: "TUR", c: "tr" }
+        ]
+    },
     "GRUPO E": { teams: [{ n: "Alemanha", s: "GER", c: "de" }, { n: "Curaçao", s: "CUW", c: "cw" }, { n: "Costa Marfim", s: "CIV", c: "ci" }, { n: "Equador", s: "ECU", c: "ec" }] },
     "GRUPO F": { teams: [{ n: "Holanda", s: "NED", c: "nl" }, { n: "Japão", s: "JPN", c: "jp" }, { n: "Suécia", s: "SWE", c: "se" }, { n: "Tunísia", s: "TUN", c: "tn" }] },
-    "GRUPO G": { teams: [{ n: "Bélgica", s: "BEL", c: "be" }, { n: "Egito", s: "EGY", c: "eg" }, { n: "Irã", s: "IRN", c: "ir" }, { n: "N. Zelândia", s: "NZL", c: "nz" }] },
+    "GRUPO G": {
+        teams: [
+            { n: "Bélgica", s: "BEL", c: "be" },
+            { n: "Egito", s: "EGY", c: "eg" },
+            { n: "Irã", s: "IRN", c: "ir" },
+            { n: "N. Zelândia", s: "NZL", c: "nz" } // Corrigido: Nome, Sigla e Bandeira
+        ]
+    },
     "GRUPO H": { teams: [{ n: "Espanha", s: "ESP", c: "es" }, { n: "Cabo Verde", s: "CPV", c: "cv" }, { n: "Arábia Saudita", s: "KSA", c: "sa" }, { n: "Uruguai", s: "URU", c: "uy" }] },
     "GRUPO I": { teams: [{ n: "França", s: "FRA", c: "fr" }, { n: "Senegal", s: "SEN", c: "sn" }, { n: "Iraque", s: "IRQ", c: "iq" }, { n: "Noruega", s: "NOR", c: "no" }] },
     "GRUPO J": { teams: [{ n: "Argentina", s: "ARG", c: "ar" }, { n: "Argélia", s: "ALG", c: "dz" }, { n: "Áustria", s: "AUT", c: "at" }, { n: "Jordânia", s: "JOR", c: "jo" }] },
@@ -50,12 +63,12 @@ function iniciarAnuncio() {
     let tempo = 7;
     const contagem = setInterval(() => {
         tempo--;
-        if (tempo > 0) { 
-            btn.innerText = `Aguarde ${tempo}s...`; 
+        if (tempo > 0) {
+            btn.innerText = `Aguarde ${tempo}s...`;
         } else {
             clearInterval(contagem);
             btn.innerText = "Pular Anúncio ✕";
-            btn.style.background = "#fedd00"; 
+            btn.style.background = "#fedd00";
             btn.style.color = "#012169";
             btn.disabled = false;
         }
@@ -110,7 +123,7 @@ function createCard(name, stickers, img) {
     const card = document.createElement('div');
     card.className = 'team-card';
     card.innerHTML = `<div class="team-header"><img src="${img}" onerror="this.src='logo.png'"> <span>${name}</span></div>`;
-    
+
     const body = document.createElement('div');
     body.className = 'team-body';
     if (filtroRepetidas) body.classList.add('active');
@@ -123,10 +136,10 @@ function createCard(name, stickers, img) {
         const s = document.createElement('div');
         s.id = `st-${sid}`;
         updateVisual(s, sid);
-        
+
         let cliques = 0, timer;
         const acao = (e) => {
-            e.preventDefault(); 
+            e.preventDefault();
             cliques++;
             if (cliques === 1) {
                 timer = setTimeout(() => {
@@ -147,7 +160,7 @@ function createCard(name, stickers, img) {
 
         s.addEventListener('touchend', acao, { passive: false });
         s.addEventListener('click', (e) => { if (e.pointerType === 'mouse') acao(e); });
-        
+
         grid.appendChild(s);
     });
 
@@ -160,7 +173,7 @@ function createCard(name, stickers, img) {
         configurarBotao(card, name, siglaParaBotao, stickers);
     }
 
-    card.querySelector('.team-header').onclick = (e) => { 
+    card.querySelector('.team-header').onclick = (e) => {
         if (!e.target.classList.contains('btn-completar-selecao')) { body.classList.toggle('active'); }
     };
     return card;
@@ -169,7 +182,7 @@ function createCard(name, stickers, img) {
 function configurarBotao(card, nome, sigla, listaFigurinhas) {
     const header = card.querySelector('.team-header');
     let btn = header.querySelector('.btn-completar-selecao');
-    
+
     if (!btn) {
         btn = document.createElement('button');
         btn.className = 'btn-completar-selecao';
@@ -212,9 +225,9 @@ function saveData(el, sid) {
 function updateStats() {
     const unique = Object.keys(owned).length;
     const percent = ((unique / 994) * 100).toFixed(1);
-    if(document.getElementById('total-count')) document.getElementById('total-count').innerText = unique;
-    if(document.getElementById('progress-percent')) document.getElementById('progress-percent').innerText = percent + "%";
-    if(document.getElementById('bar')) document.getElementById('bar').style.width = percent + "%";
+    if (document.getElementById('total-count')) document.getElementById('total-count').innerText = unique;
+    if (document.getElementById('progress-percent')) document.getElementById('progress-percent').innerText = percent + "%";
+    if (document.getElementById('bar')) document.getElementById('bar').style.width = percent + "%";
 }
 
 function completarSelecao(nome, sigla) {
@@ -251,7 +264,7 @@ function compartilharNoZap() {
 }
 
 // --- EVENTOS ---
-document.getElementById('btn-repetidas').onclick = function() {
+document.getElementById('btn-repetidas').onclick = function () {
     filtroRepetidas = !filtroRepetidas;
     this.innerText = filtroRepetidas ? "VER TUDO" : "REPETIDAS";
     this.style.background = filtroRepetidas ? "#fedd00" : "#d32f2f";
@@ -272,23 +285,23 @@ document.getElementById('searchSticker').addEventListener('input', (e) => {
     }
 });
 
-window.addEventListener('beforeinstallprompt', (e) => { 
-    e.preventDefault(); 
-    deferredPrompt = e; 
-    if(document.getElementById('btn-instalar')) document.getElementById('btn-instalar').style.display = 'block'; 
+window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    if (document.getElementById('btn-instalar')) document.getElementById('btn-instalar').style.display = 'block';
 });
 
-document.getElementById('btn-instalar').onclick = async () => { 
-    if (deferredPrompt) { deferredPrompt.prompt(); deferredPrompt = null; } 
+document.getElementById('btn-instalar').onclick = async () => {
+    if (deferredPrompt) { deferredPrompt.prompt(); deferredPrompt = null; }
 };
 
-window.addEventListener('DOMContentLoaded', () => { 
-    if(document.getElementById('current-year')) document.getElementById('current-year').innerText = new Date().getFullYear(); 
-    iniciarAnuncio(); 
-    render(); 
-    checkIOS(); 
+window.addEventListener('DOMContentLoaded', () => {
+    if (document.getElementById('current-year')) document.getElementById('current-year').innerText = new Date().getFullYear();
+    iniciarAnuncio();
+    render();
+    checkIOS();
 });
 
-document.getElementById('copy-pix').onclick = () => { 
-    navigator.clipboard.writeText("18981427594").then(() => alert("PIX Copiado! 👊")); 
+document.getElementById('copy-pix').onclick = () => {
+    navigator.clipboard.writeText("18981427594").then(() => alert("PIX Copiado! 👊"));
 };
