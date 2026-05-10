@@ -11,7 +11,7 @@
     <link rel="manifest" href="manifest.json">
     <link rel="apple-touch-icon" href="logo.png">
     
-    <link rel="stylesheet" href="style.css?v=1.2">
+    <link rel="stylesheet" href="style.css?v=1.3">
 </head>
 <body>
     <header>
@@ -67,6 +67,27 @@
 
     <main id="album-content"></main>
 
+    <div id="modal-anuncio" class="modal-ads">
+        <div class="ads-content">
+            <div class="ads-header">
+                <span>Publicidade</span>
+                <button id="btn-pular-ads" disabled>Aguarde 7s</button>
+            </div>
+            <div class="ads-body">
+                <a href="https://wa.me/5518981427594?text=Olá! Vi o anúncio no App do Álbum e gostaria de mais informações." target="_blank" style="text-decoration: none;">
+                    <div class="ads-image-wrapper">
+                        <img src="ads.png" alt="Anúncio">
+                    </div>
+                </a>
+                
+                <div class="pix-destaque" style="margin-top: 15px;">
+                    <small>Copie o PIX:</small>
+                    <strong>18981427594</strong>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <div id="modal-repetidas" class="modal">
         <div class="modal-content">
             <div style="display: flex; justify-content: space-between; align-items: center;">
@@ -88,6 +109,6 @@
         </div>
     </footer>
 
-    <script src="script.js?v=1.2"></script>
+    <script src="script.js?v=1.3"></script>
 </body>
 </html>
