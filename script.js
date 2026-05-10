@@ -18,7 +18,9 @@ const albumData = {
 
 let owned = JSON.parse(localStorage.getItem('album_2026_final')) || {};
 let totalGeralVal = 0;
+let deferredPrompt;
 
+// --- FUNÇÃO DE RENDERIZAÇÃO ---
 function render() {
     const main = document.getElementById('album-content');
     if (!main) return;
@@ -119,7 +121,7 @@ function updateStats() {
     document.getElementById('bar').style.width = percent + "%";
 }
 
-// BUSCA
+// --- BUSCA ---
 document.getElementById('searchSticker').addEventListener('input', (e) => {
     const val = e.target.value.toUpperCase().trim();
     document.querySelectorAll('.sticker').forEach(s => s.classList.remove('sticker-foco'));
@@ -136,7 +138,28 @@ document.getElementById('searchSticker').addEventListener('input', (e) => {
     }
 });
 
-// ANÚNCIO
+// --- LÓGICA DE INSTALAÇÃO ---
+window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    const btnInstalar = document.getElementById('btn-instalar');
+    if (btnInstalar) btnInstalar.style.display = 'block';
+});
+
+document.getElementById('btn-instalar').addEventListener('click', async () => {
+    if (deferredPrompt) {
+        deferredPrompt.prompt();
+        const { outcome } = await deferredPrompt.userChoice;
+        if (outcome === 'accepted') {
+            document.getElementById('btn-instalar').style.display = 'none';
+        }
+        deferredPrompt = null;
+    } else {
+        alert("No iPhone: clique no ícone de compartilhar e depois em 'Adicionar à Tela de Início'.");
+    }
+});
+
+// --- ANÚNCIO ---
 setTimeout(() => {
     const modalAds = document.getElementById('modal-anuncio');
     const btnPular = document.getElementById('btn-pular-ads');
@@ -155,15 +178,15 @@ setTimeout(() => {
         }, 1000);
         btnPular.onclick = () => modalAds.style.display = 'none';
     }
-}, 10000);
+}, 5000); // Aparece após 5 segundos
 
-// PIX
+// --- PIX ---
 document.getElementById('copy-pix').onclick = function() {
-    const chave = document.getElementById('chave-pix').innerText;
+    const chave = "18981427594";
     navigator.clipboard.writeText(chave).then(() => alert("Chave PIX copiada! 👊"));
 };
 
-// REPETIDAS
+// --- REPETIDAS ---
 document.getElementById("btn-repetidas").onclick = () => {
     const lista = document.getElementById("lista-repetidas");
     lista.innerHTML = "";
@@ -186,7 +209,7 @@ document.getElementById("btn-whatsapp").onclick = () => {
     window.open(`https://wa.me/?text=${encodeURIComponent(t)}`);
 };
 
-// INICIALIZAÇÃO BLINDADA
+// --- INICIALIZAÇÃO ---
 window.onload = () => {
     try {
         render();
