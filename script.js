@@ -19,37 +19,57 @@ const albumData = {
 let owned = JSON.parse(localStorage.getItem('album_2026_final')) || {};
 let deferredPrompt;
 
-// --- DETECÇÃO DE DISPOSITIVO E INSTALAÇÃO ---
+// --- FUNÇÃO DO ANÚNCIO ---
+function iniciarAnuncio() {
+    const modal = document.getElementById('modal-anuncio');
+    const btn = document.getElementById('btn-pular-ads');
+    if (!modal) return;
+
+    modal.style.display = 'flex';
+    let tempo = 7;
+
+    const contagem = setInterval(() => {
+        tempo--;
+        if (tempo > 0) {
+            btn.innerText = `Aguarde ${tempo}s...`;
+        } else {
+            clearInterval(contagem);
+            btn.innerText = "Pular Anúncio ✕";
+            btn.style.background = "#fedd00";
+            btn.style.color = "#012169";
+            btn.disabled = false;
+        }
+    }, 1000);
+
+    btn.onclick = () => modal.style.display = 'none';
+}
+
+// --- INSTALAÇÃO E INICIALIZAÇÃO ---
 window.addEventListener('DOMContentLoaded', () => {
     const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
     const isStandalone = window.navigator.standalone === true || window.matchMedia('(display-mode: standalone)').matches;
     
-    const iosBanner = document.getElementById('ios-install-banner');
-    const btnAndroid = document.getElementById('btn-instalar');
-
-    // Se for iOS e NÃO estiver instalado, mostra o banner clean
     if (isIOS && !isStandalone) {
-        if (iosBanner) iosBanner.style.display = 'block';
+        document.getElementById('ios-install-banner').style.display = 'block';
     }
+    
+    iniciarAnuncio(); // Abre o anúncio direto
+    render();
 });
 
 window.addEventListener('beforeinstallprompt', (e) => {
-    // Só mostra botão de instalar se não for iOS
-    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
-    if (!isIOS) {
-        e.preventDefault();
-        deferredPrompt = e;
-        const btnAndroid = document.getElementById('btn-instalar');
-        if (btnAndroid) btnAndroid.style.display = 'block';
+    e.preventDefault();
+    deferredPrompt = e;
+    if (!/iPhone|iPad|iPod/.test(navigator.userAgent)) {
+        document.getElementById('btn-instalar').style.display = 'block';
     }
 });
 
-// --- RENDERIZAÇÃO DO ÁLBUM ---
+// --- RENDERIZAÇÃO DO CONTEÚDO ---
 function render() {
     const main = document.getElementById('album-content');
     if (!main) return;
     main.innerHTML = '';
-    let totalGeralVal = 994; // Total fixo para o progresso
 
     for (const [title, data] of Object.entries(albumData)) {
         const section = document.createElement('section');
@@ -67,13 +87,14 @@ function render() {
         }
         main.appendChild(section);
     }
-    updateStats(totalGeralVal);
+    updateStats();
 }
 
 function createCard(name, stickers, img) {
     const card = document.createElement('div');
     card.className = 'team-card';
-    card.innerHTML = `<div class="team-header"><img src="${img}" onerror="this.src='logo.png'"> <span class="team-name">${name}</span></div>`;
+    card.innerHTML = `<div class="team-header"><img src="${img}" onerror="this.src='logo.png'"> <span>${name}</span></div>`;
+    
     const body = document.createElement('div');
     body.className = 'team-body';
     const grid = document.createElement('div');
@@ -84,31 +105,45 @@ function createCard(name, stickers, img) {
         s.id = `st-${sid}`;
         updateVisual(s, sid);
 
-        let clicks = 0;
-        let timeout;
+        let startX, startY;
+        let movendo = false;
+        let cliques = 0;
+        let timer;
 
-        const handleAction = (e) => {
-            e.preventDefault();
-            clicks++;
-            if (clicks === 1) {
-                timeout = setTimeout(() => {
+        // Lógica para ignorar marcação durante o scroll
+        s.addEventListener('touchstart', (e) => {
+            startX = e.touches[0].clientX;
+            startY = e.touches[0].clientY;
+            movendo = false;
+        }, { passive: true });
+
+        s.addEventListener('touchmove', (e) => {
+            const diffX = Math.abs(e.touches[0].clientX - startX);
+            const diffY = Math.abs(e.touches[0].clientY - startY);
+            if (diffX > 5 || diffY > 5) movendo = true;
+        }, { passive: true });
+
+        s.addEventListener('touchend', (e) => {
+            if (movendo) return; // Se arrastou a tela, não faz nada
+            
+            cliques++;
+            if (cliques === 1) {
+                timer = setTimeout(() => {
                     owned[sid] = (owned[sid] || 0) + 1;
                     saveData(s, sid);
-                    clicks = 0;
+                    cliques = 0;
                 }, 250);
             } else {
-                clearTimeout(timeout);
+                clearTimeout(timer);
                 if (owned[sid] > 0) {
                     owned[sid]--;
                     if (owned[sid] === 0) delete owned[sid];
                     saveData(s, sid);
                 }
-                clicks = 0;
+                cliques = 0;
             }
-        };
+        });
 
-        s.addEventListener('touchend', handleAction);
-        s.addEventListener('click', (e) => { if (e.pointerType === 'mouse' || !e.pointerType) handleAction(e); });
         grid.appendChild(s);
     });
 
@@ -126,12 +161,12 @@ function updateVisual(el, sid) {
 function saveData(el, sid) {
     localStorage.setItem('album_2026_final', JSON.stringify(owned));
     updateVisual(el, sid);
-    updateStats(994);
+    updateStats();
 }
 
-function updateStats(maxVal) {
+function updateStats() {
     const unique = Object.keys(owned).length;
-    const percent = ((unique / maxVal) * 100).toFixed(1);
+    const percent = ((unique / 994) * 100).toFixed(1);
     document.getElementById('total-count').innerText = unique;
     document.getElementById('progress-percent').innerText = percent + "%";
     document.getElementById('bar').style.width = percent + "%";
@@ -141,9 +176,9 @@ function updateStats(maxVal) {
 document.getElementById('searchSticker').addEventListener('input', (e) => {
     const val = e.target.value.toUpperCase().trim();
     document.querySelectorAll('.sticker').forEach(s => s.classList.remove('sticker-foco'));
+    
     if(val.length >= 2) {
-        const stickers = Array.from(document.querySelectorAll('.sticker'));
-        const alvo = stickers.find(s => s.id.replace('st-', '') === val) || stickers.find(s => s.id.replace('st-', '').startsWith(val));
+        const alvo = Array.from(document.querySelectorAll('.sticker')).find(s => s.id.replace('st-', '') === val);
         if(alvo) {
             alvo.closest('.team-body').classList.add('active');
             alvo.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -156,6 +191,3 @@ document.getElementById('searchSticker').addEventListener('input', (e) => {
 document.getElementById('copy-pix').onclick = () => {
     navigator.clipboard.writeText("18981427594").then(() => alert("Chave PIX copiada! 👊"));
 };
-
-// --- INICIALIZAÇÃO ---
-window.onload = render;
