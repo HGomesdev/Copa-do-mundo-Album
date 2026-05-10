@@ -1,5 +1,5 @@
-/* ALBUM DIGITAL 2026 - Versão Final Estabilizada
-   Lógica de Toque Otimizada para Celulares
+/* ALBUM DIGITAL 2026 - Versão Estável Mobile
+   Correção de Clique: Pointer Events (Touch + Mouse)
 */
 
 const albumData = {
@@ -15,7 +15,7 @@ const albumData = {
     "GRUPO G": { teams: [{ n: "Bélgica", s: "BEL", c: "be" }, { n: "Egito", s: "EGY", c: "eg" }, { n: "Irã", s: "IRN", c: "ir" }, { n: "N. Zelândia", s: "NZL", c: "nz" }] },
     "GRUPO H": { teams: [{ n: "Espanha", s: "ESP", c: "es" }, { n: "Cabo Verde", s: "CPV", c: "cv" }, { n: "Arábia Saudita", s: "KSA", c: "sa" }, { n: "Uruguai", s: "URU", c: "uy" }] },
     "GRUPO I": { teams: [{ n: "França", s: "FRA", c: "fr" }, { n: "Senegal", s: "SEN", c: "sn" }, { n: "Iraque", s: "IRQ", c: "iq" }, { n: "Noruega", s: "NOR", c: "no" }] },
-    "GRUPO J": { teams: [{ n: "Argentina", s: "ARG", c: "ar" }, { n: "Argélia", s: "ALG", c: "dz" }, { n: "Áustria", s: "AUT", c: "at" }, { n: "Jordânia", s: "JOR", b: "jo" }] },
+    "GRUPO J": { teams: [{ n: "Argentina", s: "ARG", c: "ar" }, { n: "Argélia", s: "ALG", c: "dz" }, { n: "Áustria", s: "AUT", c: "at" }, { n: "Jordânia", s: "JOR", c: "jo" }] },
     "GRUPO K": { teams: [{ n: "Portugal", s: "POR", c: "pt" }, { n: "Congo", s: "COD", c: "cd" }, { n: "Uzbequistão", s: "UZB", c: "uz" }, { n: "Colômbia", s: "COL", c: "co" }] },
     "GRUPO L": { teams: [{ n: "Inglaterra", s: "ENG", c: "gb-eng" }, { n: "Croácia", s: "CRO", c: "hr" }, { n: "Gana", s: "GHA", c: "gh" }, { n: "Panamá", s: "PAN", c: "pa" }] }
 };
@@ -28,11 +28,10 @@ let deferredPrompt;
 function iniciarAnuncio() {
     const modal = document.getElementById('modal-anuncio');
     const btn = document.getElementById('btn-pular-ads');
-    const imgAds = modal ? modal.querySelector('img') : null;
-
     if (!modal) return;
     modal.style.display = 'flex';
 
+    const imgAds = modal.querySelector('img');
     if (imgAds) {
         imgAds.style.cursor = 'pointer';
         imgAds.onclick = () => {
@@ -55,7 +54,7 @@ function iniciarAnuncio() {
     btn.onclick = () => modal.style.display = 'none';
 }
 
-// --- RENDERIZAÇÃO ---
+// --- RENDER ---
 function render() {
     const main = document.getElementById('album-content');
     if (!main) return;
@@ -77,16 +76,13 @@ function render() {
         let temConteudo = false;
 
         if (data.stickers) {
-            const possuiRepetida = data.stickers.some(id => owned[id] > 1);
-            if (!filtroRepetidas || possuiRepetida) {
-                section.appendChild(createCard(title, data.stickers, data.img));
-                temConteudo = true;
-            }
+            const temRep = data.stickers.some(id => owned[id] > 1);
+            if (!filtroRepetidas || temRep) { section.appendChild(createCard(title, data.stickers, data.img)); temConteudo = true; }
         } else {
             data.teams.forEach(t => {
                 const list = Array.from({ length: 20 }, (_, i) => `${t.s}${i + 1}`);
-                const possuiRepetida = list.some(id => owned[id] > 1);
-                if (!filtroRepetidas || possuiRepetida) {
+                const temRep = list.some(id => owned[id] > 1);
+                if (!filtroRepetidas || temRep) {
                     const flag = t.c === "scotland" ? "https://flagcdn.com/w80/gb-sct.png" : `https://flagcdn.com/w80/${t.c}.png`;
                     section.appendChild(createCard(t.n, list, flag));
                     temConteudo = true;
@@ -96,28 +92,6 @@ function render() {
         if (temConteudo) main.appendChild(section);
     }
     updateStats();
-}
-
-function configurarBotao(card, nome, sigla, listaFigurinhas) {
-    if (filtroRepetidas) return; 
-    const header = card.querySelector('.team-header');
-    let btn = header.querySelector('.btn-completar-selecao');
-    if (!btn) {
-        btn = document.createElement('button');
-        btn.className = 'btn-completar-selecao';
-        btn.style = "margin-left: auto; border: none; padding: 6px 10px; border-radius: 6px; font-size: 0.6rem; font-weight: 900; z-index: 10; position: relative; cursor: pointer;";
-        header.appendChild(btn);
-    }
-    const estaCompleta = listaFigurinhas.every(sid => owned[sid] > 0);
-    if (estaCompleta) {
-        btn.innerText = "COMPLETO ✓";
-        btn.style.background = "#d32f2f"; btn.style.color = "white";
-        btn.onclick = (e) => { e.stopPropagation(); };
-    } else {
-        btn.innerText = "COMPLETAR";
-        btn.style.background = "#009739"; btn.style.color = "white";
-        btn.onclick = (e) => { e.stopPropagation(); completarSelecao(nome, sigla); };
-    }
 }
 
 function createCard(name, stickers, img) {
@@ -138,42 +112,22 @@ function createCard(name, stickers, img) {
         s.id = `st-${sid}`;
         updateVisual(s, sid);
         
-        // LÓGICA DE TOQUE PARA CELULAR
-        let cliqueTime = 0;
-        const tratarAcao = (e) => {
-            const agora = new Date().getTime();
-            const diff = agora - cliqueTime;
-            cliqueTime = agora;
-
-            if (diff < 300 && diff > 0) { // Duplo toque
-                if (owned[sid] > 0) {
-                    owned[sid]--;
-                    if (owned[sid] === 0) delete owned[sid];
-                }
-            } else { // Toque simples
+        let lastTap = 0;
+        // EVENTO UNIFICADO (MOBILE + PC)
+        s.addEventListener('pointerdown', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            const now = Date.now();
+            if (now - lastTap < 300) { // Duplo clique
+                if (owned[sid] > 1) { owned[sid]--; } 
+                else { delete owned[sid]; }
+            } else { // Clique simples
                 owned[sid] = (owned[sid] || 0) + 1;
             }
+            lastTap = now;
             saveData(s, sid);
-        };
-
-        let startX, startY;
-        s.addEventListener('touchstart', (e) => {
-            startX = e.touches[0].clientX;
-            startY = e.touches[0].clientY;
-        }, { passive: true });
-
-        s.addEventListener('touchend', (e) => {
-            const endX = e.changedTouches[0].clientX;
-            const endY = e.changedTouches[0].clientY;
-            // Se não moveu o dedo (não foi scroll), processa o clique
-            if (Math.abs(endX - startX) < 10 && Math.abs(endY - startY) < 10) {
-                tratarAcao(e);
-            }
-        });
-
-        s.addEventListener('click', (e) => {
-            if (e.pointerType === 'mouse') tratarAcao(e);
-        });
+        }, { passive: false });
 
         grid.appendChild(s);
     });
@@ -182,13 +136,13 @@ function createCard(name, stickers, img) {
     card.appendChild(body);
 
     if (!filtroRepetidas) {
-        let siglaParaBotao = "";
-        const primeiroSticker = stickers[0];
-        if (primeiroSticker.startsWith("FWC")) siglaParaBotao = "FWC";
-        else if (primeiroSticker.startsWith("CC")) siglaParaBotao = "CC";
-        else if (primeiroSticker === "00") siglaParaBotao = "especial";
-        else siglaParaBotao = primeiroSticker.replace(/[0-9]/g, '');
-        configurarBotao(card, name, siglaParaBotao, stickers);
+        let sigla = "";
+        const ref = stickers[0];
+        if (ref.startsWith("FWC")) sigla = "FWC";
+        else if (ref.startsWith("CC")) sigla = "CC";
+        else if (ref === "00") sigla = "especial";
+        else sigla = ref.replace(/[0-9]/g, '');
+        configurarBotao(card, name, sigla, stickers);
     }
 
     card.querySelector('.team-header').onclick = (e) => { 
@@ -197,45 +151,47 @@ function createCard(name, stickers, img) {
     return card;
 }
 
-// --- RESTANTE DAS FUNÇÕES ---
+// --- FUNÇÕES DE APOIO ---
+function configurarBotao(card, nome, sigla, lista) {
+    const header = card.querySelector('.team-header');
+    let btn = header.querySelector('.btn-completar-selecao') || document.createElement('button');
+    btn.className = 'btn-completar-selecao';
+    btn.style = "margin-left: auto; border: none; padding: 6px 10px; border-radius: 6px; font-size: 0.6rem; font-weight: 900; cursor: pointer;";
+    
+    if (!header.querySelector('.btn-completar-selecao')) header.appendChild(btn);
+
+    const completo = lista.every(sid => owned[sid] > 0);
+    btn.innerText = completo ? "COMPLETO ✓" : "COMPLETAR";
+    btn.style.background = completo ? "#d32f2f" : "#009739";
+    btn.style.color = "white";
+    btn.onclick = (e) => { e.stopPropagation(); if (!completo) completarSelecao(nome, sigla); };
+}
+
 function compartilharNoZap() {
-    const linkApp = "https://hgomesdev.github.io/Copa-do-mundo-Album/"; 
     let texto = "⚽ *MINHAS REPETIDAS - ÁLBUM 2026* ⚽\n\n";
     let encontrou = false;
     for (const [title, data] of Object.entries(albumData)) {
-        let listaRep = [];
-        if (data.stickers) {
-            data.stickers.forEach(id => { if (owned[id] > 1) listaRep.push(`${id} (x${owned[id] - 1})`); });
-        } else {
-            data.teams.forEach(t => {
-                const list = Array.from({ length: 20 }, (_, i) => `${t.s}${i + 1}`);
-                list.forEach(id => { if (owned[id] > 1) listaRep.push(`${id} (x${owned[id] - 1})`); });
-            });
-        }
-        if (listaRep.length > 0) { encontrou = true; texto += `*${title}:*\n${listaRep.join(", ")}\n\n`; }
+        let aux = [];
+        const ids = data.stickers || [].concat(...data.teams.map(t => Array.from({length:20}, (_,i)=>`${t.s}${i+1}`)));
+        ids.forEach(id => { if (owned[id] > 1) aux.push(`${id} (x${owned[id]-1})`); });
+        if (aux.length > 0) { encontrou = true; texto += `*${title}:*\n${aux.join(", ")}\n\n`; }
     }
-    if (!encontrou) { alert("Nenhuma repetida encontrada!"); return; }
-    texto += "---------------------------\n";
-    texto += "✅ *Marque suas figurinhas aqui também:* \n" + linkApp;
-    window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(texto)}`, '_blank');
+    if (!encontrou) return alert("Sem repetidas!");
+    window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(texto + "https://hgomesdev.github.io/Copa-do-mundo-Album/")}`, '_blank');
 }
 
 document.getElementById('btn-repetidas').onclick = function() {
     filtroRepetidas = !filtroRepetidas;
-    if (filtroRepetidas) {
-        this.innerText = "VER TUDO";
-        this.style.background = "#fedd00"; this.style.color = "#012169";
-    } else {
-        this.innerText = "REPETIDAS";
-        this.style.background = "#e31a1a"; this.style.color = "#ffffff";
-    }
+    this.innerText = filtroRepetidas ? "VER TUDO" : "REPETIDAS";
+    this.style.background = filtroRepetidas ? "#fedd00" : "#e31a1a";
+    this.style.color = filtroRepetidas ? "#012169" : "#ffffff";
     render();
 };
 
 function updateVisual(el, sid) {
-    const count = owned[sid] || 0;
-    el.className = `sticker ${count > 0 ? 'owned' : ''}`;
-    el.innerHTML = `${sid}${count > 1 ? `<span class="badge-repeat">${count - 1}</span>` : ''}`;
+    const n = owned[sid] || 0;
+    el.className = `sticker ${n > 0 ? 'owned' : ''}`;
+    el.innerHTML = `${sid}${n > 1 ? `<span class="badge-repeat">${n - 1}</span>` : ''}`;
 }
 
 function saveData(el, sid) {
@@ -243,55 +199,38 @@ function saveData(el, sid) {
     updateVisual(el, sid);
     updateStats();
     if (filtroRepetidas) render();
-    else {
-        const card = el.closest('.team-card');
-        const stickersNoCard = Array.from(card.querySelectorAll('.sticker')).map(s => s.id.replace('st-', ''));
-        const nome = card.querySelector('.team-header span').innerText;
-        let siglaParaBotao = "";
-        const primeiro = stickersNoCard[0];
-        if (primeiro.startsWith("FWC")) siglaParaBotao = "FWC";
-        else if (primeiro.startsWith("CC")) siglaParaBotao = "CC";
-        else if (primeiro === "00") siglaParaBotao = "especial";
-        else siglaParaBotao = primeiro.replace(/[0-9]/g, '');
-        configurarBotao(card, nome, siglaParaBotao, stickersNoCard);
-    }
 }
 
 function updateStats() {
-    const unique = Object.keys(owned).length;
-    const percent = ((unique / 994) * 100).toFixed(1);
-    if(document.getElementById('total-count')) document.getElementById('total-count').innerText = unique;
-    if(document.getElementById('progress-percent')) document.getElementById('progress-percent').innerText = percent + "%";
-    if(document.getElementById('bar')) document.getElementById('bar').style.width = percent + "%";
+    const total = Object.keys(owned).length;
+    const perc = ((total / 994) * 100).toFixed(1);
+    if(document.getElementById('total-count')) document.getElementById('total-count').innerText = total;
+    if(document.getElementById('progress-percent')) document.getElementById('progress-percent').innerText = perc + "%";
+    if(document.getElementById('bar')) document.getElementById('bar').style.width = perc + "%";
 }
 
 function completarSelecao(nome, sigla) {
     if (!confirm(`Marcar todas de ${nome}?`)) return;
     let lista = [];
-    if (sigla === 'especial' || sigla === 'FWC' || sigla === 'CC') {
-        for (let key in albumData) { if (key === nome) { lista = albumData[key].stickers; break; } }
-    } else {
-        lista = Array.from({ length: 20 }, (_, i) => `${sigla}${i + 1}`);
-    }
-    lista.forEach(sid => { if (!owned[sid]) owned[sid] = 1; });
+    if (['especial', 'FWC', 'CC'].includes(sigla)) { lista = albumData[nome].stickers; } 
+    else { lista = Array.from({ length: 20 }, (_, i) => `${sigla}${i + 1}`); }
+    lista.forEach(id => { if (!owned[id]) owned[id] = 1; });
     localStorage.setItem('album_2026_final', JSON.stringify(owned));
     render();
 }
 
 document.getElementById('searchSticker').addEventListener('input', (e) => {
     const val = e.target.value.toUpperCase().trim();
-    document.querySelectorAll('.sticker').forEach(s => s.classList.remove('sticker-foco'));
     if (val.length >= 2) {
-        const alvo = Array.from(document.querySelectorAll('.sticker')).find(s => s.id.replace('st-', '') === val);
+        const alvo = Array.from(document.querySelectorAll('.sticker')).find(s => s.id === `st-${val}`);
         if (alvo) {
             alvo.closest('.team-body').classList.add('active');
             alvo.scrollIntoView({ behavior: 'smooth', block: 'center' });
             alvo.classList.add('sticker-foco');
+            setTimeout(() => alvo.classList.remove('sticker-foco'), 3000);
         }
     }
 });
 
-window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); deferredPrompt = e; if (document.getElementById('btn-instalar')) document.getElementById('btn-instalar').style.display = 'block'; });
-document.getElementById('btn-instalar').onclick = async () => { if (deferredPrompt) { deferredPrompt.prompt(); const { outcome } = await deferredPrompt.userChoice; if (outcome === 'accepted') document.getElementById('btn-instalar').style.display = 'none'; deferredPrompt = null; } };
+document.getElementById('copy-pix').onclick = () => { navigator.clipboard.writeText("18981427594").then(() => alert("PIX Copiado!")); };
 window.addEventListener('DOMContentLoaded', () => { if(document.getElementById('current-year')) document.getElementById('current-year').innerText = new Date().getFullYear(); iniciarAnuncio(); render(); });
-document.getElementById('copy-pix').onclick = () => { navigator.clipboard.writeText("18981427594").then(() => alert("PIX Copiado! 👊")); };
