@@ -11,24 +11,27 @@
     <link rel="icon" type="image/png" href="logo.png">
     <link rel="apple-touch-icon" href="logo.png">
     
-    <link rel="stylesheet" href="style.css?v=1.6">
+    <link rel="stylesheet" href="style.css?v=1.7">
 </head>
 <body>
 
     <header>
         <div class="header-container">
-            <div class="header-top">
-                <div style="display: flex; align-items: center; gap: 10px;">
-                    <img src="logo.png" alt="Logo" onerror="this.style.display='none'" style="width: 45px; height: 45px; border-radius: 8px; border: 2px solid #fedd00;">
-                    <h1 style="color: white !important; margin: 0; font-size: 1.2rem;">MEU ÁLBUM 2026</h1>
+            <div class="header-top" style="display: flex; justify-content: space-between; align-items: center; width: 100%; gap: 10px;">
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <img src="logo.png" alt="Logo" onerror="this.style.display='none'" style="width: 42px; height: 42px; border-radius: 8px; border: 2px solid #fedd00;">
+                    <h1 style="color: white !important; margin: 0; font-size: 1.1rem; letter-spacing: -0.5px;">MEU ÁLBUM 2026</h1>
                 </div>
-                <div>
-                    <button id="btn-repetidas" class="badge-btn" style="background:#d32f2f; color: white; border: none; padding: 8px 12px; border-radius: 6px; font-weight: bold; cursor: pointer;">REPETIDAS</button>
+                
+                <div style="display: flex; gap: 6px;">
+                    <button id="btn-instalar" class="badge-btn" style="display: none; background: #fedd00; color: #012169; border: none; padding: 8px 10px; border-radius: 6px; font-weight: 900; font-size: 0.65rem; text-transform: uppercase;">Instalar</button>
+                    
+                    <button id="btn-repetidas" class="badge-btn" style="background:#d32f2f; color: white; border: none; padding: 8px 10px; border-radius: 6px; font-weight: 900; font-size: 0.65rem; text-transform: uppercase;">Repetidas</button>
                 </div>
             </div>
             
             <div class="search-container" style="margin-top: 15px;">
-                <input type="text" id="searchSticker" placeholder="🔍 Buscar figurinha (ex: BRA10)" style="width: 100%; padding: 12px; border-radius: 8px; border: none; font-weight: bold;">
+                <input type="text" id="searchSticker" placeholder="🔍 Buscar figurinha (ex: BRA10)" style="width: 100%; padding: 12px; border-radius: 8px; border: none; font-weight: bold; outline: none;">
             </div>
 
             <div class="progress-container" style="margin-top: 15px;">
@@ -63,12 +66,11 @@
                 <button id="btn-pular-ads" disabled>Aguarde 7s</button>
             </div>
             <div class="ads-body">
-                <a href="https://wa.me/5518981427594?text=Olá! Vi o anúncio no App e quero anunciar também." target="_blank" style="text-decoration: none;">
+                <a href="https://wa.me/5518981427594?text=Olá! Quero anunciar no App." target="_blank" style="text-decoration: none;">
                     <div class="ads-image-wrapper">
-                        <img src="Ads.PNG" alt="Clique para Anunciar">
+                        <img src="Ads.PNG" alt="Anuncie Aqui">
                     </div>
                 </a>
-                
                 <div class="pix-destaque">
                     <small>Fortaleça o projeto via PIX:</small>
                     <strong>18981427594</strong>
@@ -83,26 +85,25 @@
         <div class="modal-content">
             <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eee; padding-bottom: 10px;">
                 <h2 style="margin:0; color:#009739; font-size: 1.2rem;">Minhas Repetidas</h2>
-                <span class="close-modal" style="cursor:pointer; font-size:28px; font-weight: bold;">&times;</span>
+                <span class="close-modal" style="cursor:pointer; font-size:28px;">&times;</span>
             </div>
-            <div id="lista-repetidas" class="sticker-grid" style="margin-top:20px; max-height:50vh; overflow-y:auto; padding: 5px;">
-                </div>
-            <button id="btn-whatsapp" class="btn-whatsapp" style="width: 100%; background: #25D366; color: white; border: none; padding: 15px; border-radius: 10px; font-weight: bold; margin-top: 15px; cursor: pointer;">
+            <div id="lista-repetidas" class="sticker-grid" style="margin-top:20px; max-height:50vh; overflow-y:auto;"></div>
+            <button id="btn-whatsapp" style="width: 100%; background: #25D366; color: white; border: none; padding: 15px; border-radius: 10px; font-weight: bold; margin-top: 15px;">
                 Compartilhar no WhatsApp
             </button>
         </div>
     </div>
 
     <footer class="main-footer">
-        <p style="margin: 0; font-size: 0.8rem; font-weight: bold;">📱 1 Toque: Adicionar | 2 Toques: Remover</p>
+        <p style="margin: 0; font-size: 0.8rem; font-weight: 800;">📱 1 Toque: Adicionar | 2 Toques: Remover</p>
         <div class="footer-credits">
             <span>© 2026 Hugo Gomes</span>
-            <a href="https://www.instagram.com/h.gomes04" target="_blank" class="insta-link" style="display: flex; align-items: center; gap: 5px;">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" width="15"> @h.gomes04
+            <a href="https://www.instagram.com/h.gomes04" target="_blank" class="insta-link" style="color: white !important; text-decoration: none; font-weight: bold; display: flex; align-items: center; gap: 4px;">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" width="14"> @h.gomes04
             </a>
         </div>
     </footer>
 
-    <script src="script.js?v=1.6"></script>
+    <script src="script.js?v=1.7"></script>
 </body>
 </html>
