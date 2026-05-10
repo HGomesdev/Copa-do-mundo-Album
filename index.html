@@ -12,21 +12,20 @@
     <link rel="icon" type="image/png" href="logo.png">
     <link rel="apple-touch-icon" href="logo.png">
     
-    <link rel="stylesheet" href="style.css?v=1.8">
+    <link rel="stylesheet" href="style.css?v=1.9">
 </head>
 <body>
 
     <header>
         <div class="header-container">
-            <div class="header-top" style="display: flex; justify-content: space-between; align-items: center; width: 100%; gap: 10px;">
+            <div class="header-top" style="display: flex; justify-content: space-between; align-items: center; width: 100%;">
                 <div style="display: flex; align-items: center; gap: 8px;">
                     <img src="logo.png" alt="Logo" onerror="this.style.display='none'" style="width: 42px; height: 42px; border-radius: 8px; border: 2px solid #fedd00;">
-                    <h1 style="color: white !important; margin: 0; font-size: 1.1rem; letter-spacing: -0.5px;">MEU ÁLBUM 2026</h1>
+                    <h1 style="color: white; margin: 0; font-size: 1.1rem;">MEU ÁLBUM 2026</h1>
                 </div>
                 
                 <div style="display: flex; gap: 6px;">
                     <button id="btn-instalar" class="badge-btn" style="display: none; background: #fedd00; color: #012169; border: none; padding: 8px 10px; border-radius: 6px; font-weight: 900; font-size: 0.65rem; text-transform: uppercase;">Baixar App</button>
-                    
                     <button id="btn-repetidas" class="badge-btn" style="background:#d32f2f; color: white; border: none; padding: 8px 10px; border-radius: 6px; font-weight: 900; font-size: 0.65rem; text-transform: uppercase;">Repetidas</button>
                 </div>
             </div>
@@ -40,12 +39,25 @@
                     <span>Progresso: <strong id="progress-percent">0%</strong></span>
                     <span><strong id="total-count">0</strong> / <span id="max-total">994</span></span>
                 </div>
-                <div class="progress-bar-bg" style="background: rgba(0,0,0,0.2); height: 12px; border-radius: 6px; overflow: hidden; border: 1px solid rgba(255,255,255,0.1);">
+                <div class="progress-bar-bg" style="background: rgba(0,0,0,0.2); height: 12px; border-radius: 6px; overflow: hidden;">
                     <div id="bar" style="background: #fedd00; height: 100%; width: 0%; transition: width 0.4s ease;"></div>
                 </div>
             </div>
         </div>
     </header>
+
+    <div id="ios-install-banner" class="ios-banner" style="display: none;">
+        <div class="ios-banner-content">
+            <div class="ios-icon">
+                <img src="logo.png" alt="App Icon" style="width: 45px; height: 45px; border-radius: 10px;">
+            </div>
+            <div class="ios-text">
+                <strong>Instalar App no iPhone</strong>
+                <span>Toque em <img src="https://img.icons8.com/ios/50/000000/export.png" width="15"> e depois em <b>"Adicionar à Tela de Início"</b></span>
+            </div>
+            <button class="ios-close" onclick="this.parentElement.parentElement.style.display='none'">×</button>
+        </div>
+    </div>
 
     <div class="apoio-container">
         <div class="apoio-card">
@@ -60,51 +72,18 @@
         </div>
     </div>
 
-    <div id="modal-anuncio" class="modal-ads">
-        <div class="ads-content">
-            <div class="ads-header">
-                <span>Publicidade</span>
-                <button id="btn-pular-ads" disabled>Aguarde 7s</button>
-            </div>
-            <div class="ads-body">
-                <a href="https://wa.me/5518981427594?text=Olá! Quero anunciar no App." target="_blank" style="text-decoration: none;">
-                    <div class="ads-image-wrapper">
-                        <img src="Ads.PNG" alt="Anuncie Aqui">
-                    </div>
-                </a>
-                <div class="pix-destaque">
-                    <small>Fortaleça o projeto via PIX:</small>
-                    <strong>18981427594</strong>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <main id="album-content"></main>
-
-    <div id="modal-repetidas" class="modal">
-        <div class="modal-content">
-            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eee; padding-bottom: 10px;">
-                <h2 style="margin:0; color:#009739; font-size: 1.2rem;">Minhas Repetidas</h2>
-                <span class="close-modal" style="cursor:pointer; font-size:28px;">&times;</span>
-            </div>
-            <div id="lista-repetidas" class="sticker-grid" style="margin-top:20px; max-height:50vh; overflow-y:auto;"></div>
-            <button id="btn-whatsapp" style="width: 100%; background: #25D366; color: white; border: none; padding: 15px; border-radius: 10px; font-weight: bold; margin-top: 15px;">
-                Compartilhar no WhatsApp
-            </button>
-        </div>
-    </div>
 
     <footer class="main-footer">
         <p style="margin: 0; font-size: 0.8rem; font-weight: 800;">📱 1 Toque: Adicionar | 2 Toques: Remover</p>
         <div class="footer-credits">
             <span>© 2026 Hugo Gomes</span>
-            <a href="https://www.instagram.com/h.gomes04" target="_blank" class="insta-link" style="color: white !important; text-decoration: none; font-weight: bold; display: flex; align-items: center; gap: 4px;">
+            <a href="https://www.instagram.com/h.gomes04" target="_blank" style="color: white !important; text-decoration: none; font-weight: bold;">
                 <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" width="14"> @h.gomes04
             </a>
         </div>
     </footer>
 
-    <script src="script.js?v=1.8"></script>
+    <script src="script.js?v=1.9"></script>
 </body>
 </html>
