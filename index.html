@@ -1,67 +1,126 @@
 <!DOCTYPE html>
 <html lang="pt-br">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Meu Álbum 2026</title>
+
     <link rel="manifest" href="manifest.json">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="theme-color" content="#009739">
-    <link rel="stylesheet" href="style.css?v=7.5">
+    <link rel="icon" type="image/png" href="logo.png">
+    <link rel="apple-touch-icon" href="logo.png">
+
+    <link rel="stylesheet" href="style.css?v=3.5">
 </head>
+
 <body>
 
-    <div id="modal-anuncio" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.95); z-index:9999; justify-content:center; align-items:center; flex-direction:column; padding: 20px;">
-        <div style="background:white; padding:15px; border-radius:20px; text-align:center; max-width:400px; width:100%; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
-            
-            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-                <span style="font-size: 0.75rem; color: #999; font-weight: bold; text-transform: uppercase;">Publicidade</span>
-                <button id="btn-pular-ads" disabled style="background: #d32f2f; color: white; border: none; padding: 8px 15px; border-radius: 20px; font-weight: bold; font-size: 0.75rem; cursor: pointer;">Aguarde...</button>
-            </div>
-            
-            <div style="width: 100%; border-radius: 15px; overflow: hidden; margin-bottom: 15px; border: 1px solid #eee;">
-                <img src="ads.PNG" alt="Anúncio" style="width: 100%; display: block;">
+    <div id="modal-anuncio"
+        style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); z-index:9999; justify-content:center; align-items:center; flex-direction:column; padding: 20px;">
+        <div
+            style="background:white; padding:15px; border-radius:20px; text-align:center; max-width:400px; width:100%; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+
+            <h2 style="color:#009739; margin: 10px 0; font-size: 1.3rem; font-weight: 900;">APOIE O PROJETO! 🚀</h2>
+
+            <div
+                style="width: 100%; border-radius: 12px; overflow: hidden; margin-bottom: 15px; border: 2px solid #f0f0f0;">
+                <img src="ads.PNG" alt="Anúncio" style="width: 100%; display: block; object-fit: cover;">
             </div>
 
-            <div style="background: #f0fdf4; border: 2px solid #009739; border-radius: 12px; padding: 12px; cursor: pointer;" onclick="navigator.clipboard.writeText('18981427594'); alert('Chave PIX copiada! 👊');">
-                <small style="color: #666; display: block; margin-bottom: 4px; font-size: 0.7rem; font-weight: bold;">FORTALEÇA O PROJETO VIA PIX:</small>
-                <strong style="color: #012169; font-size: 1.1rem; text-decoration: underline;">18981427594</strong>
-            </div>
+            <button id="btn-pular-ads" disabled
+                style="width: 100%; padding: 15px; border-radius: 12px; border: none; background: #e0e0e0; color: #888; font-weight: 900; font-size: 1rem; cursor: pointer; text-transform: uppercase;">
+                Aguarde 7s...
+            </button>
         </div>
     </div>
 
     <header>
-        <div class="header-container" style="max-width: 600px; margin: 0 auto; padding: 10px 15px;">
-            <div style="display: flex; justify-content: space-between; align-items: center;">
-                <div style="display: flex; align-items: center; gap: 8px;">
-                    <img src="logo.png" style="width: 40px; height: 40px; border-radius: 8px; border: 2px solid #fedd00;">
-                    <h1 style="color: white; margin: 0; font-size: 1rem; font-weight: 900;">MEU ÁLBUM 2026</h1>
+        <div class="header-container">
+            <div class="header-top"
+                style="display: flex; justify-content: space-between; align-items: center; gap: 8px;">
+                <div style="display: flex; align-items: center; gap: 8px; min-width: 0;">
+                    <img src="logo.png" alt="Logo"
+                        onerror="this.src='https://cdn-icons-png.flaticon.com/512/3112/3112946.png'"
+                        style="width: 40px; height: 40px; border-radius: 8px; border: 2px solid #fedd00; flex-shrink: 0;">
+                    <h1
+                        style="color: white; margin: 0; font-size: 1rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                        MEU ÁLBUM 2026</h1>
                 </div>
-                <button id="btn-repetidas" style="background:#d32f2f; color: white; border: none; padding: 8px 12px; border-radius: 6px; font-weight: 900; font-size: 0.6rem; cursor: pointer;">REPETIDAS</button>
-            </div>
-            
-            <div style="margin-top: 15px;">
-                <input type="text" id="searchSticker" placeholder="🔍 Buscar figurinha (ex: BRA10)" style="width: 100%; padding: 12px; border-radius: 8px; border: none; font-weight: bold; outline: none;">
+
+                <div style="display: flex; gap: 5px; flex-shrink: 0;">
+                    <button id="btn-instalar" class="badge-btn"
+                        style="display: none; background: #fedd00; color: #012169; border: none; padding: 8px 10px; border-radius: 6px; font-weight: 900; font-size: 0.6rem;">BAIXAR
+                        APP</button>
+                    <button id="btn-repetidas" class="badge-btn"
+                        style="background:#d32f2f; color: white; border: none; padding: 8px 10px; border-radius: 6px; font-weight: 900; font-size: 0.6rem;">REPETIDAS</button>
+                </div>
             </div>
 
-            <div style="margin-top: 15px; color: white; font-weight: bold;">
-                <div style="display: flex; justify-content: space-between; font-size: 0.8rem;">
-                    <span>Progresso: <span id="progress-percent">0%</span></span>
-                    <span><span id="total-count">0</span> / 994</span>
+            <div style="margin-top: 15px;">
+                <input type="text" id="searchSticker" placeholder="🔍 Buscar figurinha (ex: BRA10)"
+                    style="width: 100%; padding: 12px; border-radius: 8px; border: none; font-weight: bold; outline: none; font-size: 0.9rem;">
+            </div>
+
+            <div style="margin-top: 15px;">
+                <div
+                    style="display: flex; justify-content: space-between; font-size: 0.75rem; margin-bottom: 5px; color: white; font-weight: bold;">
+                    <span>Progresso: <strong id="progress-percent">0%</strong></span>
+                    <span><strong id="total-count">0</strong> / 994</span>
                 </div>
-                <div style="background: rgba(0,0,0,0.2); height: 10px; border-radius: 5px; margin-top: 5px; overflow: hidden;">
-                    <div id="bar" style="background: #fedd00; height: 100%; width: 0%; transition: 0.5s;"></div>
+                <div style="background: rgba(0,0,0,0.2); height: 10px; border-radius: 5px; overflow: hidden;">
+                    <div id="bar" style="background: #fedd00; height: 100%; width: 0%; transition: width 0.5s ease;">
+                    </div>
                 </div>
             </div>
         </div>
     </header>
 
-    <main id="album-content" style="min-height: 400px;"></main>
+    <div id="ios-install-banner" class="ios-banner"
+        style="display: none; background: white; margin: 15px; padding: 15px; border-radius: 166px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); border: 1px solid #eee;">
+        <div style="display: flex; align-items: center; gap: 12px;">
+            <img src="logo.png" style="width: 42px; height: 42px; border-radius: 10px;">
+            <div style="flex: 1;">
+                <strong style="font-size: 0.85rem; color: #333; display: block;">Instalar no iPhone</strong>
+                <span style="font-size: 0.7rem; color: #666;">Toque em <img
+                        src="https://img.icons8.com/ios/50/000000/export.png" width="14"> e depois <b>"Adicionar à Tela
+                        de Início"</b></span>
+            </div>
+            <button onclick="this.parentElement.parentElement.style.display='none'"
+                style="background: none; border: none; color: #999; font-size: 18px; font-weight: bold;">✕</button>
+        </div>
+    </div>
 
-    <footer style="position: fixed; bottom: 0; width: 100%; height: 80px; background: #009739; color: white; border-top: 4px solid #fedd00; z-index: 1000; display: flex; flex-direction: column; align-items: center; justify-content: center;">
-        <p style="margin: 0; font-size: 0.7rem; font-weight: 900;">📱 1 Toque: Adicionar | 2 Toques: Remover</p>
-        <p style="margin: 5px 0 0; font-size: 0.6rem; opacity: 0.8;">© 2026 Hugo Gomes | @h.gomes04</p>
+    <div style="max-width: 600px; margin: 15px auto; padding: 0 15px;">
+        <div
+            style="background: #fff; border-radius: 12px; padding: 12px; display: flex; justify-content: space-between; align-items: center; border: 2px solid #fedd00;">
+            <div>
+                <strong style="font-size: 0.8rem; color: #009739; display: block;">🚀 Gostou do App?</strong>
+                <span style="font-size: 0.7rem; color: #666;">Sua ajuda mantém o projeto online!</span>
+            </div>
+            <div id="copy-pix"
+                style="background: #f0fdf4; border: 1px dashed #009739; padding: 5px 10px; border-radius: 8px; cursor: pointer; text-align: center;">
+                <span style="display: block; font-size: 0.8rem; font-weight: bold;">18981427594</span>
+                <small style="font-size: 0.55rem; color: #009739; font-weight: 800;">COPIAR PIX</small>
+            </div>
+        </div>
+    </div>
+
+    <main id="album-content"></main>
+
+    <footer
+        style="position: fixed; bottom: 0; width: 100%; height: 90px; background: #009739; color: white; border-top: 4px solid #fedd00; z-index: 1000; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+        <p style="margin: 0; font-size: 0.75rem; font-weight: 900;">📱 1 Toque: Adicionar | 2 Toques: Remover</p>
+        <div style="font-size: 0.7rem; margin-top: 5px;">
+            © <span id="current-year"></span> Hugo Gomes |
+            <a href="https://www.instagram.com/h.gomes04" target="_blank"
+                style="color: white; text-decoration: none; font-weight: bold;">@h.gomes04</a>
+        </div>
     </footer>
 
-    <script src="script.js?v=7.5"></script>
+    <script src="script.js?v=3.5"></script>
 </body>
+
 </html>
