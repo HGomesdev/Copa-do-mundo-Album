@@ -6,25 +6,25 @@
     <title>Meu Álbum 2026</title>
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#009739">
-    <link rel="stylesheet" href="style.css?v=4.0">
+    <link rel="stylesheet" href="style.css?v=7.5">
 </head>
 <body>
 
-    <div id="modal-anuncio" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.9); z-index:9999; justify-content:center; align-items:center; flex-direction:column; padding: 20px;">
+    <div id="modal-anuncio" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.95); z-index:9999; justify-content:center; align-items:center; flex-direction:column; padding: 20px;">
         <div style="background:white; padding:15px; border-radius:20px; text-align:center; max-width:400px; width:100%; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
             
             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
-                <span style="font-size: 0.7rem; color: #999; font-weight: bold; text-transform: uppercase;">Publicidade</span>
-                <button id="btn-pular-ads" disabled style="background: #eee; color: #888; border: none; padding: 6px 15px; border-radius: 20px; font-weight: bold; font-size: 0.7rem;">Aguarde...</button>
+                <span style="font-size: 0.75rem; color: #999; font-weight: bold; text-transform: uppercase;">Publicidade</span>
+                <button id="btn-pular-ads" disabled style="background: #d32f2f; color: white; border: none; padding: 8px 15px; border-radius: 20px; font-weight: bold; font-size: 0.75rem; cursor: pointer;">Aguarde...</button>
             </div>
             
-            <div style="width: 100%; border-radius: 12px; overflow: hidden; margin-bottom: 15px; border: 1px solid #f0f0f0;">
+            <div style="width: 100%; border-radius: 15px; overflow: hidden; margin-bottom: 15px; border: 1px solid #eee;">
                 <img src="ads.PNG" alt="Anúncio" style="width: 100%; display: block;">
             </div>
 
-            <div style="background: #f0fdf4; border: 2px solid #009739; border-radius: 12px; padding: 12px; cursor: pointer;" onclick="navigator.clipboard.writeText('18981427594'); alert('PIX Copiado!');">
-                <small style="color: #666; display: block; margin-bottom: 4px; font-size: 0.7rem; font-weight: bold;">APOIE O PROJETO VIA PIX:</small>
-                <strong style="color: #012169; font-size: 1.1rem;">18981427594</strong>
+            <div style="background: #f0fdf4; border: 2px solid #009739; border-radius: 12px; padding: 12px; cursor: pointer;" onclick="navigator.clipboard.writeText('18981427594'); alert('Chave PIX copiada! 👊');">
+                <small style="color: #666; display: block; margin-bottom: 4px; font-size: 0.7rem; font-weight: bold;">FORTALEÇA O PROJETO VIA PIX:</small>
+                <strong style="color: #012169; font-size: 1.1rem; text-decoration: underline;">18981427594</strong>
             </div>
         </div>
     </div>
@@ -33,18 +33,18 @@
         <div class="header-container" style="max-width: 600px; margin: 0 auto; padding: 10px 15px;">
             <div style="display: flex; justify-content: space-between; align-items: center;">
                 <div style="display: flex; align-items: center; gap: 8px;">
-                    <img src="logo.png" style="width: 40px; height: 40px; border-radius: 8px;">
-                    <h1 style="color: white; margin: 0; font-size: 1rem;">MEU ÁLBUM 2026</h1>
+                    <img src="logo.png" style="width: 40px; height: 40px; border-radius: 8px; border: 2px solid #fedd00;">
+                    <h1 style="color: white; margin: 0; font-size: 1rem; font-weight: 900;">MEU ÁLBUM 2026</h1>
                 </div>
-                <button id="btn-repetidas" style="background:#d32f2f; color: white; border: none; padding: 8px 12px; border-radius: 6px; font-weight: 900; font-size: 0.6rem;">REPETIDAS</button>
+                <button id="btn-repetidas" style="background:#d32f2f; color: white; border: none; padding: 8px 12px; border-radius: 6px; font-weight: 900; font-size: 0.6rem; cursor: pointer;">REPETIDAS</button>
             </div>
             
             <div style="margin-top: 15px;">
-                <input type="text" id="searchSticker" placeholder="🔍 Buscar figurinha (ex: BRA10)" style="width: 100%; padding: 12px; border-radius: 8px; border: none; font-weight: bold;">
+                <input type="text" id="searchSticker" placeholder="🔍 Buscar figurinha (ex: BRA10)" style="width: 100%; padding: 12px; border-radius: 8px; border: none; font-weight: bold; outline: none;">
             </div>
 
-            <div style="margin-top: 15px; color: white; font-weight: bold; font-size: 0.8rem;">
-                <div style="display: flex; justify-content: space-between;">
+            <div style="margin-top: 15px; color: white; font-weight: bold;">
+                <div style="display: flex; justify-content: space-between; font-size: 0.8rem;">
                     <span>Progresso: <span id="progress-percent">0%</span></span>
                     <span><span id="total-count">0</span> / 994</span>
                 </div>
@@ -55,13 +55,13 @@
         </div>
     </header>
 
-    <main id="album-content"></main>
+    <main id="album-content" style="min-height: 400px;"></main>
 
-    <footer style="position: fixed; bottom: 0; width: 100%; height: 80px; background: #009739; color: white; border-top: 4px solid #fedd00; z-index: 1000; text-align: center; display: flex; flex-direction: column; justify-content: center;">
+    <footer style="position: fixed; bottom: 0; width: 100%; height: 80px; background: #009739; color: white; border-top: 4px solid #fedd00; z-index: 1000; display: flex; flex-direction: column; align-items: center; justify-content: center;">
         <p style="margin: 0; font-size: 0.7rem; font-weight: 900;">📱 1 Toque: Adicionar | 2 Toques: Remover</p>
-        <p style="margin: 5px 0 0; font-size: 0.6rem;">© 2026 Hugo Gomes | @h.gomes04</p>
+        <p style="margin: 5px 0 0; font-size: 0.6rem; opacity: 0.8;">© 2026 Hugo Gomes | @h.gomes04</p>
     </footer>
 
-    <script src="script.js?v=4.0"></script>
+    <script src="script.js?v=7.5"></script>
 </body>
 </html>
