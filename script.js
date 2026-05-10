@@ -20,9 +20,20 @@ let owned = JSON.parse(localStorage.getItem('album_2026_final')) || {};
 let filtroRepetidas = false;
 let deferredPrompt;
 
+// --- FUNÇÃO iOS (CORREÇÃO DO BANNER) ---
+function checkIOS() {
+    const isIos = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+    const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone;
+
+    if (isIos && !isStandalone) {
+        const iosBanner = document.getElementById('ios-install-banner');
+        if (iosBanner) iosBanner.style.display = 'block';
+    }
+}
+
 // --- ANÚNCIO ---
 function iniciarAnuncio() {
-    const modal = document.getElementById('modal-overlay'); // Ajustado para fechar o overlay completo
+    const modal = document.getElementById('modal-overlay');
     const btn = document.getElementById('btn-pular-ads');
     const imgAds = document.querySelector('#modal-anuncio img');
 
@@ -30,9 +41,8 @@ function iniciarAnuncio() {
     modal.style.display = 'flex';
 
     if (imgAds) {
-        imgAds.style.cursor = 'pointer';
         imgAds.onclick = () => {
-            const msg = encodeURIComponent("Olá Hugo! Gostaria de anunciar no seu app de figurinhas. Como funciona?");
+            const msg = encodeURIComponent("Olá Hugo! Gostaria de anunciar no seu app.");
             window.open(`https://wa.me/5518981427594?text=${msg}`, "_blank");
         };
     }
@@ -42,8 +52,7 @@ function iniciarAnuncio() {
         tempo--;
         if (tempo > 0) { 
             btn.innerText = `Aguarde ${tempo}s...`; 
-        } 
-        else {
+        } else {
             clearInterval(contagem);
             btn.innerText = "Pular Anúncio ✕";
             btn.style.background = "#fedd00"; 
@@ -117,7 +126,7 @@ function createCard(name, stickers, img) {
         
         let cliques = 0, timer;
         const acao = (e) => {
-            e.preventDefault(); // Impede o zoom nativo
+            e.preventDefault(); 
             cliques++;
             if (cliques === 1) {
                 timer = setTimeout(() => {
@@ -136,7 +145,6 @@ function createCard(name, stickers, img) {
             }
         };
 
-        // Usa touchend para mobile e click para desktop
         s.addEventListener('touchend', acao, { passive: false });
         s.addEventListener('click', (e) => { if (e.pointerType === 'mouse') acao(e); });
         
@@ -147,12 +155,8 @@ function createCard(name, stickers, img) {
     card.appendChild(body);
 
     if (!filtroRepetidas) {
-        let siglaParaBotao = "";
-        const primeiroSticker = stickers[0];
-        if (primeiroSticker.startsWith("FWC")) siglaParaBotao = "FWC";
-        else if (primeiroSticker.startsWith("CC")) siglaParaBotao = "CC";
-        else if (primeiroSticker === "00") siglaParaBotao = "especial";
-        else siglaParaBotao = primeiroSticker.replace(/[0-9]/g, '');
+        let siglaParaBotao = stickers[0].replace(/[0-9]/g, '') || "especial";
+        if (stickers[0] === "00") siglaParaBotao = "especial";
         configurarBotao(card, name, siglaParaBotao, stickers);
     }
 
@@ -169,7 +173,7 @@ function configurarBotao(card, nome, sigla, listaFigurinhas) {
     if (!btn) {
         btn = document.createElement('button');
         btn.className = 'btn-completar-selecao';
-        btn.style = "margin-left: auto; border: none; padding: 6px 10px; border-radius: 6px; font-size: 0.6rem; font-weight: 900; z-index: 10; position: relative; cursor: pointer;";
+        btn.style = "margin-left: auto; border: none; padding: 6px 10px; border-radius: 6px; font-size: 0.6rem; font-weight: 900; z-index: 10; cursor: pointer;";
         header.appendChild(btn);
     }
 
@@ -227,7 +231,6 @@ function completarSelecao(nome, sigla) {
 }
 
 function compartilharNoZap() {
-    const linkApp = window.location.href; 
     let texto = "⚽ *MINHAS REPETIDAS - ÁLBUM 2026* ⚽\n\n";
     let encontrou = false;
     for (const [title, data] of Object.entries(albumData)) {
@@ -243,12 +246,11 @@ function compartilharNoZap() {
         if (listaRep.length > 0) { encontrou = true; texto += `*${title}:*\n${listaRep.join(", ")}\n\n`; }
     }
     if (!encontrou) { alert("Nenhuma repetida encontrada!"); return; }
-    texto += "---------------------------\n";
-    texto += "✅ *Marque suas figurinhas aqui também:* \n" + linkApp;
+    texto += "✅ *Marque no seu também:* " + window.location.href;
     window.open(`https://api.whatsapp.com/send?text=${encodeURIComponent(texto)}`, '_blank');
 }
 
-// --- BOTÕES E BUSCA ---
+// --- EVENTOS ---
 document.getElementById('btn-repetidas').onclick = function() {
     filtroRepetidas = !filtroRepetidas;
     this.innerText = filtroRepetidas ? "VER TUDO" : "REPETIDAS";
@@ -270,11 +272,23 @@ document.getElementById('searchSticker').addEventListener('input', (e) => {
     }
 });
 
-window.addEventListener('beforeinstallprompt', (e) => { e.preventDefault(); deferredPrompt = e; document.getElementById('btn-instalar').style.display = 'block'; });
-document.getElementById('btn-instalar').onclick = async () => { if (deferredPrompt) { deferredPrompt.prompt(); deferredPrompt = null; } };
+window.addEventListener('beforeinstallprompt', (e) => { 
+    e.preventDefault(); 
+    deferredPrompt = e; 
+    if(document.getElementById('btn-instalar')) document.getElementById('btn-instalar').style.display = 'block'; 
+});
+
+document.getElementById('btn-instalar').onclick = async () => { 
+    if (deferredPrompt) { deferredPrompt.prompt(); deferredPrompt = null; } 
+};
+
 window.addEventListener('DOMContentLoaded', () => { 
     if(document.getElementById('current-year')) document.getElementById('current-year').innerText = new Date().getFullYear(); 
     iniciarAnuncio(); 
     render(); 
+    checkIOS(); 
 });
-document.getElementById('copy-pix').onclick = () => { navigator.clipboard.writeText("18981427594").then(() => alert("PIX Copiado! 👊")); };
+
+document.getElementById('copy-pix').onclick = () => { 
+    navigator.clipboard.writeText("18981427594").then(() => alert("PIX Copiado! 👊")); 
+};
