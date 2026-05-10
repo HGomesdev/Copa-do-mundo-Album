@@ -17,7 +17,7 @@ body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
     background-color: var(--cinza-fundo); 
     margin: 0; 
-    padding-bottom: 110px; 
+    padding-bottom: 115px; /* Espaço para o rodapé não cobrir figurinhas */
 }
 
 /* HEADER CONFIGURAÇÕES */
@@ -38,18 +38,9 @@ header {
     box-shadow: 0 2px 4px rgba(0,0,0,0.2);
     transition: transform 0.1s;
     cursor: pointer;
+    white-space: nowrap;
 }
 .badge-btn:active { transform: scale(0.95); }
-
-/* BANNER IOS CLEAN */
-.ios-banner {
-    animation: slideDown 0.5s ease-out;
-}
-
-@keyframes slideDown {
-    from { transform: translateY(-20px); opacity: 0; }
-    to { transform: translateY(0); opacity: 1; }
-}
 
 /* SEÇÃO DE GRUPOS E TIMES */
 .group-section { max-width: 600px; margin: 15px auto; padding: 0 12px; }
@@ -70,6 +61,7 @@ header {
     border: 1px solid #ddd; 
     margin-bottom: 10px; 
     overflow: hidden; 
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
 }
 
 .team-header { 
@@ -113,7 +105,7 @@ header {
     font-weight: bold; 
     position: relative;
     color: #555;
-    transition: all 0.2s;
+    transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 .sticker.owned { 
@@ -141,13 +133,24 @@ header {
 
 /* DESTAQUE DE BUSCA */
 .sticker-foco {
-    box-shadow: 0 0 12px var(--detalhe-amarelo);
-    border-color: var(--detalhe-amarelo);
-    transform: scale(1.05);
+    box-shadow: 0 0 15px var(--detalhe-amarelo);
+    border: 2px solid var(--detalhe-amarelo) !important;
+    transform: scale(1.1);
+    z-index: 10;
 }
 
-/* RESPONSIVIDADE PARA CELULARES PEQUENOS */
+/* RESPONSIVIDADE */
 @media (max-width: 370px) {
     .sticker-grid { grid-template-columns: repeat(3, 1fr); }
     h1 { font-size: 0.9rem !important; }
+}
+
+/* ANIMAÇÃO SLIDE */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.ios-banner {
+    animation: fadeIn 0.5s ease-out;
 }
