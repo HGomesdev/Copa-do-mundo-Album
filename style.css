@@ -25,31 +25,31 @@ header {
 }
 
 .header-container { max-width: 600px; margin: 0 auto; }
+
 #searchSticker {
     width: 100%; padding: 12px; border-radius: 8px; border: 1px solid var(--detalhe-amarelo);
     background: rgba(255,255,255,0.2); color: white; font-weight: bold; outline: none;
+    margin-top: 10px;
 }
 
-.header-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; }
+.header-top { display: flex; justify-content: space-between; align-items: center; }
 h1 { margin: 0; font-size: 1.1rem; font-weight: 900; }
 
 .badge-btn { padding: 8px 12px; border-radius: 6px; font-size: 0.7rem; font-weight: bold; color: white; border: none; cursor: pointer; }
 
-.progress-info { display: flex; justify-content: space-between; font-size: 0.8rem; margin-bottom: 5px; font-weight: bold; }
+.progress-info { display: flex; justify-content: space-between; font-size: 0.8rem; margin: 10px 0 5px 0; font-weight: bold; }
 .progress-bar-bg { background: rgba(0,0,0,0.2); height: 14px; border-radius: 7px; overflow: hidden; }
 #bar { background: var(--detalhe-amarelo); height: 100%; width: 0%; transition: width 0.4s ease; }
 
-/* AJUSTE: Respiro no topo para as logos especiais não ficarem coladas */
-main#album-content {
-    padding-top: 15px;
-}
+/* Ajuste para o conteúdo não começar colado no header */
+main#album-content { padding-top: 15px; }
 
 .group-section { max-width: 600px; margin: 25px auto; padding: 0 15px; }
 .section-title { border-left: 6px solid var(--topo-inicio); padding-left: 12px; color: var(--topo-inicio); font-size: 1.1rem; font-weight: 800; text-transform: uppercase; margin-bottom: 15px; }
 
 .team-card { background: white; border-radius: 12px; border: 1px solid #ddd; margin-bottom: 12px; overflow: hidden; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
 
-/* CORREÇÃO DAS LOGOS: Altura e alinhamento */
+/* CORREÇÃO DAS LOGOS: Garante que as logos (Coca, Especiais) apareçam inteiras */
 .team-header { 
     padding: 15px; 
     display: flex; 
@@ -60,11 +60,10 @@ main#album-content {
 
 .team-header img { 
     width: 35px; 
-    height: auto;
-    max-height: 35px;
+    height: 35px;
     margin-right: 15px; 
     border-radius: 4px; 
-    object-fit: contain; 
+    object-fit: contain; /* Isso impede que a logo seja cortada */
 }
 
 .team-header .name { font-weight: bold; color: #222; }
@@ -81,12 +80,14 @@ main#album-content {
 .sticker.owned { background: var(--detalhe-amarelo); border-color: var(--topo-inicio); }
 .badge-repeat { position: absolute; top: -8px; right: -8px; background: var(--vermelho); color: white; width: 20px; height: 20px; border-radius: 50%; font-size: 0.65rem; display: flex; align-items: center; justify-content: center; border: 2px solid white; }
 
+/* RODAPÉ FIXO */
 .main-footer { position: fixed; bottom: 0; width: 100%; height: 90px; background: var(--topo-inicio); color: white; border-top: 4px solid var(--detalhe-amarelo); z-index: 1000; display: flex; flex-direction: column; align-items: center; justify-content: center; }
 .footer-instruction { margin: 0; font-size: 0.85rem; font-weight: bold; }
 .footer-credits { margin-top: 6px; font-size: 0.75rem; display: flex; align-items: center; gap: 10px; }
 .insta-link { color: white; text-decoration: none; font-weight: bold; display: flex; align-items: center; gap: 4px; }
 .insta-link img { width: 14px; height: 14px; }
 
+/* MODAIS */
 .modal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); }
-.modal-content { background: white; margin: 10% auto; padding: 20px; border-radius: 15px; width: 90%; max-width: 400px; position: relative; }
+.modal-content { background: white; margin: 15% auto; padding: 20px; border-radius: 15px; width: 90%; max-width: 400px; position: relative; }
 .btn-whatsapp { width: 100%; background: #25D366; color: white; border: none; padding: 12px; border-radius: 8px; font-weight: bold; margin-top: 15px; cursor: pointer; }
