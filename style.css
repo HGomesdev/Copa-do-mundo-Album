@@ -50,7 +50,44 @@ h1 { margin: 0; font-size: 1.1rem; font-weight: 900; }
 .progress-bar-bg { background: rgba(0,0,0,0.1); height: 14px; border-radius: 7px; overflow: hidden; border: 1px solid rgba(255,255,255,0.2); }
 #bar { background: var(--detalhe-amarelo); height: 100%; width: 0%; transition: width 0.4s ease; }
 
-/* AVISO IPHONE ESTILO CARD */
+/* BANNER DE APOIO (PIX) FIXO */
+.apoio-container {
+    max-width: 600px;
+    margin: 15px auto;
+    padding: 0 15px;
+}
+
+.apoio-card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 12px 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: 2px solid var(--detalhe-amarelo);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+}
+
+.apoio-texto { display: flex; flex-direction: column; }
+.apoio-texto strong { font-size: 0.9rem; color: var(--topo-inicio); }
+.apoio-texto span { font-size: 0.75rem; color: #666; }
+
+.pix-box {
+    background: #f0fdf4;
+    border: 1px dashed var(--topo-inicio);
+    padding: 6px 10px;
+    border-radius: 8px;
+    text-align: center;
+    cursor: pointer;
+    min-width: 120px;
+    transition: all 0.2s;
+}
+
+.pix-box:active { background: #dcfce7; transform: scale(0.95); }
+.pix-box span { display: block; font-size: 0.8rem; font-weight: bold; color: #333; }
+.pix-box small { font-size: 0.6rem; color: var(--topo-inicio); text-transform: uppercase; font-weight: bold; }
+
+/* AVISO IPHONE */
 #aviso-ios {
     display: none;
     background: white;
@@ -63,25 +100,9 @@ h1 { margin: 0; font-size: 1.1rem; font-weight: 900; }
     position: relative;
     text-align: center;
     color: #333;
-    animation: slideDown 0.5s ease;
 }
 
-#fechar-aviso {
-    position: absolute;
-    top: 8px;
-    right: 15px;
-    font-size: 1.6rem;
-    font-weight: bold;
-    color: #bbb;
-    cursor: pointer;
-}
-
-#aviso-ios p { margin: 0; font-size: 0.9rem; line-height: 1.5; }
-
-@keyframes slideDown {
-    from { transform: translateY(-20px); opacity: 0; }
-    to { transform: translateY(0); opacity: 1; }
-}
+#fechar-aviso { position: absolute; top: 8px; right: 15px; font-size: 1.6rem; font-weight: bold; color: #bbb; cursor: pointer; }
 
 /* ANIMAÇÃO DE DESTAQUE PARA A BUSCA */
 @keyframes destaqueBusca {
@@ -96,7 +117,7 @@ h1 { margin: 0; font-size: 1.1rem; font-weight: 900; }
     position: relative;
 }
 
-/* CONTEÚDO */
+/* CONTEÚDO DO ÁLBUM */
 main#album-content { padding-top: 5px; }
 
 .group-section { max-width: 600px; margin: 20px auto; padding: 0 15px; }
@@ -115,7 +136,7 @@ main#album-content { padding-top: 5px; }
 .sticker { 
     background: #fff; border: 2px solid #eee; border-radius: 8px; padding: 15px 0; 
     text-align: center; font-size: 0.75rem; font-weight: bold; position: relative; 
-    cursor: pointer; transition: transform 0.2s;
+    cursor: pointer;
 }
 .sticker.owned { background: var(--detalhe-amarelo); border-color: var(--topo-inicio); }
 .badge-repeat { position: absolute; top: -8px; right: -8px; background: var(--vermelho); color: white; width: 20px; height: 20px; border-radius: 50%; font-size: 0.65rem; display: flex; align-items: center; justify-content: center; border: 2px solid white; }
