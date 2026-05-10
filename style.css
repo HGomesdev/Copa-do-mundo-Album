@@ -39,6 +39,7 @@ header {
 .badge-btn {
     box-shadow: 0 2px 5px rgba(0,0,0,0.2);
     transition: transform 0.1s active;
+    text-transform: uppercase;
 }
 
 .badge-btn:active {
@@ -61,7 +62,7 @@ header {
     color: rgba(255,255,255,0.7);
 }
 
-/* CARD DE APOIO PIX */
+/* CARD DE APOIO PIX (Conforme IMG_3272) */
 .apoio-container { max-width: 600px; margin: 15px auto; padding: 0 15px; }
 .apoio-card {
     background: #fff; border-radius: 12px; padding: 12px 15px; display: flex;
@@ -106,7 +107,7 @@ header {
 .pix-destaque { background: #f0fdf4; border: 2px solid var(--topo-inicio); padding: 10px; border-radius: 10px; }
 .pix-destaque strong { font-size: 1.1rem; color: #333; display: block; text-decoration: underline; }
 
-/* CONTEÚDO DO ÁLBUM */
+/* CONTEÚDO DO ÁLBUM (Conforme IMG_3271) */
 .group-section { max-width: 600px; margin: 20px auto; padding: 0 15px; }
 .section-title { border-left: 6px solid var(--topo-inicio); padding-left: 12px; color: var(--topo-inicio); font-size: 1.1rem; font-weight: 800; text-transform: uppercase; margin-bottom: 15px; }
 .team-card { background: white; border-radius: 12px; border: 1px solid #ddd; margin-bottom: 12px; overflow: hidden; }
@@ -132,11 +133,14 @@ header {
     display: flex; flex-direction: column; align-items: center; justify-content: center; 
 }
 
-/* Ajuste da cor do Instagram para Branco */
+/* Forçar cor branca no Instagram (Ignora azul padrão do navegador) */
 .insta-link { 
     color: white !important; 
     text-decoration: none; 
     font-weight: bold; 
+    display: flex;
+    align-items: center;
+    gap: 4px;
 }
 
 /* MODAIS GERAIS */
