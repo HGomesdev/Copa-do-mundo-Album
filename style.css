@@ -20,11 +20,11 @@ body {
     padding-bottom: 110px; 
 }
 
-/* HEADER FIXO */
+/* HEADER CONFIGURAÇÕES */
 header {
     background: linear-gradient(135deg, var(--topo-inicio) 0%, var(--topo-fim) 100%);
     color: white; 
-    padding: 15px; 
+    padding: 12px 15px; 
     position: sticky; 
     top: 0; 
     z-index: 1000;
@@ -33,101 +33,121 @@ header {
 
 .header-container { max-width: 600px; margin: 0 auto; }
 
-/* BOTÕES NO TOPO */
+/* AJUSTE DOS BOTÕES NO TOPO */
 .badge-btn {
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
     transition: transform 0.1s;
     cursor: pointer;
 }
 .badge-btn:active { transform: scale(0.95); }
 
-/* BANNER IOS CLEAN (ESTILO SMART APP BANNER) */
+/* BANNER IOS CLEAN */
 .ios-banner {
-    background: #ffffff;
-    margin: 15px;
-    padding: 12px;
-    border-radius: 16px;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
-    border: 1px solid #e0e0e0;
-    animation: slideIn 0.5s ease-out;
+    animation: slideDown 0.5s ease-out;
 }
 
-.ios-banner-content {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    position: relative;
-}
-
-.ios-text {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-}
-
-.ios-text strong {
-    font-size: 0.9rem;
-    color: #333;
-}
-
-.ios-text span {
-    font-size: 0.75rem;
-    color: #666;
-    line-height: 1.4;
-}
-
-.ios-close {
-    background: #f0f0f0;
-    border: none;
-    width: 26px;
-    height: 26px;
-    border-radius: 50%;
-    color: #888;
-    font-size: 18px;
-    cursor: pointer;
-}
-
-/* APOIO PIX */
-.apoio-container { max-width: 600px; margin: 15px auto; padding: 0 15px; }
-.apoio-card {
-    background: #fff; border-radius: 12px; padding: 12px 15px; display: flex;
-    justify-content: space-between; align-items: center; border: 2px solid var(--detalhe-amarelo);
-}
-.pix-box {
-    background: #f0fdf4; border: 1px dashed var(--topo-inicio); padding: 6px 10px;
-    border-radius: 8px; text-align: center; cursor: pointer;
-}
-.pix-box span { display: block; font-size: 0.8rem; font-weight: bold; color: #333; }
-
-/* ESTILO DAS FIGURINHAS */
-.group-section { max-width: 600px; margin: 20px auto; padding: 0 15px; }
-.section-title { border-left: 6px solid var(--topo-inicio); padding-left: 12px; color: var(--topo-inicio); font-size: 1.1rem; font-weight: 800; text-transform: uppercase; margin-bottom: 15px; }
-
-.team-card { background: white; border-radius: 12px; border: 1px solid #ddd; margin-bottom: 12px; overflow: hidden; }
-.team-header { padding: 15px; display: flex; align-items: center; cursor: pointer; }
-
-.sticker-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; padding: 10px; }
-.sticker { 
-    background: #fff; border: 1px solid #ddd; border-radius: 8px; padding: 12px 0; 
-    text-align: center; font-size: 0.7rem; font-weight: bold; position: relative;
-}
-.sticker.owned { background: var(--detalhe-amarelo); border-color: var(--topo-inicio); color: var(--azul-brasil); }
-.badge-repeat { position: absolute; top: -6px; right: -6px; background: var(--vermelho); color: white; width: 18px; height: 18px; border-radius: 50%; font-size: 0.6rem; display: flex; align-items: center; justify-content: center; border: 1.5px solid white; }
-
-/* RODAPÉ BRASIL */
-.main-footer { 
-    position: fixed; bottom: 0; width: 100%; height: 95px; 
-    background: var(--topo-inicio); color: white; 
-    border-top: 4px solid var(--detalhe-amarelo); z-index: 1000; 
-    display: flex; flex-direction: column; align-items: center; justify-content: center; 
-}
-
-@keyframes slideIn {
+@keyframes slideDown {
     from { transform: translateY(-20px); opacity: 0; }
     to { transform: translateY(0); opacity: 1; }
 }
 
-/* Responsividade */
-@media (max-width: 400px) {
+/* SEÇÃO DE GRUPOS E TIMES */
+.group-section { max-width: 600px; margin: 15px auto; padding: 0 12px; }
+
+.section-title { 
+    border-left: 5px solid var(--topo-inicio); 
+    padding-left: 10px; 
+    color: var(--topo-inicio); 
+    font-size: 1rem; 
+    font-weight: 800; 
+    text-transform: uppercase; 
+    margin-bottom: 12px; 
+}
+
+.team-card { 
+    background: white; 
+    border-radius: 12px; 
+    border: 1px solid #ddd; 
+    margin-bottom: 10px; 
+    overflow: hidden; 
+}
+
+.team-header { 
+    padding: 12px 15px; 
+    display: flex; 
+    align-items: center; 
+    cursor: pointer;
+    background: #fff;
+}
+
+.team-header img { 
+    width: 30px; 
+    height: auto; 
+    margin-right: 12px; 
+    border-radius: 3px; 
+}
+
+.team-body { 
+    display: none; 
+    padding: 12px; 
+    background: #fafafa; 
+    border-top: 1px solid #eee; 
+}
+
+.team-body.active { display: block; }
+
+/* GRID DE FIGURINHAS */
+.sticker-grid { 
+    display: grid; 
+    grid-template-columns: repeat(4, 1fr); 
+    gap: 8px; 
+}
+
+.sticker { 
+    background: #fff; 
+    border: 1px solid #ddd; 
+    border-radius: 8px; 
+    padding: 12px 0; 
+    text-align: center; 
+    font-size: 0.65rem; 
+    font-weight: bold; 
+    position: relative;
+    color: #555;
+    transition: all 0.2s;
+}
+
+.sticker.owned { 
+    background: var(--detalhe-amarelo); 
+    border-color: var(--topo-inicio); 
+    color: var(--azul-brasil); 
+}
+
+.badge-repeat { 
+    position: absolute; 
+    top: -5px; 
+    right: -5px; 
+    background: var(--vermelho); 
+    color: white; 
+    width: 17px; 
+    height: 17px; 
+    border-radius: 50%; 
+    font-size: 0.55rem; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    border: 1.5px solid white; 
+    font-weight: 900;
+}
+
+/* DESTAQUE DE BUSCA */
+.sticker-foco {
+    box-shadow: 0 0 12px var(--detalhe-amarelo);
+    border-color: var(--detalhe-amarelo);
+    transform: scale(1.05);
+}
+
+/* RESPONSIVIDADE PARA CELULARES PEQUENOS */
+@media (max-width: 370px) {
     .sticker-grid { grid-template-columns: repeat(3, 1fr); }
+    h1 { font-size: 0.9rem !important; }
 }
