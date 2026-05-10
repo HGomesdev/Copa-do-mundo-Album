@@ -17,14 +17,14 @@ const albumData = {
 };
 
 let owned = JSON.parse(localStorage.getItem('album_2026_final')) || {};
-let totalGeral = 0;
+let totalGeralVal = 0;
 
 window.oncontextmenu = (e) => { e.preventDefault(); return false; };
 
 function render() {
     const main = document.getElementById('album-content');
     main.innerHTML = '';
-    totalGeral = 0;
+    totalGeralVal = 0;
 
     for (const [title, data] of Object.entries(albumData)) {
         const section = document.createElement('section');
@@ -33,21 +33,20 @@ function render() {
         
         if (data.stickers) {
             section.appendChild(createCard(title, data.stickers, data.img));
-            totalGeral += data.stickers.length;
+            totalGeralVal += data.stickers.length;
         } else {
             data.teams.forEach(t => {
                 const list = Array.from({length: 20}, (_, i) => `${t.s}${i + 1}`);
                 const flag = t.c === "scotland" ? "https://flagcdn.com/w80/gb-sct.png" : `https://flagcdn.com/w80/${t.c}.png`;
                 section.appendChild(createCard(t.n, list, flag));
-                totalGeral += 20;
+                totalGeralVal += 20;
             });
         }
         main.appendChild(section);
     }
     
-    // Atualiza o número total no HTML dinamicamente
     const maxDisplay = document.getElementById('max-total');
-    if(maxDisplay) maxDisplay.innerText = totalGeral;
+    if(maxDisplay) maxDisplay.innerText = totalGeralVal;
     
     updateStats();
 }
@@ -120,14 +119,15 @@ function saveQuiet(el, sid) {
 
 function updateStats() {
     const unique = Object.keys(owned).length;
-    const percent = ((unique / totalGeral) * 100).toFixed(1);
+    const maxVal = totalGeralVal || 670;
+    const percent = ((unique / maxVal) * 100).toFixed(1);
     
     document.getElementById('total-count').innerText = unique;
     document.getElementById('progress-percent').innerText = percent + "%";
     document.getElementById('bar').style.width = percent + "%";
 }
 
-// ... Resto das funções de Busca, Repetidas e Whatsapp (mantém igual) ...
+// BUSCA
 document.getElementById('searchSticker').addEventListener('input', (e) => {
     const val = e.target.value.toUpperCase().trim();
     if(val.length >= 3) {
@@ -140,6 +140,7 @@ document.getElementById('searchSticker').addEventListener('input', (e) => {
     }
 });
 
+// REPETIDAS
 const modal = document.getElementById("modal-repetidas");
 document.getElementById("btn-repetidas").onclick = () => {
     const lista = document.getElementById("lista-repetidas");
@@ -156,10 +157,53 @@ document.getElementById("btn-repetidas").onclick = () => {
 };
 document.querySelector(".close-modal").onclick = () => modal.style.display = "none";
 
+// WHATSAPP
 document.getElementById("btn-whatsapp").onclick = () => {
     let t = "*MINHAS REPETIDAS 2026*\n";
     Object.keys(owned).forEach(sid => { if(owned[sid]>1) t += `• ${sid} (${owned[sid]-1}x)\n`; });
     window.open(`https://wa.me/?text=${encodeURIComponent(t)}`);
 };
+
+// --- LÓGICA DE INSTALAÇÃO E AVISO IPHONE ---
+const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+const isStandalone = window.navigator.standalone === true || window.matchMedia('(display-mode: standalone)').matches;
+
+const avisoIos = document.getElementById('aviso-ios');
+const btnInstalar = document.getElementById('btn-instalar');
+
+// Controle do Banner iPhone
+if (isIOS && !isStandalone && avisoIos) {
+    avisoIos.style.display = 'block';
+}
+
+if(document.getElementById('fechar-aviso')) {
+    document.getElementById('fechar-aviso').onclick = () => avisoIos.style.display = 'none';
+}
+
+// Controle do Botão Android/PC
+let deferredPrompt;
+window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    if (!isIOS && !isStandalone && btnInstalar) {
+        btnInstalar.style.display = 'block';
+    }
+});
+
+if(btnInstalar) {
+    btnInstalar.addEventListener('click', async () => {
+        if (deferredPrompt) {
+            deferredPrompt.prompt();
+            const { outcome } = await deferredPrompt.userChoice;
+            if (outcome === 'accepted') btnInstalar.style.display = 'none';
+            deferredPrompt = null;
+        }
+    });
+}
+
+// Registro Service Worker
+if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('sw.js').catch(err => console.log(err));
+}
 
 window.onload = render;
