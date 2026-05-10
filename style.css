@@ -10,19 +10,17 @@
 * { 
     box-sizing: border-box; 
     -webkit-tap-highlight-color: transparent; 
-    user-select: none !important; 
-    -webkit-user-select: none !important;
+    user-select: none !important;
 }
 
 body { 
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
     background-color: var(--cinza-fundo); 
     margin: 0; 
-    padding-bottom: 120px; 
-    overflow-x: hidden; 
+    padding-bottom: 110px; 
 }
 
-/* HEADER */
+/* HEADER FIXO */
 header {
     background: linear-gradient(135deg, var(--topo-inicio) 0%, var(--topo-fim) 100%);
     color: white; 
@@ -35,97 +33,88 @@ header {
 
 .header-container { max-width: 600px; margin: 0 auto; }
 
-/* Botões do Header */
+/* BOTÕES NO TOPO */
 .badge-btn {
     box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-    transition: transform 0.1s active;
-    text-transform: uppercase;
+    transition: transform 0.1s;
+    cursor: pointer;
+}
+.badge-btn:active { transform: scale(0.95); }
+
+/* BANNER IOS CLEAN (ESTILO SMART APP BANNER) */
+.ios-banner {
+    background: #ffffff;
+    margin: 15px;
+    padding: 12px;
+    border-radius: 16px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    border: 1px solid #e0e0e0;
+    animation: slideIn 0.5s ease-out;
 }
 
-.badge-btn:active {
-    transform: scale(0.95);
+.ios-banner-content {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    position: relative;
 }
 
-/* INPUT DE BUSCA */
-#searchSticker {
-    width: 100%; 
-    padding: 12px; 
-    border-radius: 8px; 
-    border: 1px solid rgba(255,255,255,0.3);
-    background: rgba(255,255,255,0.2); 
-    color: white; 
-    font-weight: bold; 
-    outline: none;
+.ios-text {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
 }
 
-#searchSticker::placeholder {
-    color: rgba(255,255,255,0.7);
+.ios-text strong {
+    font-size: 0.9rem;
+    color: #333;
 }
 
-/* CARD DE APOIO PIX (Conforme IMG_3272) */
+.ios-text span {
+    font-size: 0.75rem;
+    color: #666;
+    line-height: 1.4;
+}
+
+.ios-close {
+    background: #f0f0f0;
+    border: none;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    color: #888;
+    font-size: 18px;
+    cursor: pointer;
+}
+
+/* APOIO PIX */
 .apoio-container { max-width: 600px; margin: 15px auto; padding: 0 15px; }
 .apoio-card {
     background: #fff; border-radius: 12px; padding: 12px 15px; display: flex;
     justify-content: space-between; align-items: center; border: 2px solid var(--detalhe-amarelo);
-    box-shadow: 0 4px 10px rgba(0,0,0,0.08);
 }
-.apoio-texto strong { font-size: 0.9rem; color: var(--topo-inicio); display: block; }
-.apoio-texto span { font-size: 0.75rem; color: #666; }
 .pix-box {
     background: #f0fdf4; border: 1px dashed var(--topo-inicio); padding: 6px 10px;
-    border-radius: 8px; text-align: center; cursor: pointer; min-width: 120px;
+    border-radius: 8px; text-align: center; cursor: pointer;
 }
 .pix-box span { display: block; font-size: 0.8rem; font-weight: bold; color: #333; }
-.pix-box small { font-size: 0.6rem; color: var(--topo-inicio); text-transform: uppercase; font-weight: bold; }
 
-/* MODAL DE ANÚNCIO (Refinado conforme IMG_3268 e IMG_3270) */
-.modal-ads {
-    display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-    background: rgba(0, 0, 0, 0.75); 
-    backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
-    z-index: 9999; align-items: center; justify-content: center;
-}
-.ads-content {
-    background: white; width: 92%; max-width: 380px; border-radius: 20px;
-    overflow: hidden; box-shadow: 0 25px 50px rgba(0,0,0,0.5); animation: zoomIn 0.3s ease;
-}
-.ads-header { background: #f8f9fa; padding: 12px 15px; display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #eee; }
-
-#btn-pular-ads {
-    background: #eee; border: none; padding: 6px 14px; border-radius: 20px;
-    font-size: 0.8rem; font-weight: bold; color: #666; transition: 0.3s;
-}
-#btn-pular-ads.ativo { background: var(--vermelho); color: white; cursor: pointer; }
-
-.ads-body { padding: 15px; text-align: center; }
-.ads-image-wrapper { 
-    width: 100%; border-radius: 15px; overflow: hidden; 
-    border: 1px solid #eee; background: #fff; margin-bottom: 10px;
-}
-.ads-image-wrapper img { width: 100%; height: auto; display: block; }
-
-.pix-destaque { background: #f0fdf4; border: 2px solid var(--topo-inicio); padding: 10px; border-radius: 10px; }
-.pix-destaque strong { font-size: 1.1rem; color: #333; display: block; text-decoration: underline; }
-
-/* CONTEÚDO DO ÁLBUM (Conforme IMG_3271) */
+/* ESTILO DAS FIGURINHAS */
 .group-section { max-width: 600px; margin: 20px auto; padding: 0 15px; }
 .section-title { border-left: 6px solid var(--topo-inicio); padding-left: 12px; color: var(--topo-inicio); font-size: 1.1rem; font-weight: 800; text-transform: uppercase; margin-bottom: 15px; }
+
 .team-card { background: white; border-radius: 12px; border: 1px solid #ddd; margin-bottom: 12px; overflow: hidden; }
 .team-header { padding: 15px; display: flex; align-items: center; cursor: pointer; }
-.team-header img { width: 35px; height: 35px; margin-right: 15px; border-radius: 4px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
-.team-body { display: none; padding: 15px; background: #fdfdfd; border-top: 1px solid #eee; }
-.team-body.active { display: block; }
 
-/* GRID DE FIGURINHAS */
-.sticker-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+.sticker-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; padding: 10px; }
 .sticker { 
     background: #fff; border: 1px solid #ddd; border-radius: 8px; padding: 12px 0; 
-    text-align: center; font-size: 0.7rem; font-weight: bold; position: relative; color: #555;
+    text-align: center; font-size: 0.7rem; font-weight: bold; position: relative;
 }
 .sticker.owned { background: var(--detalhe-amarelo); border-color: var(--topo-inicio); color: var(--azul-brasil); }
 .badge-repeat { position: absolute; top: -6px; right: -6px; background: var(--vermelho); color: white; width: 18px; height: 18px; border-radius: 50%; font-size: 0.6rem; display: flex; align-items: center; justify-content: center; border: 1.5px solid white; }
 
-/* RODAPÉ FIXO (Conforme IMG_3271) */
+/* RODAPÉ BRASIL */
 .main-footer { 
     position: fixed; bottom: 0; width: 100%; height: 95px; 
     background: var(--topo-inicio); color: white; 
@@ -133,31 +122,12 @@ header {
     display: flex; flex-direction: column; align-items: center; justify-content: center; 
 }
 
-/* Forçar cor branca no Instagram (Ignora azul padrão do navegador) */
-.insta-link { 
-    color: white !important; 
-    text-decoration: none; 
-    font-weight: bold; 
-    display: flex;
-    align-items: center;
-    gap: 4px;
+@keyframes slideIn {
+    from { transform: translateY(-20px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
 }
 
-/* MODAIS GERAIS */
-.modal { display: none; position: fixed; z-index: 2000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); }
-.modal-content { background: white; margin: 15% auto; padding: 20px; border-radius: 15px; width: 90%; max-width: 400px; position: relative; }
-
-/* ANIMAÇÕES */
-@keyframes zoomIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-.sticker-foco { animation: destaqueBusca 1.5s ease-in-out; z-index: 10; }
-@keyframes destaqueBusca {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.15); box-shadow: 0 0 15px var(--detalhe-amarelo); border-color: var(--detalhe-amarelo); }
-    100% { transform: scale(1); }
-}
-
-/* Responsividade para telas menores */
-@media (max-width: 380px) {
+/* Responsividade */
+@media (max-width: 400px) {
     .sticker-grid { grid-template-columns: repeat(3, 1fr); }
-    h1 { font-size: 0.9rem !important; }
 }
