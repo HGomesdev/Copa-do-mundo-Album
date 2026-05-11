@@ -4,6 +4,9 @@ Um Progressive Web App (PWA) desenvolvido para colecionadores que desejam gerir 
 
 🚀 **Acesse o App aqui:** [https://hgomesdev.github.io/Copa-do-mundo-Album/](https://hgomesdev.github.io/Copa-do-mundo-Album/)
 
+![Versão do App](https://img.shields.io/badge/version-3.6-009739?style=for-the-badge)
+![Status](https://img.shields.io/badge/Status-Ativo-success?style=for-the-badge)
+
 ---
 
 ## 📱 Sobre o Projeto
