@@ -52,4 +52,11 @@ O **Meu Álbum 2026** é uma ferramenta leve e direta. Ele elimina a necessidade
 
 ## 🤝 Apoio ao Desenvolvedor
 
-Se
+Se este app facilitou sua jornada rumo ao álbum completo, considere apoiar o projeto:
+
+- **Instagram:** [@h.gomes04](https://www.instagram.com/h.gomes04)
+- **Pix:** `18981427594` (Hugo Gomes)
+
+---
+
+Desenvolvido com 💚 por **Hugo Gomes**.
