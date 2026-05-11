@@ -1,63 +1,55 @@
-# ⚽ Meu Álbum 2026 - Controle de Figurinhas
+# ⚽ Meu Álbum 2026 - Controle de Figurinhas (v4.0)
 
-Um Progressive Web App (PWA) desenvolvido para colecionadores que desejam gerir o seu progresso no Álbum de Figurinhas da Copa do Mundo de 2026 de forma rápida, intuitiva e mobile-first.
+Um Progressive Web App (PWA) de alta performance desenvolvido para colecionadores que desejam gerir o progresso do seu Álbum de Figurinhas da Copa do Mundo de 2026 de forma rápida, intuitiva e mobile-first.
 
 🚀 **Acesse o App aqui:** [https://hgomesdev.github.io/Copa-do-mundo-Album/](https://hgomesdev.github.io/Copa-do-mundo-Album/)
 
-![Versão do App](https://img.shields.io/badge/version-3.6-009739?style=for-the-badge)
-![Status](https://img.shields.io/badge/Status-Ativo-success?style=for-the-badge)
+![Versão do App](https://img.shields.io/badge/version-4.0-009739?style=for-the-badge)
+![Status](https://img.shields.io/badge/Status-Finalizado-success?style=for-the-badge)
+![PWA](https://img.shields.io/badge/PWA-Pronto_para_Instalar-blue?style=for-the-badge)
 
 ---
 
 ## 📱 Sobre o Projeto
 
-Este projeto nasceu da necessidade de ter uma lista de controle sempre à mão, sem a necessidade de carregar papel ou caneta. O sistema permite marcar as figurinhas que já possuís e identificar rapidamente as vossas repetidas para troca.
+O **Meu Álbum 2026** é uma ferramenta leve e direta. Ele elimina a necessidade de listas de papel, permitindo que o colecionador marque suas figurinhas e gerencie repetidas em segundos, diretamente pelo navegador ou instalado como aplicativo nativo.
+
+### ✨ Novidades da Versão 4.0:
+- **Blindagem de Toque:** Implementada trava de `touch-action` para evitar zoom indesejado em cliques rápidos no celular.
+- **Suporte iOS Nativo:** Sistema de detecção de iPhone/iPad que orienta o usuário sobre como instalar o app via Safari.
+- **Correção de Base:** Banco de dados de seleções atualizado (Austrália e N. Zelândia corrigidas).
+- **Interface Otimizada:** Melhor espaçamento no rodapé e headers responsivos para telas menores.
 
 ### Principais Funcionalidades:
-- **Controle de Posse:** 1 toque para adicionar, 2 toques para remover ou marcar repetidas.
-- **Busca Rápida:** Filtre por código (ex: BRA10, ARG5) e o app foca automaticamente na figurinha.
-- **Gestão de Repetidas:** Filtro exclusivo para visualizar apenas o que tens para troca.
-- **Compartilhamento:** Gera uma lista formatada das tuas repetidas pronta para enviar no WhatsApp.
-- **PWA (Instalável):** Adicione à tela de início do seu Android ou iPhone e use como um aplicativo nativo.
-- **Persistência de Dados:** Suas marcações ficam salvas automaticamente no seu dispositivo (LocalStorage).
+- **Controle Preciso:** 1 toque para adicionar, 2 toques para remover/diminuir repetidas.
+- **Busca Inteligente:** Filtre figurinhas por código (ex: BRA10, ARG5) com scroll automático.
+- **Compartilhamento WhatsApp:** Gere automaticamente uma lista das suas repetidas formatada para trocas.
+- **Offline First:** Suas marcações ficam salvas no `LocalStorage` do dispositivo.
 
 ---
 
 ## 🛠️ Tecnologias Utilizadas
 
-O projeto foi construído utilizando tecnologias web puras (Vanilla Web) para garantir máxima performance e leveza:
-
-- **HTML5:** Estrutura semântica.
-- **CSS3:** Estilização personalizada com travas de toque para evitar zoom indesejado no mobile.
-- **JavaScript (ES6+):** Lógica de renderização dinâmica e manipulação de dados.
-- **Manifest JSON:** Configurações de PWA para instalação.
+- **HTML5:** Estrutura e Meta-tags de PWA.
+- **CSS3:** Estilização com animações de foco e travas de manipulação de toque.
+- **JavaScript (Vanilla ES6+):** Motor de renderização dinâmico e lógica de persistência.
+- **Manifest JSON:** Configurações de interface independente (Standalone).
 
 ---
 
-## 📸 Como Instalar
+## 📸 Instalação no Celular
 
 ### No Android (Chrome)
-1. Acesse o link do projeto.
-2. Aguarde o banner "BAIXAR APP" aparecer no topo ou clique nas opções do navegador e selecione **"Instalar Aplicativo"**.
+1. Abra o link no Chrome.
+2. Clique no botão **"BAIXAR APP"** que aparecerá no topo.
 
 ### No iPhone (Safari)
-1. Acesse o link do projeto.
-2. Toque no ícone de **Compartilhar** (quadrado com uma seta para cima).
-3. Role para baixo e selecione **"Adicionar à Tela de Início"**.
+1. Abra o link no Safari.
+2. Toque no ícone de **Compartilhar** (quadrado com seta).
+3. Selecione **"Adicionar à Tela de Início"**.
 
 ---
 
-## 🤝 Contribuições e Apoio
+## 🤝 Apoio ao Desenvolvedor
 
-Se este projeto te ajudou a organizar o teu álbum e queres apoiar o desenvolvedor:
-
-- **Instagram:** [@h.gomes04](https://www.instagram.com/h.gomes04)
-- **Pix:** `18981427594` (Hugo Gomes)
-
----
-
-## 📄 Licença
-
-Este projeto é para fins de entretenimento e organização pessoal. As marcas e nomes de seleções são de propriedade dos seus respectivos detentores.
-
-Desenvolvido com 💚 por **Hugo Gomes**.
+Se
